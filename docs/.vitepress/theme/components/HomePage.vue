@@ -26,7 +26,7 @@ const projects: Project[] = [
     title: 'ROS 2 学习记录（连载）',
     cover: 'ROS 2',
     meta: '2026 年 10 月 · 教程',
-    desc: '从配置 WSL 2、装 ROS 2 Humble 到写出第一个节点，按章节一步步来。',
+    desc: '从 Ubuntu、WSL 环境一路到 ROS 2 架构与编译，7 章连载，全是踩过的坑。',
     link: '/ros2/',
     lang: 'Ubuntu 22.04',
     tone: 'sage'

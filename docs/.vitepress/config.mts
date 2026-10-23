@@ -46,10 +46,13 @@ export default defineConfig({
           text: 'ROS 2 学习记录',
           items: [
             { text: '开始之前', link: '/ros2/' },
-            { text: '第一章 · 配置 WSL 2', link: '/ros2/chapter-1-wsl' },
-            { text: '第二章 · 安装 ROS 2 Humble', link: '/ros2/chapter-2-install-ros2' },
-            { text: '第三章 · 第一个工作空间', link: '/ros2/chapter-3-first-workspace' },
-            { text: '附录 · 常用命令与排错', link: '/ros2/appendix-commands' }
+            { text: '第一章 · Ubuntu、WSL 与 ROS 是什么', link: '/ros2/ch-01-ubuntu-wsl-ros' },
+            { text: '第二章 · WSL 安装与配置踩坑', link: '/ros2/ch-02-wsl-install' },
+            { text: '第三章 · ROS 2 安装与验证', link: '/ros2/ch-03-ros2-install' },
+            { text: '第四章 · Ubuntu 常用命令', link: '/ros2/ch-04-ubuntu-commands' },
+            { text: '第五章 · Ubuntu 环境下编程', link: '/ros2/ch-05-ubuntu-programming' },
+            { text: '第六章 · ROS 2 体验与系统架构', link: '/ros2/ch-06-ros2-experience' },
+            { text: '第七章 · 用 CMake + ament 编译节点', link: '/ros2/ch-07-cmake-ament' }
           ]
         }
       ],

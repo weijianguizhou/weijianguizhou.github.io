@@ -24,12 +24,15 @@ my-blog/
 │  │  ├─ index.md
 │  │  ├─ hello-world.md
 │  │  └─ writing-with-markdown.md
-│  ├─ ros2/                        # ROS 2 教程连载
+│  ├─ ros2/                        # ROS 2 连载（内容来自 ROS2/ 下的原始笔记）
 │  │  ├─ index.md                  # 系列目录
-│  │  ├─ chapter-1-wsl.md          # 第一章：配置 WSL 2
-│  │  ├─ chapter-2-install-ros2.md # 第二章：安装 ROS 2 Humble
-│  │  ├─ chapter-3-first-workspace.md # 第三章：第一个工作空间
-│  │  └─ appendix-commands.md      # 附录：常用命令与排错
+│  │  ├─ ch-01-ubuntu-wsl-ros.md   # 第一章：Ubuntu、WSL 与 ROS 是什么
+│  │  ├─ ch-02-wsl-install.md      # 第二章：WSL 安装与配置踩坑
+│  │  ├─ ch-03-ros2-install.md     # 第三章：ROS 2 安装与验证
+│  │  ├─ ch-04-ubuntu-commands.md  # 第四章：Ubuntu 常用命令
+│  │  ├─ ch-05-ubuntu-programming.md # 第五章：Ubuntu 环境下编程
+│  │  ├─ ch-06-ros2-experience.md  # 第六章：ROS 2 体验与系统架构
+│  │  └─ ch-07-cmake-ament.md      # 第七章：用 CMake + ament 编译节点
 │  └─ public/
 │     ├─ avatar.jpg                # 头像（400×400，来自 GitHub 公开头像）
 │     └─ favicon.svg
