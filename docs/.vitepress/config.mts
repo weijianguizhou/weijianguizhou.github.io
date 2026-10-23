@@ -22,7 +22,7 @@ export default defineConfig({
   lastUpdated: true,
 
   head: [
-    ['link', { rel: 'icon', type: 'image/png', href: '/avatar.png' }],
+    ['link', { rel: 'icon', type: 'image/png', href: '/favicon.png' }],
     ['meta', { name: 'theme-color', content: '#fafaf8' }],
     ['meta', { name: 'author', content: SITE.name }]
   ],

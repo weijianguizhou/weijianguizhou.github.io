@@ -68,7 +68,7 @@ const isExternal = (link: string) => /^https?:\/\//.test(link)
             <a href="/about.html">关于</a>
           </p>
         </div>
-        <img class="av-photo" src="/avatar.png" :alt="profile.name" width="168" height="168" />
+        <img class="av-photo" src="/avatar.jpg" :alt="profile.name" width="168" height="168" />
       </header>
 
       <section class="av-work">

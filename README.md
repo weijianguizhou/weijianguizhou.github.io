@@ -31,7 +31,7 @@ my-blog/
 │  │  ├─ chapter-3-first-workspace.md # 第三章：第一个工作空间
 │  │  └─ appendix-commands.md      # 附录：常用命令与排错
 │  └─ public/
-│     ├─ avatar.png                # 头像（GitHub 公开头像）
+│     ├─ avatar.jpg                # 头像（400×400，来自 GitHub 公开头像）
 │     └─ favicon.svg
 ├─ .github/workflows/deploy.yml    # 推送 main 自动构建 + 部署 Pages
 ├─ package.json / package-lock.json
@@ -112,7 +112,7 @@ tags:
 | --- | --- |
 | 首页空白 / 显示成默认文档页 | `docs/index.md` 的 frontmatter 必须有 `customLayout: home` |
 | 线上样式丢失、链接 404 | `base` 配错；不是 `<用户名>.github.io` 仓库时改成 `'/仓库名/'` |
-| 头像不显示 | `docs/public/avatar.png` 必须在，且引用写成 `/avatar.png` |
+| 头像不显示 | `docs/public/avatar.jpg` 必须在，且 `HomePage.vue` 里的引用写成 `/avatar.jpg`（favicon 用的是 `/favicon.png`） |
 | Actions 报 `npm ci` 失败 | `package-lock.json` 必须一起提交 |
 | 想加深色模式适配 | `custom.css` 里已有 `html.dark` 的配色变量，改那里 |
 | 想加评论 | [Giscus](https://giscus.app/zh-CN)，免费，基于 GitHub Discussions |
