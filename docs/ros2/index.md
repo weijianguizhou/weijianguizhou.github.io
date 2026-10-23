@@ -13,7 +13,7 @@ description: 从 Ubuntu、WSL 环境到 ROS 2 架构与编译，一套按顺序�
 
 1. 搞清楚 **Ubuntu / WSL / ROS** 分别是什么、为什么这么搭
 2. 把 **WSL 2 + Ubuntu** 装好，处理网络、中文、磁盘这些琐事
-3. 装 **ROS 2 Humble** 并跑通第一个节点
+3. 装 **ROS 2**（笔记里是 Lyrical，对应 Ubuntu 26.04）并跑通第一个节点
 4. 补上 **Ubuntu 常用命令**，不然终端里寸步难行
 5. 会写一点 **C++ / Python**，能编译能运行
 6. 理解 ROS 2 的**节点、话题、DDS 与分层架构**
@@ -36,9 +36,14 @@ description: 从 Ubuntu、WSL 环境到 ROS 2 架构与编译，一套按顺序�
 | 项目 | 版本 |
 | --- | --- |
 | 系统 | Windows 10 2004+ / Windows 11 |
-| 子系统 | WSL 2 + Ubuntu 22.04 LTS |
-| ROS | ROS 2 Humble Hawksbill（官方支持到 2027 年 5 月） |
+| 子系统 | WSL 2（3.0.3）+ Ubuntu 26.04 |
+| ROS | ROS 2 Lyrical（对应 Ubuntu 26.04） |
 | 终端 | Windows Terminal |
+
+::: warning 版本一定要配对
+ROS 2 和 Ubuntu 是绑死的：**Ubuntu 26.04 → Lyrical，24.04 → Jazzy，22.04 → Humble**。
+本站命令以 Lyrical 为例；如果你用的是 22.04，把命令里的 `lyrical` 全部换成 `humble`（包名、`/opt/ros/` 路径、环境变量都要换）。
+:::
 
 ::: tip 怎么读
 按顺序读，前一章是后一章的地基；赶时间可以直接从第三章开始，遇到不懂的概念再回头翻第一章。

@@ -14,7 +14,7 @@ ROS 2 和 Ubuntu 是严格配对的，所以第一步永远是确认系统版本
 这条千万记住：**版本对不上，装是装不上的**。在 26.04 上敲 `apt install ros-humble-desktop`，得到的只会是 `Unable to locate package`，因为软件源里根本没有为这个系统编译的 Humble 包。
 
 ::: warning 命令里的发行版代号
-下面手动安装这一路，命令里用的是 `lyrical`（对应较新的 Ubuntu）。如果你跟着本站前两章在 Ubuntu 22.04 上装 Humble，就把下面所有 `lyrical` 换成 `humble`——**代号换错，源配得再对也装不上**。
+下面手动安装这一路，命令里用的是 `lyrical`（对应 Ubuntu 26.04，也是本笔记的实际环境）。如果你用的是 Ubuntu 22.04，就把下面所有 `lyrical` 换成 `humble`——**代号换错，源配得再对也装不上**。
 :::
 
 ## 3.2 官方路线：ros2-apt-source
@@ -104,7 +104,7 @@ ros2 run demo_nodes_py listener
 
 原因出在 WSL 默认的 NAT 网络模式上。ROS 2 底层靠 DDS 通信，节点之间要靠多播互相发现，而 NAT 模式会把这个过程挡住。解决办法还是在 `C:\Users\<你的用户名>\.wslconfig` 里改成镜像模式，然后 `wsl --shutdown` 重启：
 
-```ini
+```text
 [wsl2]
 networkingMode=mirrored
 ```

@@ -28,7 +28,7 @@ const projects: Project[] = [
     meta: '2026 年 10 月 · 教程',
     desc: '从 Ubuntu、WSL 环境一路到 ROS 2 架构与编译，7 章连载，全是踩过的坑。',
     link: '/ros2/',
-    lang: 'Ubuntu 22.04',
+    lang: 'Ubuntu 26.04',
     tone: 'sage'
   },
   {
