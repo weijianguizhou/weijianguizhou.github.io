@@ -49,17 +49,14 @@ const projects: Project[] = [
     link: '/digital/',
     lang: 'DIGITAL CIRCUITS',
     tone: 'sand'
-  },
-  {
-    title: '材料力学',
-    cover: '材料力学',
-    meta: '2026 年 10 月 · 完整笔记',
-    desc: '从轴向拉压、扭转、弯曲到能量法，13 章合成一页，方便回查。',
-    link: '/notes/mechanics.html',
-    lang: 'COMPLETED',
-    tone: 'stone',
-    badge: '已学完'
   }
+]
+
+const completed = [
+  { title: '材料力学', meta: '力学 · 2026', link: '/notes/mechanics.html' },
+  { title: '常微分方程', meta: 'ODE · 2026', link: '/notes/ode/' },
+  { title: '概率论', meta: '概率 · 2026', link: '/notes/probability.html' },
+  { title: '数理统计', meta: '统计 · 2026', link: '/notes/statistics.html' }
 ]
 
 const year = new Date().getFullYear()
@@ -124,6 +121,16 @@ const isExternal = (link: string) => /^https?:\/\//.test(link)
             <p class="av-item-desc">{{ p.desc }}</p>
           </article>
         </div>
+      </section>
+
+      <section class="av-done">
+        <h2>已学完</h2>
+        <ul class="av-done-list">
+          <li v-for="c in completed" :key="c.title">
+            <a :href="c.link">{{ c.title }}</a>
+            <span class="av-done-meta">{{ c.meta }}</span>
+          </li>
+        </ul>
       </section>
 
       <footer class="av-footer">
@@ -368,6 +375,51 @@ h1 {
   font-size: 0.92rem;
   line-height: 1.7;
   color: var(--av-sub);
+}
+
+/* ---------- 已学完 ---------- */
+.av-done {
+  margin-top: 3rem;
+}
+
+.av-done h2 {
+  margin: 0 0 1rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.av-done-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--av-border);
+}
+
+.av-done-list li {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.65rem 0;
+  border-bottom: 1px solid var(--av-border);
+  font-size: 0.95rem;
+}
+
+.av-done-list a {
+  color: var(--av-fg);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+
+.av-done-list a:hover {
+  border-bottom-color: var(--av-fg);
+}
+
+.av-done-meta {
+  flex: 0 0 auto;
+  font-size: 0.78rem;
+  color: var(--av-muted);
 }
 
 /* ---------- footer ---------- */

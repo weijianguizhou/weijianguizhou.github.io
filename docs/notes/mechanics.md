@@ -1286,7 +1286,7 @@ $$
 \sigma_{\max}=\left|\frac{M_z}{W_z}\pm\frac{M_y}{W_y}\right|\le[\sigma]
 $$
 
-对于矩形、工字形等具有两个对称轴的截面，$\sigma_{\max}=\dfrac{|M_z|}{W_z}+\dfrac{|M_y|}{W_y}$。
+对于矩形、工字形等具有两个对称轴的截面，$\sigma_{\max}=\dfrac{\vert M_z\vert }{W_z}+\dfrac{\vert M_y\vert }{W_y}$。
 :::
 
 ### 10.3 拉伸（压缩）与弯曲的组合

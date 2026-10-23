@@ -1,4 +1,5 @@
 import { defineConfig } from 'vitepress'
+import { katex } from '@mdit/plugin-katex'
 
 /* ============================================================
  * TODO：以后改名字 / 联系方式的唯一入口
@@ -19,6 +20,9 @@ export default defineConfig({
   // 仓库名是 <用户名>.github.io 时用 '/'；若仓库叫 blog 则改成 '/blog/'
   base: '/',
 
+  // 工程数学的 tex 公式还有 128 处渲染异常，先不上线
+  srcExclude: ['notes/engineering-math.md'],
+
   lastUpdated: true,
 
   head: [
@@ -28,8 +32,26 @@ export default defineConfig({
   ],
 
   markdown: {
-    math: true,
-    lineNumbers: true
+    lineNumbers: true,
+    config: (md) => {
+      md.use(katex, {
+        allowInlineWithSpace: true,
+        macros: {
+          '\\Arg': '\\operatorname{Arg}',
+          '\\argz': '\\operatorname{Arg}',
+          '\\re': '\\operatorname{Re}',
+          '\\im': '\\operatorname{Im}',
+          '\\oiint': '\\iint',
+          '\\dif': '\\mathrm{d}',
+          '\\dd': '\\mathrm{d}',
+          '\\R': '\\mathbb{R}',
+          '\\C': '\\mathbb{C}',
+          '\\Z': '\\mathbb{Z}',
+          '\\N': '\\mathbb{N}',
+          '\\Q': '\\mathbb{Q}'
+        }
+      })
+    }
   },
 
   themeConfig: {
