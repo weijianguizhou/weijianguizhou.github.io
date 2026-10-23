@@ -20,9 +20,7 @@ export default defineConfig({
   // 仓库名是 <用户名>.github.io 时用 '/'；若仓库叫 blog 则改成 '/blog/'
   base: '/',
 
-  // 工程数学的 tex 公式还有 128 处渲染异常，先不上线
-  srcExclude: ['notes/engineering-math.md'],
-
+  // 工程数学页面已从 tex 重新转换，公式渲染无错误，正常参与构建
   lastUpdated: true,
 
   head: [
@@ -68,7 +66,7 @@ export default defineConfig({
           { text: '常微分方程', link: '/notes/ode/' },
           { text: '概率论', link: '/notes/probability/' },
           { text: '数理统计', link: '/notes/statistics/' },
-          { text: '工程数学（PDF）', link: '/notes/engineering-math.pdf' }
+          { text: '工程数学', link: '/notes/engineering-math.html' }
         ]
       },
       { text: '写作', link: '/posts/' },
