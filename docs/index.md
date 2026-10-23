@@ -2,9 +2,9 @@
 layout: home
 
 hero:
-  name: 你的名字
-  text: 写代码，也写字
-  tagline: 个人主页与博客：技术笔记、项目复盘，以及一些没想清楚的思考。
+  name: 爱吃烧饼的大熊猫
+  text: 魏舟的个人主页与博客
+  tagline: 技术笔记、项目复盘，以及一些没想清楚的思考。
   image:
     src: /logo.svg
     alt: 站点 Logo

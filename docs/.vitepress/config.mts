@@ -4,10 +4,11 @@ import { defineConfig } from 'vitepress'
  * TODO：把下面 5 个字段换成你自己的信息，其余可以先不动
  * ============================================================ */
 const SITE = {
-  name: '你的名字',                     // 站点标题（浏览器标签页 + 左上角）
-  description: '个人主页与博客：记录技术、项目与思考',
-  github: 'https://github.com/yourname', // 你的 GitHub 主页
-  email: 'you@example.com',              // 你的邮箱
+  name: '爱吃烧饼的大熊猫',              // 站点标题（浏览器标签页 + 左上角）
+  author: '魏舟',                        // 真实姓名 / 页脚署名
+  description: '魏舟（爱吃烧饼的大熊猫）的个人主页与博客：技术笔记、项目复盘与思考',
+  github: 'https://github.com/yourname', // TODO: 换成你的 GitHub 主页
+  email: 'you@example.com',              // TODO: 换成你的邮箱
   avatar: '/logo.svg'                    // 头像 / 站点 logo（在 docs/public 下）
 }
 
@@ -80,7 +81,7 @@ export default defineConfig({
 
     footer: {
       message: '基于 VitePress 构建 · 由 GitHub Pages 免费托管',
-      copyright: 'Copyright © 2026 ' + SITE.name
+      copyright: 'Copyright © 2026 ' + SITE.author
     },
 
     // 界面文案中文化（VitePress 默认英文）
