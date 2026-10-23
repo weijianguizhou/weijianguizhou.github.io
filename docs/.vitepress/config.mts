@@ -102,6 +102,51 @@ export default defineConfig({
           ]
         }
       ],
+      '/notes/mechanics/': [
+        {
+          text: '材料力学',
+          items: [
+            { text: '开始之前', link: '/notes/mechanics/' },
+            { text: '第一章 绪论', link: '/notes/mechanics/ch-01-intro' },
+            { text: '第二章 材料力学的一些基本', link: '/notes/mechanics/ch-02-basics' },
+            { text: '第三章 轴向拉伸与压缩', link: '/notes/mechanics/ch-03-axial' },
+            { text: '第四章 剪切', link: '/notes/mechanics/ch-04-shear' },
+            { text: '第五章 扭转', link: '/notes/mechanics/ch-05-torsion' },
+            { text: '第六章 弯曲内力', link: '/notes/mechanics/ch-06-bending-internal' },
+            { text: '第七章 弯曲应力', link: '/notes/mechanics/ch-07-bending-stress' },
+            { text: '第八章 弯曲变形', link: '/notes/mechanics/ch-08-bending-deformation' },
+            { text: '第九章 应力状态分析和强度理论', link: '/notes/mechanics/ch-09-stress-state' },
+            { text: '第十章 组合变形', link: '/notes/mechanics/ch-10-combined' },
+            { text: '第十一章 压杆稳定性', link: '/notes/mechanics/ch-11-buckling' },
+            { text: '第十二章 能量法', link: '/notes/mechanics/ch-12-energy' },
+            { text: '第十三章 静不定问题', link: '/notes/mechanics/ch-13-statically-indeterminate' },
+            { text: '附录 A 补充材料', link: '/notes/mechanics/ch-14-appendix' }
+          ]
+        }
+      ],
+      '/notes/probability/': [
+        {
+          text: '概率论',
+          items: [
+            { text: '开始之前', link: '/notes/probability/' },
+            { text: '第一章 概率论的基础知识', link: '/notes/probability/ch-01-basics' },
+            { text: '第二章 随机变量及其分布', link: '/notes/probability/ch-02-random-variable' },
+            { text: '第三章 多维随机变量及其分布', link: '/notes/probability/ch-03-multivariate' },
+            { text: '第四章 随机变量的数字特征', link: '/notes/probability/ch-04-numerical' }
+          ]
+        }
+      ],
+      '/notes/statistics/': [
+        {
+          text: '数理统计',
+          items: [
+            { text: '开始之前', link: '/notes/statistics/' },
+            { text: '第一章 基本概念', link: '/notes/statistics/ch-01-basics' },
+            { text: '第二章 参数估计', link: '/notes/statistics/ch-02-estimation' },
+            { text: '第三章 假设检验', link: '/notes/statistics/ch-03-hypothesis' }
+          ]
+        }
+      ],
       '/posts/': [
         {
           text: '写作',

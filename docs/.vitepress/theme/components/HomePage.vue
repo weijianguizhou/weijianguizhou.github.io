@@ -53,10 +53,10 @@ const projects: Project[] = [
 ]
 
 const completed = [
-  { title: '材料力学', meta: '力学 · 2026', link: '/notes/mechanics.html' },
+  { title: '材料力学', meta: '力学 · 2026', link: '/notes/mechanics/' },
   { title: '常微分方程', meta: 'ODE · 2026', link: '/notes/ode/' },
-  { title: '概率论', meta: '概率 · 2026', link: '/notes/probability.html' },
-  { title: '数理统计', meta: '统计 · 2026', link: '/notes/statistics.html' }
+  { title: '概率论', meta: '概率 · 2026', link: '/notes/probability/' },
+  { title: '数理统计', meta: '统计 · 2026', link: '/notes/statistics/' }
 ]
 
 const year = new Date().getFullYear()

@@ -1,0 +1,273 @@
+---
+title: 第十一章 压杆稳定性
+description: 材料力学 · 第十一章 压杆稳定性
+---
+
+# 第十一章 压杆稳定性
+
+> 世界巨大
+>
+> 我以渺小来爱它
+>
+> 时间悠长
+>
+> 我以短暂来爱它
+>
+> 我急切，滚烫
+>
+> 配得上慢慢活着
+>
+> 也配得上突然死亡
+
+#### 11.1 压杆稳定的基本概念
+
+::: info 失稳与临界压力
+对于细长压杆，当轴向压力 $F$ 小于某一极限值时，杆件保持直线平衡状态；若受到微小侧向干扰，撤去干扰后杆件能恢复直线平衡，则称该平衡是**稳定的**。当压力 $F$ 超过该极限值时，微小的干扰会使杆件发生显著弯曲变形甚至破坏，这种平衡状态称为**不稳定的**。压力由稳定平衡过渡到不稳定平衡的临界值称为**临界压力**，记作 $F_{\text{cr}}$。
+:::
+
+::: tip 临界压力的实验现象
+当作用在细长压杆上的轴向压力达到临界压力 $F_{\text{cr}}$ 时，杆件可以保持在微弯状态下的平衡；压力稍大于 $F_{\text{cr}}$ 时，弯曲变形迅速增大，最终导致压杆失效。
+:::
+
+#### 11.2 细长压杆的临界压力——欧拉公式
+
+考虑两端铰支的理想细长压杆，长度为 $l$，弯曲刚度为 $EI$。设压力 $F$ 达到临界值 $F_{\text{cr}}$ 时杆件处于微弯平衡状态，挠曲线方程为 $w(x)$。由弯矩平衡得：
+
+$$
+M(x)=-F_{\text{cr}}w(x)
+$$
+
+而梁的近似挠曲线微分方程为：
+
+$$
+EI\,w''(x)=M(x)=-F_{\text{cr}}w(x)
+$$
+
+令 $k^2=\dfrac{F_{\text{cr}}}{EI}$，则：
+
+$$
+w''+k^2w=0
+$$
+
+通解为：
+
+$$
+w(x)=A\sin kx+B\cos kx
+$$
+
+利用边界条件 $w(0)=0$ 得 $B=0$；再由 $w(l)=0$ 得 $A\sin kl=0$。若 $A\neq 0$（非平凡解），则需 $\sin kl=0$，故：
+
+$$
+kl=n\pi\quad(n=1,2,3,\dots)
+$$
+
+取最小非零解 $n=1$，得到临界压力：
+
+$$
+F_{\text{cr}}=\frac{\pi^2EI}{l^2}
+$$
+
+此为两端铰支压杆的**欧拉公式**。
+
+::: tip 欧拉公式（两端铰支）
+两端铰支的细长压杆，其临界压力为：
+
+$$
+\boxed{F_{\text{cr}}=\frac{\pi^2EI}{l^2}}
+$$
+
+式中 $E$ 为材料的弹性模量，$I$ 为横截面的最小形心主惯性矩（因为压杆总是在抗弯能力最弱的方向失稳），$l$ 为压杆长度。
+:::
+
+#### 11.3 不同约束条件下的欧拉公式
+
+对于不同支座条件，只需将欧拉公式中的长度 $l$ 换算为**相当长度** $\mu l$，其中 $\mu$ 称为**长度因数**。临界压力的一般形式为：
+
+$$
+F_{\text{cr}}=\frac{\pi^2EI}{(\mu l)^2}
+$$
+
+常见约束的长度因数如下表所示：
+
+| 约束形式 | 长度因数 $\mu$ | 失稳时挠曲线形状特征 |
+| :--- | :---: | :--- |
+| 两端铰支 | $1.0$ | 正弦半波 |
+| 一端固定、一端自由 | $2.0$ | 正弦四分之一波 |
+| 一端固定、一端铰支 | $0.7$ | 正弦 0.7 波 |
+| 两端固定 | $0.5$ | 正弦半波（两端有拐点） |
+
+::: tip 临界应力与柔度
+压杆的柔度（长细比）定义为：
+
+$$
+\lambda=\frac{\mu l}{i},\quad i=\sqrt{\frac{I}{A}}
+$$
+
+其中 $i$ 为截面的惯性半径。临界应力为：
+
+$$
+\sigma_{\text{cr}}=\frac{F_{\text{cr}}}{A}=\frac{\pi^2E}{\lambda^2}
+$$
+:::
+
+#### 11.4 欧拉公式的适用范围
+
+欧拉公式推导中使用了线弹性小变形假设，因此临界应力不能超过材料的比例极限 $\sigma_p$：
+
+$$
+\frac{\pi^2E}{\lambda^2}\le\sigma_p\quad\Rightarrow\quad\lambda\ge\pi\sqrt{\frac{E}{\sigma_p}}\triangleq\lambda_p
+$$
+
+$\lambda_p$ 称为**比例极限柔度**。当 $\lambda\ge\lambda_p$ 时，欧拉公式适用，此类压杆称为**大柔度杆**（细长杆）。
+
+常见材料的 $\lambda_p$ 参考值：
+
+- Q235 钢：$E\approx 206\,\text{GPa},\ \sigma_p\approx 200\,\text{MPa}$，$\lambda_p\approx 100$
+- 铸铁：$\lambda_p\approx 80$
+- 木材：$\lambda_p\approx 110$
+
+#### 11.5 中、小柔度杆的经验公式
+
+当 $\lambda<\lambda_p$ 时，欧拉公式失效，需采用经验公式。
+
+::: info 直线公式（中柔度杆）
+对于中柔度杆（$\lambda_c\le\lambda<\lambda_p$，$\lambda_c$ 为材料常数），临界应力与柔度成线性关系：
+
+$$
+\sigma_{\text{cr}}=a-b\lambda
+$$
+
+式中 $a,b$ 为与材料有关的常数，可通过实验测定。例如 Q235 钢（$\lambda_c\approx 60$）：$a=304\,\text{MPa}$，$b=1.12\,\text{MPa}$。
+:::
+
+::: info 抛物线公式
+某些规范（如我国钢结构设计规范）推荐采用抛物线公式：
+
+$$
+\sigma_{\text{cr}}=\sigma_s\left[1-\alpha\left(\frac{\lambda}{\lambda_c}\right)^2\right]
+$$
+
+其中 $\sigma_s$ 为屈服极限，$\alpha$ 为系数（通常取 0.43 左右），$\lambda_c$ 为抛物线公式适用的上限柔度。
+:::
+
+对于小柔度杆（$\lambda<\lambda_c$），压杆破坏主要是强度问题，取：
+
+$$
+\sigma_{\text{cr}}=\sigma_s\quad\text{（塑性材料）}\quad\text{或}\quad\sigma_{\text{cr}}=\sigma_b\quad\text{（脆性材料）}
+$$
+
+::: warning 压杆分类汇总
+- **大柔度杆（$\lambda\ge\lambda_p$）**：弹性失稳，用欧拉公式。
+- **中柔度杆（$\lambda_c\le\lambda<\lambda_p$）**：弹塑性失稳，用直线公式或抛物线公式。
+- **小柔度杆（$\lambda<\lambda_c$）**：强度破坏，按压缩强度计算。
+:::
+
+#### 11.6 压杆的稳定校核
+
+为保证压杆安全工作，必须满足稳定条件：
+
+$$
+\frac{F_{\text{cr}}}{F}\ge n_{\text{st}}\quad\text{或}\quad\frac{\sigma_{\text{cr}}}{\sigma}\ge n_{\text{st}}
+$$
+
+其中 $n_{\text{st}}$ 为规定的稳定安全系数，一般大于强度安全系数（$n_{\text{st}}=1.5\sim 3.0$）。
+
+工程上常采用**折减系数法**：
+
+$$
+\sigma=\frac{F}{A}\le\varphi(\lambda)[\sigma]
+$$
+
+式中 $\varphi(\lambda)$ 为稳定系数（小于 1），可从规范中查得；$[\sigma]$ 为材料的许用压应力。
+
+$$
+\begin{aligned}
+\text{稳定条件（安全系数法）：}&\quad n=\frac{F_{\text{cr}}}{F}\ge n_{\text{st}}\\[4pt]
+\text{稳定条件（折减系数法）：}&\quad \sigma=\frac{F}{A}\le\varphi(\lambda)[\sigma]
+\end{aligned}
+$$
+
+#### 典型例题
+
+##### 例 11.1　两端铰支钢压杆的临界压力
+
+已知 Q235 钢制压杆，截面为 $50\times 50\,\text{mm}$ 的正方形，长度 $l=2\,\text{m}$，两端铰支，弹性模量 $E=206\,\text{GPa}$，比例极限 $\sigma_p=200\,\text{MPa}$。求临界压力并判断是否适用欧拉公式。
+
+**解**
+
+截面惯性矩：
+
+$$
+I=\frac{50^4}{12}=520833\,\text{mm}^4=5.208\times 10^{-7}\,\text{m}^4
+$$
+
+两端铰支 $\mu=1$，欧拉公式给出：
+
+$$
+\begin{aligned}
+F_{\text{cr}}&=\frac{\pi^2\times 206\times 10^9\times 5.208\times 10^{-7}}{2^2}\\
+&=\frac{\pi^2\times 206\times 5.208\times 10^2}{4}\approx 2.646\times 10^5\,\text{N}=264.6\,\text{kN}
+\end{aligned}
+$$
+
+临界应力：
+
+$$
+\sigma_{\text{cr}}=\frac{F_{\text{cr}}}{A}=\frac{264.6\times 10^3}{0.05^2}=105.8\,\text{MPa}
+$$
+
+柔度：
+
+$$
+i=\sqrt{\frac{I}{A}}=\sqrt{\frac{5.208\times 10^{-7}}{0.0025}}=0.01443\,\text{m},\quad
+\lambda=\frac{\mu l}{i}=\frac{1\times 2}{0.01443}\approx 138.6
+$$
+
+比例极限柔度：
+
+$$
+\lambda_p=\pi\sqrt{\frac{E}{\sigma_p}}=\pi\sqrt{\frac{206\times 10^9}{200\times 10^6}}\approx 100.8
+$$
+
+因 $\lambda>\lambda_p$，故欧拉公式适用。
+
+##### 例 11.2　一端固定一端自由压杆的稳定校核
+
+圆截面钢压杆，直径 $d=40\,\text{mm}$，长度 $l=800\,\text{mm}$，一端固定，一端自由。材料为 Q235，$\sigma_p=200\,\text{MPa}$，$E=206\,\text{GPa}$，稳定安全系数 $n_{\text{st}}=3$。若杆顶承受轴向压力 $F=30\,\text{kN}$，试校核其稳定性。
+
+**解**
+
+一端固定一端自由，长度因数 $\mu=2$。
+
+截面惯性矩：
+
+$$
+I=\frac{\pi d^4}{64}=\frac{\pi\times(0.04)^4}{64}=1.257\times 10^{-7}\,\text{m}^4
+$$
+
+惯性半径：
+
+$$
+i=\frac{d}{4}=0.01\,\text{m},\quad\lambda=\frac{\mu l}{i}=\frac{2\times 0.8}{0.01}=160
+$$
+
+因 $\lambda>\lambda_p\approx 100.8$，属大柔度杆，用欧拉公式：
+
+$$
+\begin{aligned}
+F_{\text{cr}}&=\frac{\pi^2EI}{(\mu l)^2}=\frac{\pi^2\times 206\times 10^9\times 1.257\times 10^{-7}}{(1.6)^2}\\
+&=\frac{\pi^2\times 206\times 1.257\times 10^2}{2.56}\approx 1.001\times 10^5\,\text{N}=100.1\,\text{kN}
+\end{aligned}
+$$
+
+工作安全系数：
+
+$$
+n=\frac{F_{\text{cr}}}{F}=\frac{100.1}{30}\approx 3.34>n_{\text{st}}=3
+$$
+
+满足稳定性要求。
+
+::: danger 注
+压杆稳定性设计时，应尽量使杆在两个形心主惯性平面内的柔度相等（等稳定性），以充分利用材料。例如采用工字形或空心截面时，应使 $I_{\max}$ 和 $I_{\min}$ 尽可能接近。
+:::
