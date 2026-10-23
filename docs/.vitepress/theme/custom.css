@@ -1,0 +1,29 @@
+/* 品牌色：想换配色只改这里即可 */
+:root {
+  --vp-c-brand-1: #5b7cfa;
+  --vp-c-brand-2: #4a6be0;
+  --vp-c-brand-3: #3a5bd0;
+  --vp-c-brand-soft: rgba(91, 124, 250, 0.14);
+
+  /* 首页大标题稍微收紧一点 */
+  --vp-home-hero-name-color: transparent;
+  --vp-home-hero-name-background: linear-gradient(120deg, #5b7cfa 20%, #a06bff 80%);
+}
+
+.dark {
+  --vp-c-brand-1: #8aa3ff;
+  --vp-c-brand-2: #7b94f5;
+  --vp-c-brand-3: #6b84e6;
+  --vp-c-brand-soft: rgba(138, 163, 255, 0.16);
+}
+
+/* 中文正文行距稍放宽，长文更好读 */
+.vp-doc p,
+.vp-doc li {
+  line-height: 1.8;
+}
+
+/* 首页正文区留白 */
+.VPHome .vp-doc {
+  margin-top: 24px;
+}
