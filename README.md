@@ -44,15 +44,17 @@ my-blog/
 
 ```ts
 {
-  title: '中文学术排版模板库',   // 卡片标题
-  cover: '学术排版',            // 封面上显示的大字（汉字水印取首字）
-  meta: '2026 年 10 月 · 工具', // 灰色小字
-  desc: '一句话说明',
-  link: 'https://github.com/weijianguizhou/typst-tex-templates',
-  lang: 'Typst / LaTeX',       // 封面左上角的小标签
-  tone: 'sand'                 // 封面色调：sand / sage / clay / stone / mist
+  title: '多体系统动力学',        // 卡片标题
+  cover: '动力学',               // 封面上显示的大字（汉字水印取首字）
+  meta: '2026 年 9 月 · 课程',    // 灰色小字
+  desc: '多体系统动力学的课程笔记与推导。',
+  link: 'https://github.com/weijianguizhou/mutibodysysytemdynamics',
+  lang: 'TeX',                   // 封面左上角的小标签
+  tone: 'mist'                   // 封面色调：sand / sage / clay / stone / mist
 }
 ```
+
+当前首页只放了 **ROS 2 学习记录** 和 **多体系统动力学** 两张卡片；以后想加，往数组里追加一项就行。
 
 想换成真实截图：把图片放进 `docs/public/`，然后把 `cover` 那一层换成 `<img>`（或告诉我，我改成支持图片的模式）。
 

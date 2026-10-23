@@ -15,7 +15,7 @@ const profile = {
   tagline: '一个对力学和机器人感兴趣的本科生~',
   facts: [
     '南京理工大学 · 力学与机器人方向',
-    '最近在做：ROS 2、多体系统动力学、Typst / LaTeX 排版'
+    '最近在做：ROS 2、多体系统动力学'
   ],
   github: 'https://github.com/weijianguizhou',
   email: 'wei_zhou@njust.edu.cn'
@@ -23,40 +23,13 @@ const profile = {
 
 const projects: Project[] = [
   {
-    title: '中文学术排版模板库',
-    cover: '学术排版',
-    meta: '2026 年 10 月 · 工具',
-    desc: 'Typst + TeX 的中文学术排版模板库：81 个 Typst 模板（论文、学位论文、笔记、幻灯片、CV、海报）加 40 个 LaTeX 模板。',
-    link: 'https://github.com/weijianguizhou/typst-tex-templates',
-    lang: 'Typst / LaTeX',
-    tone: 'sand'
-  },
-  {
-    title: '我的学习资料库',
-    cover: '课程笔记',
-    meta: '2026 年 10 月 · 笔记',
-    desc: '平时所学的知识整理，也包括借助 AI 一起梳理的内容。',
-    link: 'https://github.com/weijianguizhou/study',
+    title: 'ROS 2 学习记录',
+    cover: 'ROS 2',
+    meta: '2026 年 9 月 · 机器人',
+    desc: 'ROS 2 的学习记录与动手实验。',
+    link: 'https://github.com/weijianguizhou/ros2',
     lang: 'TeX',
     tone: 'sage'
-  },
-  {
-    title: '数学建模国赛',
-    cover: '数模国赛',
-    meta: '2026 年 9 月 · 竞赛',
-    desc: '数学建模国赛的代码与论文工作区。',
-    link: 'https://github.com/weijianguizhou/shumoguosai',
-    lang: 'Python',
-    tone: 'clay'
-  },
-  {
-    title: '数模国赛论文模板',
-    cover: '论文模板',
-    meta: '2026 年 9 月 · 模板',
-    desc: '为数学建模国赛准备的论文排版模板。',
-    link: 'https://github.com/weijianguizhou/shumoguosaimuban',
-    lang: 'TeX',
-    tone: 'stone'
   },
   {
     title: '多体系统动力学',
@@ -66,24 +39,6 @@ const projects: Project[] = [
     link: 'https://github.com/weijianguizhou/mutibodysysytemdynamics',
     lang: 'TeX',
     tone: 'mist'
-  },
-  {
-    title: '机械设计',
-    cover: '机械设计',
-    meta: '2026 年 9 月 · 课程',
-    desc: '机械设计课程的资料与作业。',
-    link: 'https://github.com/weijianguizhou/machinedesign',
-    lang: 'TeX',
-    tone: 'sand'
-  },
-  {
-    title: 'ROS 2 学习记录',
-    cover: 'ROS 2',
-    meta: '2026 年 9 月 · 机器人',
-    desc: 'ROS 2 的学习记录与动手实验。',
-    link: 'https://github.com/weijianguizhou/ros2',
-    lang: 'TeX',
-    tone: 'sage'
   }
 ]
 
@@ -116,7 +71,7 @@ const year = new Date().getFullYear()
       <section class="av-work">
         <h2>Work</h2>
         <p class="av-work-intro">
-          <a href="/posts/">写作</a>、课程笔记、和一些自己顺手写的小工具。全部代码在
+          <a href="/posts/">写作</a>、课程笔记，和最近的学习记录。全部代码在
           <a :href="`${profile.github}?tab=repositories`" target="_blank" rel="noreferrer">GitHub</a>。
         </p>
 
