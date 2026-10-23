@@ -35,11 +35,24 @@ export default defineConfig({
     siteTitle: SITE.name,
 
     nav: [
+      { text: 'ROS 2', link: '/ros2/' },
       { text: '写作', link: '/posts/' },
       { text: '关于', link: '/about' }
     ],
 
     sidebar: {
+      '/ros2/': [
+        {
+          text: 'ROS 2 学习记录',
+          items: [
+            { text: '开始之前', link: '/ros2/' },
+            { text: '第一章 · 配置 WSL 2', link: '/ros2/chapter-1-wsl' },
+            { text: '第二章 · 安装 ROS 2 Humble', link: '/ros2/chapter-2-install-ros2' },
+            { text: '第三章 · 第一个工作空间', link: '/ros2/chapter-3-first-workspace' },
+            { text: '附录 · 常用命令与排错', link: '/ros2/appendix-commands' }
+          ]
+        }
+      ],
       '/posts/': [
         {
           text: '写作',

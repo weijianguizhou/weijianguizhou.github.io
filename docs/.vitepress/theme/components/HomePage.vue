@@ -23,12 +23,12 @@ const profile = {
 
 const projects: Project[] = [
   {
-    title: 'ROS 2 学习记录',
+    title: 'ROS 2 学习记录（连载）',
     cover: 'ROS 2',
-    meta: '2026 年 9 月 · 机器人',
-    desc: 'ROS 2 的学习记录与动手实验。',
-    link: 'https://github.com/weijianguizhou/ros2',
-    lang: 'TeX',
+    meta: '2026 年 10 月 · 教程',
+    desc: '从配置 WSL 2、装 ROS 2 Humble 到写出第一个节点，按章节一步步来。',
+    link: '/ros2/',
+    lang: 'Ubuntu 22.04',
     tone: 'sage'
   },
   {
@@ -43,6 +43,9 @@ const projects: Project[] = [
 ]
 
 const year = new Date().getFullYear()
+
+// 站内链接不开新标签页，站外链接才开
+const isExternal = (link: string) => /^https?:\/\//.test(link)
 </script>
 
 <template>
@@ -82,14 +85,18 @@ const year = new Date().getFullYear()
               :class="`tone-${p.tone}`"
               :data-ghost="p.cover.slice(0, 1)"
               :href="p.link"
-              target="_blank"
-              rel="noreferrer"
+              :target="isExternal(p.link) ? '_blank' : undefined"
+              :rel="isExternal(p.link) ? 'noreferrer' : undefined"
             >
               <span class="av-cover-lang">{{ p.lang }}</span>
               <span class="av-cover-title">{{ p.cover }}</span>
             </a>
             <h3 class="av-item-title">
-              <a :href="p.link" target="_blank" rel="noreferrer">{{ p.title }}</a>
+              <a
+                :href="p.link"
+                :target="isExternal(p.link) ? '_blank' : undefined"
+                :rel="isExternal(p.link) ? 'noreferrer' : undefined"
+              >{{ p.title }}</a>
             </h3>
             <p class="av-item-meta">{{ p.meta }}</p>
             <p class="av-item-desc">{{ p.desc }}</p>
@@ -98,7 +105,7 @@ const year = new Date().getFullYear()
       </section>
 
       <footer class="av-footer">
-        <p>© {{ year }} {{ profile.name }} · 用 VitePress 搭建，托管在 GitHub Pages</p>
+        <p>© {{ year }} {{ profile.name }} · 用 VitePress 搭建 · 部署在 Netlify 与 GitHub Pages</p>
       </footer>
     </div>
   </div>

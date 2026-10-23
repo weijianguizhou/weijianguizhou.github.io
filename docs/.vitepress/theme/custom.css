@@ -94,7 +94,7 @@ html.dark {
   font-family: var(--vp-font-family-mono);
 }
 
-/* 正文宽度收窄一点，更像文章 */
-.VPDoc .container {
+/* 正文宽度收窄一点，更像文章（只收内容列，别把右侧目录挤出去） */
+.VPDoc .content-container {
   max-width: 46rem;
 }

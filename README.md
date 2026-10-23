@@ -24,6 +24,12 @@ my-blog/
 │  │  ├─ index.md
 │  │  ├─ hello-world.md
 │  │  └─ writing-with-markdown.md
+│  ├─ ros2/                        # ROS 2 教程连载
+│  │  ├─ index.md                  # 系列目录
+│  │  ├─ chapter-1-wsl.md          # 第一章：配置 WSL 2
+│  │  ├─ chapter-2-install-ros2.md # 第二章：安装 ROS 2 Humble
+│  │  ├─ chapter-3-first-workspace.md # 第三章：第一个工作空间
+│  │  └─ appendix-commands.md      # 附录：常用命令与排错
 │  └─ public/
 │     ├─ avatar.png                # 头像（GitHub 公开头像）
 │     └─ favicon.svg
@@ -97,6 +103,7 @@ tags:
 ```
 
 3. 在两处加链接：`docs/posts/index.md`（列表）和 `config.mts` 的 `sidebar['/posts/']`（侧栏）。
+   - 如果是**系列教程**（像 `/ros2/` 那样一章一章写）：文件放进 `docs/<系列名>/`，在 `config.mts` 的 `sidebar` 里新加一个 `'/<系列名>/'` 数组，章节顺序就是侧栏顺序，VitePress 会自动生成「上一章 / 下一章」。
 4. `git add -A && git commit -m "post: my-post" && git push`。
 
 ## 常见问题
