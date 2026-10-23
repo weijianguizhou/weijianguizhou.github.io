@@ -33,22 +33,15 @@ my-blog/
 │  │  ├─ ch-05-ubuntu-programming.md # 第五章：Ubuntu 环境下编程
 │  │  ├─ ch-06-ros2-experience.md  # 第六章：ROS 2 体验与系统架构
 │  │  └─ ch-07-cmake-ament.md      # 第七章：用 CMake + ament 编译节点
-│  ├─ mechanics/                   # 材料力学连载（内容来自 材料力学/ 笔记）
-│  │  ├─ index.md                  # 系列目录
-│  │  ├─ ch-01-introduction.md      # 第一章 绪论
-│  │  ├─ ch-02-basics.md           # 第二章 材料力学的一些基本
-│  │  ├─ ch-03-axial.md            # 第三章 轴向拉伸与压缩
-│  │  ├─ ch-04-shear.md            # 第四章 剪切
-│  │  ├─ ch-05-torsion.md          # 第五章 扭转
-│  │  ├─ ch-06-bending-internal.md # 第六章 弯曲内力
-│  │  ├─ ch-07-bending-stress.md   # 第七章 弯曲应力
-│  │  ├─ ch-08-bending-deformation.md # 第八章 弯曲变形
-│  │  ├─ ch-09-stress-state.md     # 第九章 应力状态分析和强度理论
-│  │  ├─ ch-10-combined.md         # 第十章 组合变形
-│  │  ├─ ch-11-buckling.md         # 第十一章 压杆稳定性
-│  │  ├─ ch-12-energy.md           # 第十二章 能量法
-│  │  ├─ ch-13-statically-indeterminate.md # 第十三章 静不定问题
-│  │  └─ ch-14-appendix.md         # 附录 A
+│  ├─ fluids/                      # 流体力学连载（内容来自 流体力学/笔记/）
+│  │  ├─ index.md
+│  │  ├─ ch-01-intro.md            # 第一章 绪论
+│  │  ├─ ch-02-properties.md       # 第二章 流体的物理性质
+│  │  └─ ch-03-tensor.md           # 第三章 张量代数基础
+│  ├─ digital/                     # 数字电路连载（内容来自 数字电路/笔记/）
+│  │  ├─ index.md
+│  │  ├─ ch-01-number-systems.md   # 第一章 数制与 BCD 码
+│  │  └─ ch-02-boolean-algebra.md  # 第二章 布尔代数
 │  └─ public/
 │     ├─ avatar.jpg                # 头像（400×400，来自 GitHub 公开头像）
 │     └─ favicon.svg
