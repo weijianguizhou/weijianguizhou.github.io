@@ -1,29 +1,100 @@
-/* 品牌色：想换配色只改这里即可 */
+/* ============================================================
+ * 全站配色与字体：纸感暖白 + 衬线体（参考 arjunvirk.com 的设计语言）
+ * 想换色只改这里
+ * ============================================================ */
 :root {
-  --vp-c-brand-1: #5b7cfa;
-  --vp-c-brand-2: #4a6be0;
-  --vp-c-brand-3: #3a5bd0;
-  --vp-c-brand-soft: rgba(91, 124, 250, 0.14);
+  --av-bg: #fafaf8;
+  --av-fg: #111111;
+  --av-sub: #374151;
+  --av-muted: #6b7280;
+  --av-border: #e5e5e3;
+  --av-card: #f4f4f2;
 
-  /* 首页大标题稍微收紧一点 */
-  --vp-home-hero-name-color: transparent;
-  --vp-home-hero-name-background: linear-gradient(120deg, #5b7cfa 20%, #a06bff 80%);
+  /* VitePress 变量覆盖 */
+  --vp-c-bg: var(--av-bg);
+  --vp-c-bg-alt: var(--av-card);
+  --vp-c-bg-soft: var(--av-card);
+  --vp-c-bg-elv: var(--av-bg);
+  --vp-c-text-1: var(--av-fg);
+  --vp-c-text-2: var(--av-sub);
+  --vp-c-text-3: var(--av-muted);
+  --vp-c-border: var(--av-border);
+  --vp-c-divider: var(--av-border);
+  --vp-c-gutter: var(--av-border);
+  --vp-c-brand-1: var(--av-fg);
+  --vp-c-brand-2: var(--av-fg);
+  --vp-c-brand-3: var(--av-fg);
+  --vp-c-brand-soft: rgba(17, 17, 17, 0.08);
+
+  --vp-font-family-base: "et-book", "Palatino Linotype", Palatino, "Book Antiqua",
+    Georgia, "Songti SC", "Noto Serif SC", "Source Han Serif SC", "SimSun", serif;
+  --vp-font-family-mono: ui-monospace, SFMono-Regular, Menlo, Consolas,
+    "Liberation Mono", monospace;
 }
 
-.dark {
-  --vp-c-brand-1: #8aa3ff;
-  --vp-c-brand-2: #7b94f5;
-  --vp-c-brand-3: #6b84e6;
-  --vp-c-brand-soft: rgba(138, 163, 255, 0.16);
+html.dark {
+  --av-bg: #15150f;
+  --av-fg: #f1f0e6;
+  --av-sub: #cbc9bf;
+  --av-muted: #9b998f;
+  --av-border: #2f2e28;
+  --av-card: #1d1c16;
 }
 
-/* 中文正文行距稍放宽，长文更好读 */
+/* 正文：衬线、偏大的行距，接近书页 */
+.vp-doc {
+  font-family: var(--vp-font-family-base);
+}
+
 .vp-doc p,
 .vp-doc li {
-  line-height: 1.8;
+  line-height: 1.75;
 }
 
-/* 首页正文区留白 */
-.VPHome .vp-doc {
-  margin-top: 24px;
+.vp-doc a {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
+}
+
+.vp-doc h1,
+.vp-doc h2,
+.vp-doc h3 {
+  letter-spacing: -0.01em;
+  font-weight: 600;
+}
+
+/* 顶部导航：去掉毛玻璃感，贴近纸质 */
+.VPNavBar,
+.VPNav {
+  background-color: var(--av-bg) !important;
+}
+
+.VPNavBar {
+  border-bottom: 1px solid var(--av-border);
+  backdrop-filter: none !important;
+}
+
+.VPNavBarTitle .title {
+  font-family: var(--vp-font-family-base);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.VPSidebar {
+  background-color: var(--av-bg) !important;
+  border-right: 1px solid var(--av-border);
+}
+
+/* 代码块与表格保持等宽字体，别串成衬线 */
+.vp-doc div[class*='language-'],
+.vp-doc code,
+.vp-doc pre,
+.vp-doc kbd {
+  font-family: var(--vp-font-family-mono);
+}
+
+/* 正文宽度收窄一点，更像文章 */
+.VPDoc .container {
+  max-width: 46rem;
 }

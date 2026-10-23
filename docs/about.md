@@ -2,38 +2,26 @@
 title: 关于
 ---
 
-# 关于我
+# 关于
 
-我是**魏舟**，网上叫「**爱吃烧饼的大熊猫**」。这里记录我正在学的东西、做过的项目，和一些没想清楚的思考。
+我是**魏舟**，南京理工大学本科生，对力学和机器人感兴趣。
 
-> TODO：把职业方向补一句（例：机器人仿真 / 数据分析 / 前端开发），别人一眼就能知道你做什么。
+## 现在在做什么
 
-## 我在做什么
+- 学力学与机器人相关的课程：多体系统动力学、机械设计、控制工程
+- 折腾 ROS 2，边学边记
+- 整理课程笔记和排版模板：把 Typst / LaTeX 的模板攒成一个库，省得每次重写
 
-- 正在学 / 正在做的方向（待补充）
-- 手头在维护的项目（待补充）
-- 长期想做的几件事（待补充）
+## 想做的事
 
-## 技能与方向
-
-| 方向 | 熟悉程度 | 备注 |
-| --- | --- | --- |
-| 编程语言 | 熟练 / 入门 | 例：Python、TypeScript、C++ |
-| 工具链 | — | Git、Docker、CI |
-| 其他 | — | 写作、设计、数据可视化 |
-
-## 这个站点
-
-- 用 **VitePress** 构建，文章都是纯 Markdown 文件
-- 托管在 **GitHub Pages**，零成本
-- 想留言：可以接 [Giscus](https://giscus.app/zh-CN)（基于 GitHub Discussions，免费）
+- 把机器人仿真和真实系统之间的那道沟填得平一点
+- 让课程笔记真正“可复用”，而不是考完就扔
 
 ## 联系我
 
-- GitHub：`https://github.com/yourname`（TODO：换成你的主页）
-- 邮箱：`you@example.com`（TODO：换成你愿意公开的邮箱）
-- 微信 / 其他：按需补充
+- GitHub：[weijianguizhou](https://github.com/weijianguizhou)
+- 邮箱：[wei_zhou@njust.edu.cn](mailto:wei_zhou@njust.edu.cn)
 
-::: tip 小提示
-联系方式建议只放你愿意长期公开的。手机号、常住地址这类别放。
-:::
+## 这个站点
+
+Markdown 写，VitePress 构建，GitHub Pages 免费托管。文章在 [写作](/posts/) 一栏。

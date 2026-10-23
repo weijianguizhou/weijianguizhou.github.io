@@ -1,15 +1,14 @@
 import { defineConfig } from 'vitepress'
 
 /* ============================================================
- * TODO：把下面 5 个字段换成你自己的信息，其余可以先不动
+ * TODO：以后改名字 / 联系方式的唯一入口
  * ============================================================ */
 const SITE = {
-  name: '爱吃烧饼的大熊猫',              // 站点标题（浏览器标签页 + 左上角）
-  author: '魏舟',                        // 真实姓名 / 页脚署名
-  description: '魏舟（爱吃烧饼的大熊猫）的个人主页与博客：技术笔记、项目复盘与思考',
-  github: 'https://github.com/yourname', // TODO: 换成你的 GitHub 主页
-  email: 'you@example.com',              // TODO: 换成你的邮箱
-  avatar: '/logo.svg'                    // 头像 / 站点 logo（在 docs/public 下）
+  name: '魏舟',
+  en: 'Wei Zhou',
+  description: '魏舟的个人主页：力学、机器人、仿真与笔记',
+  github: 'https://github.com/weijianguizhou',
+  email: 'wei_zhou@njust.edu.cn'
 }
 
 export default defineConfig({
@@ -17,16 +16,14 @@ export default defineConfig({
   title: SITE.name,
   description: SITE.description,
 
-  // 仓库名是 <用户名>.github.io 时用 '/'；
-  // 如果仓库叫 blog，就改成 '/blog/'
+  // 仓库名是 <用户名>.github.io 时用 '/'；若仓库叫 blog 则改成 '/blog/'
   base: '/',
 
-  // 更新时间取自 git 提交时间，需要仓库有 git 历史
   lastUpdated: true,
 
   head: [
-    ['link', { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }],
-    ['meta', { name: 'theme-color', content: '#5b7cfa' }],
+    ['link', { rel: 'icon', type: 'image/png', href: '/avatar.png' }],
+    ['meta', { name: 'theme-color', content: '#fafaf8' }],
     ['meta', { name: 'author', content: SITE.name }]
   ],
 
@@ -35,19 +32,17 @@ export default defineConfig({
   },
 
   themeConfig: {
-    logo: SITE.avatar,
     siteTitle: SITE.name,
 
     nav: [
-      { text: '首页', link: '/' },
-      { text: '文章', link: '/posts/' },
+      { text: '写作', link: '/posts/' },
       { text: '关于', link: '/about' }
     ],
 
     sidebar: {
       '/posts/': [
         {
-          text: '文章',
+          text: '写作',
           items: [
             { text: '全部文章', link: '/posts/' },
             { text: '你好，世界', link: '/posts/hello-world' },
@@ -80,13 +75,12 @@ export default defineConfig({
     },
 
     footer: {
-      message: '基于 VitePress 构建 · 由 GitHub Pages 免费托管',
-      copyright: 'Copyright © 2026 ' + SITE.author
+      message: '用 VitePress 搭建 · 托管在 GitHub Pages',
+      copyright: '© 2026 ' + SITE.name
     },
 
-    // 界面文案中文化（VitePress 默认英文）
     returnToTopLabel: '回到顶部',
-    sidebarMenuLabel: '文章目录',
+    sidebarMenuLabel: '目录',
     darkModeSwitchLabel: '深浅色',
     langMenuLabel: '语言'
   }
