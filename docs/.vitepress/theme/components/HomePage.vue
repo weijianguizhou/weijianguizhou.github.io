@@ -7,6 +7,7 @@ type Project = {
   link: string
   lang: string
   tone: string
+  badge?: string
 }
 
 const profile = {
@@ -48,6 +49,16 @@ const projects: Project[] = [
     link: '/digital/',
     lang: 'DIGITAL CIRCUITS',
     tone: 'sand'
+  },
+  {
+    title: '材料力学',
+    cover: '材料力学',
+    meta: '2026 年 10 月 · 完整笔记',
+    desc: '从轴向拉压、扭转、弯曲到能量法，13 章合成一页，方便回查。',
+    link: '/notes/mechanics.html',
+    lang: 'COMPLETED',
+    tone: 'stone',
+    badge: '已学完'
   }
 ]
 
@@ -107,7 +118,9 @@ const isExternal = (link: string) => /^https?:\/\//.test(link)
                 :rel="isExternal(p.link) ? 'noreferrer' : undefined"
               >{{ p.title }}</a>
             </h3>
-            <p class="av-item-meta">{{ p.meta }}</p>
+            <p class="av-item-meta">
+              <span v-if="p.badge" class="av-badge">{{ p.badge }}</span>{{ p.meta }}
+            </p>
             <p class="av-item-desc">{{ p.desc }}</p>
           </article>
         </div>
@@ -335,6 +348,19 @@ h1 {
   margin: 0 0 0.3rem;
   font-size: 0.8rem;
   color: var(--av-muted);
+}
+
+.av-badge {
+  display: inline-block;
+  margin-right: 0.45rem;
+  padding: 0.05rem 0.42rem;
+  border: 1px solid var(--av-border);
+  border-radius: 999px;
+  font-size: 0.7rem;
+  line-height: 1.5;
+  color: var(--av-sub);
+  background: var(--av-card);
+  vertical-align: 1px;
 }
 
 .av-item-desc {
