@@ -61,6 +61,16 @@ export default defineConfig({
       { text: '流体力学', link: '/fluids/' },
       { text: '数字电路', link: '/digital/' },
       { text: 'ROS 2', link: '/ros2/' },
+      {
+        text: '笔记',
+        items: [
+          { text: '材料力学', link: '/notes/mechanics/' },
+          { text: '常微分方程', link: '/notes/ode/' },
+          { text: '概率论', link: '/notes/probability/' },
+          { text: '数理统计', link: '/notes/statistics/' },
+          { text: '工程数学（PDF）', link: '/notes/engineering-math.pdf' }
+        ]
+      },
       { text: '写作', link: '/posts/' },
       { text: '关于', link: '/about' }
     ],
@@ -144,6 +154,20 @@ export default defineConfig({
             { text: '第一章 基本概念', link: '/notes/statistics/ch-01-basics' },
             { text: '第二章 参数估计', link: '/notes/statistics/ch-02-estimation' },
             { text: '第三章 假设检验', link: '/notes/statistics/ch-03-hypothesis' }
+          ]
+        }
+      ],
+      '/notes/ode/': [
+        {
+          text: '常微分方程',
+          items: [
+            { text: '开始之前', link: '/notes/ode/' },
+            { text: '第一章 绪论', link: '/notes/ode/ch-01-intro' },
+            { text: '第二章 一阶微分方程的初等积分法', link: '/notes/ode/ch-02-elementary' },
+            { text: '第三章 一阶微分方程解的存在定理', link: '/notes/ode/ch-03-existence' },
+            { text: '第四章 高阶微分方程', link: '/notes/ode/ch-04-higher-order' },
+            { text: '第五章 线性微分方程组', link: '/notes/ode/ch-05-linear-systems' },
+            { text: '第六章 非线性微分方程', link: '/notes/ode/ch-06-nonlinear' }
           ]
         }
       ],

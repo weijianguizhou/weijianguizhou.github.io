@@ -54,27 +54,29 @@ my-blog/
 
 | 想改什么 | 打开哪里 |
 | --- | --- |
-| 首页姓名、身份、邮箱、项目卡片 | [`docs/.vitepress/theme/components/HomePage.vue`](docs/.vitepress/theme/components/HomePage.vue) 顶部的 `profile` 和 `projects` 数组 |
+| 首页姓名、身份、邮箱、笔记卡片 | [`docs/.vitepress/theme/components/HomePage.vue`](docs/.vitepress/theme/components/HomePage.vue) 顶部的 `profile` 和 `notes` 数组 |
 | 站点标题、导航、页脚、页面元信息 | [`docs/.vitepress/config.mts`](docs/.vitepress/config.mts) 顶部的 `SITE` 与 `themeConfig` |
 | 「关于」页正文 | [`docs/about.md`](docs/about.md) |
 
-首页的 `projects` 数组每项长这样，改文字/日期/链接即可，**不用动样式**：
+首页的 `notes` 数组每项长这样，改文字/日期/链接即可，**不用动样式**：
 
 ```ts
 {
-  title: '多体系统动力学',        // 卡片标题
-  cover: '动力学',               // 封面上显示的大字（汉字水印取首字）
-  meta: '2026 年 9 月 · 课程',    // 灰色小字
-  desc: '多体系统动力学的课程笔记与推导。',
-  link: 'https://github.com/weijianguizhou/mutibodysysytemdynamics',
-  lang: 'TeX',                   // 封面左上角的小标签
-  tone: 'mist'                   // 封面色调：sand / sage / clay / stone / mist
+  title: '常微分方程',            // 卡片标题
+  cover: '常微分方程',            // 封面上显示的大字（汉字水印取首字）
+  meta: '2026 · 6 章',           // 灰色小字
+  desc: '初等积分法、解的存在定理、高阶方程……',
+  link: '/notes/ode/',           // 站内链接；单文件页面写 .html，目录页面写尾斜杠
+  lang: 'ODE',                   // 封面左上角的小标签
+  tone: 'stone',                 // 封面色调：sand / sage / clay / stone / mist
+  badge: '已学完',                // 可选：小徽章（连载 / 已学完）
+  image: '/notes/ode-lorenz.png' // 可选：鼠标悬停时浮现的代表图
 }
 ```
 
-当前首页只放了 **ROS 2 学习记录** 和 **多体系统动力学** 两张卡片；以后想加，往数组里追加一项就行。
+当前首页是 **8 张笔记卡片**：ROS 2、流体力学、数字电路（连载）+ 材料力学、常微分方程、工程数学、概率论、数理统计（已学完）。鼠标移上卡片会浮现该笔记的代表图，移开淡回排版封面——这个效果由 CSS 的 `:hover` / `:focus-visible` 驱动，不依赖 JS，触屏设备用 `:active` 兜底。
 
-想换成真实截图：把图片放进 `docs/public/`，然后把 `cover` 那一层换成 `<img>`（或告诉我，我改成支持图片的模式）。
+**加新卡片**：往 `notes` 数组追加一项，把代表图放进 `docs/public/` 下面（`image` 写 `/xxx.png`）；想让卡片在导航里也有入口，再去 `config.mts` 的 `nav` / `sidebar` 补条目。
 
 ## 本地预览
 

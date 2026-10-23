@@ -6,7 +6,7 @@ title: 写作
 
 ## 连载
 
-- [ROS 2 学习记录](/ros2/) — 在 Windows + WSL 2 上从零配置 ROS 2 Humble，共三章 + 附录
+- [ROS 2 学习记录](/ros2/) — 在 Windows + WSL 2 上从零配置 ROS 2 Lyrical（Ubuntu 26.04），共七章
 
 ## 随笔
 

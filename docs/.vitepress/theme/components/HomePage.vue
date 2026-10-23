@@ -7,6 +7,7 @@ type Project = {
   link: string
   lang: string
   tone: string
+  image?: string
   badge?: string
 }
 
@@ -22,15 +23,19 @@ const profile = {
   email: 'wei_zhou@njust.edu.cn'
 }
 
-const projects: Project[] = [
+// 所有笔记都做成卡片。image 是「鼠标悬停时浮现的那张代表图」，
+// 移开鼠标后卡片回到默认的纯排版封面（CSS 过渡，不依赖 JS）。
+const notes: Project[] = [
   {
     title: 'ROS 2 学习记录（连载）',
     cover: 'ROS 2',
-    meta: '2026 年 10 月 · 教程',
-    desc: '从 Ubuntu、WSL 环境一路到 ROS 2 架构与编译，7 章连载，全是踩过的坑。',
+    meta: '2026 年 10 月 · 7 章连载',
+    desc: '从 Ubuntu、WSL 环境一路到 ROS 2 架构与编译，全是踩过的坑。',
     link: '/ros2/',
-    lang: 'Ubuntu 26.04',
-    tone: 'sage'
+    lang: 'UBUNTU 26.04',
+    tone: 'sage',
+    badge: '连载',
+    image: '/ros2/talker-listener.webp'
   },
   {
     title: '流体力学（连载）',
@@ -39,7 +44,9 @@ const projects: Project[] = [
     desc: '从连续介质模型、粘性到张量代数，公式都排版好了。',
     link: '/fluids/',
     lang: 'FLUID MECHANICS',
-    tone: 'mist'
+    tone: 'mist',
+    badge: '连载',
+    image: '/fluids/stress-state.webp'
   },
   {
     title: '数字电路（连载）',
@@ -48,15 +55,65 @@ const projects: Project[] = [
     desc: '数制与编码、布尔代数与逻辑门，配逻辑电路图。',
     link: '/digital/',
     lang: 'DIGITAL CIRCUITS',
-    tone: 'sand'
+    tone: 'sand',
+    badge: '连载',
+    image: '/digital/and-circuit.webp'
+  },
+  {
+    title: '材料力学',
+    cover: '材料力学',
+    meta: '2026 · 13 章 + 附录',
+    desc: '从轴向拉压到能量法，低碳钢拉伸曲线、应力单元体都在里面。',
+    link: '/notes/mechanics/',
+    lang: 'MECHANICS',
+    tone: 'clay',
+    badge: '已学完',
+    image: '/mechanics/mild-steel-curve.webp'
+  },
+  {
+    title: '常微分方程',
+    cover: '常微分方程',
+    meta: '2026 · 6 章',
+    desc: '初等积分法、解的存在定理、高阶方程、线性方程组与非线性方程。',
+    link: '/notes/ode/',
+    lang: 'ODE',
+    tone: 'stone',
+    badge: '已学完',
+    image: '/notes/ode-lorenz.png'
+  },
+  {
+    title: '工程数学',
+    cover: '工程数学',
+    meta: '2026 · 复变 / 变换 / 场论 · PDF',
+    desc: '复变函数、级数、留数、Fourier 与 Laplace 变换、场论，完整原稿 PDF。',
+    link: '/notes/engineering-math.pdf',
+    lang: 'ENGINEERING MATH',
+    tone: 'mist',
+    badge: '已学完',
+    image: '/notes/emath-fourier.png'
+  },
+  {
+    title: '概率论',
+    cover: '概率论',
+    meta: '2026 · 4 章',
+    desc: '随机事件、随机变量、多维随机变量与数字特征。',
+    link: '/notes/probability/',
+    lang: 'PROBABILITY',
+    tone: 'sage',
+    badge: '已学完',
+    image: '/notes/prob-1.webp'
+  },
+  {
+    title: '数理统计',
+    cover: '数理统计',
+    meta: '2026 · 3 章',
+    desc: '基本概念、参数估计与假设检验，配 χ² 与 t 分布图。',
+    link: '/notes/statistics/',
+    lang: 'STATISTICS',
+    tone: 'clay',
+    badge: '已学完',
+    image: '/notes/chi2-density.webp'
   }
-]
-
-const completed = [
-  { title: '材料力学', meta: '力学 · 2026', link: '/notes/mechanics/' },
-  { title: '常微分方程', meta: 'ODE · 2026', link: '/notes/ode/' },
-  { title: '概率论', meta: '概率 · 2026', link: '/notes/probability/' },
-  { title: '数理统计', meta: '统计 · 2026', link: '/notes/statistics/' }
 ]
 
 const year = new Date().getFullYear()
@@ -89,14 +146,15 @@ const isExternal = (link: string) => /^https?:\/\//.test(link)
       </header>
 
       <section class="av-work">
-        <h2>Work</h2>
+        <h2>笔记</h2>
         <p class="av-work-intro">
           <a href="/posts/">写作</a>、课程笔记，和最近的学习记录。全部代码在
           <a :href="`${profile.github}?tab=repositories`" target="_blank" rel="noreferrer">GitHub</a>。
+          鼠标移到卡片上，会浮现这份笔记里的一张代表图；移开就收回去。
         </p>
 
         <div class="av-list">
-          <article v-for="p in projects" :key="p.title" class="av-item">
+          <article v-for="p in notes" :key="p.title" class="av-item">
             <a
               class="av-cover"
               :class="`tone-${p.tone}`"
@@ -105,6 +163,14 @@ const isExternal = (link: string) => /^https?:\/\//.test(link)
               :target="isExternal(p.link) ? '_blank' : undefined"
               :rel="isExternal(p.link) ? 'noreferrer' : undefined"
             >
+              <img
+                v-if="p.image"
+                class="av-cover-img"
+                :src="p.image"
+                :alt="`${p.title} 代表图`"
+                loading="lazy"
+                decoding="async"
+              />
               <span class="av-cover-lang">{{ p.lang }}</span>
               <span class="av-cover-title">{{ p.cover }}</span>
             </a>
@@ -121,16 +187,6 @@ const isExternal = (link: string) => /^https?:\/\//.test(link)
             <p class="av-item-desc">{{ p.desc }}</p>
           </article>
         </div>
-      </section>
-
-      <section class="av-done">
-        <h2>已学完</h2>
-        <ul class="av-done-list">
-          <li v-for="c in completed" :key="c.title">
-            <a :href="c.link">{{ c.title }}</a>
-            <span class="av-done-meta">{{ c.meta }}</span>
-          </li>
-        </ul>
       </section>
 
       <footer class="av-footer">
@@ -299,6 +355,73 @@ h1 {
   box-shadow: 0 8px 22px rgba(0, 0, 0, 0.07);
 }
 
+/* ---------- 悬停浮现代表图 ---------- */
+.av-cover-img {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transform: scale(1.06);
+  transition: opacity 0.32s ease, transform 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
+  pointer-events: none;
+}
+
+/* 压在图片上的一层暗渐变，保证浮起时标题仍然看得清 */
+.av-cover::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    to top,
+    rgba(12, 10, 8, 0.84) 0%,
+    rgba(12, 10, 8, 0.5) 38%,
+    rgba(12, 10, 8, 0.24) 70%,
+    rgba(12, 10, 8, 0.24) 100%
+  );
+  opacity: 0;
+  transition: opacity 0.32s ease;
+  pointer-events: none;
+}
+
+.av-cover-lang,
+.av-cover-title {
+  position: relative;
+  z-index: 2;
+  transition: color 0.32s ease;
+}
+
+.av-cover::after {
+  transition: opacity 0.32s ease;
+}
+
+.av-cover:hover .av-cover-img,
+.av-cover:focus-visible .av-cover-img {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.av-cover:hover::before,
+.av-cover:focus-visible::before {
+  opacity: 1;
+}
+
+.av-cover:hover::after,
+.av-cover:focus-visible::after {
+  opacity: 0;
+}
+
+.av-cover:hover .av-cover-lang,
+.av-cover:hover .av-cover-title,
+.av-cover:focus-visible .av-cover-lang,
+.av-cover:focus-visible .av-cover-title {
+  color: #fff;
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.55), 0 1px 2px rgba(0, 0, 0, 0.45);
+}
+
 .tone-sand {
   background-image: linear-gradient(135deg, rgba(120, 96, 60, 0.06), rgba(0, 0, 0, 0.045));
 }
@@ -377,51 +500,6 @@ h1 {
   color: var(--av-sub);
 }
 
-/* ---------- 已学完 ---------- */
-.av-done {
-  margin-top: 3rem;
-}
-
-.av-done h2 {
-  margin: 0 0 1rem;
-  font-size: 1.5rem;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-}
-
-.av-done-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  border-top: 1px solid var(--av-border);
-}
-
-.av-done-list li {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 0.65rem 0;
-  border-bottom: 1px solid var(--av-border);
-  font-size: 0.95rem;
-}
-
-.av-done-list a {
-  color: var(--av-fg);
-  text-decoration: none;
-  border-bottom: 1px solid transparent;
-}
-
-.av-done-list a:hover {
-  border-bottom-color: var(--av-fg);
-}
-
-.av-done-meta {
-  flex: 0 0 auto;
-  font-size: 0.78rem;
-  color: var(--av-muted);
-}
-
 /* ---------- footer ---------- */
 .av-footer {
   margin-top: 3.5rem;
@@ -456,6 +534,38 @@ h1 {
 
   .av-cover-title {
     font-size: 1.2rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .av-cover,
+  .av-cover::before,
+  .av-cover::after,
+  .av-cover-img,
+  .av-cover-lang,
+  .av-cover-title {
+    transition: none;
+  }
+
+  .av-cover-img {
+    transform: none;
+  }
+}
+
+/* 触屏设备没有 hover，保持纯排版封面即可，不做额外展开 */
+@media (hover: none) {
+  .av-cover:active .av-cover-img {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .av-cover:active::before {
+    opacity: 1;
+  }
+
+  .av-cover:active .av-cover-lang,
+  .av-cover:active .av-cover-title {
+    color: #fff;
   }
 }
 </style>

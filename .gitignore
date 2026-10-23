@@ -11,3 +11,6 @@ Thumbs.db
 *.local
 .vscode/
 .idea/
+
+# 临时目录（构建绕行 / 预览截图）
+.tmp/
