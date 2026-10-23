@@ -72,8 +72,8 @@ export default defineConfig({
           items: [
             { text: '开始之前', link: '/fluids/' },
             { text: '第一章 绪论', link: '/fluids/ch-01-intro' },
-            { text: '第二章 流体的物理性质', link: '/fluids/ch-02-properties' },
-            { text: '第三章 张量代数基础', link: '/fluids/ch-03-tensor' }
+            { text: '第二章 张量代数基础', link: '/fluids/ch-02-tensor' },
+            { text: '第三章 流体的物理性质', link: '/fluids/ch-03-properties' }
           ]
         }
       ],

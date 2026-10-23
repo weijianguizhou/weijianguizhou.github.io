@@ -12,8 +12,8 @@ description: 流体力学课程笔记。从连续介质模型和流体物理性�
 | 章节 | 内容 |
 | --- | --- |
 | [第一章 绪论](/fluids/ch-01-intro.html) | 流体力学的研究对象、研究方法与课程地图 |
-| [第二章 流体的物理性质](/fluids/ch-02-properties.html) | 连续介质模型、粘性、压缩性，以及体积力与表面力 |
-| [第三章 张量代数基础](/fluids/ch-03-tensor.html) | 指标表示、张量运算、Kronecker δ 与置换符号 |
+| [第二章 张量代数基础](/fluids/ch-02-tensor.html) | 指标表示、张量运算、Kronecker δ 与置换符号 |
+| [第三章 流体的物理性质](/fluids/ch-03-properties.html) | 连续介质模型、粘性、压缩性，以及体积力与表面力 |
 
 ::: tip 怎么读
 按顺序读：前面的章节是后面章节的基础。
