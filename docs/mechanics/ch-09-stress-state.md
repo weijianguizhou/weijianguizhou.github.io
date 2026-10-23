@@ -1,0 +1,218 @@
+---
+title: 第九章 应力状态分析和强度理论
+description: 第九章 应力状态分析和强度理论 · 材料力学学习笔记
+---
+
+# 第九章 应力状态分析和强度理论
+
+> 你的眼睛还没掉转过来看我，只起了一个势，我早惊乱得同一只听到弹弓弦子响中的小雀了。
+> —— 沈从文
+
+## 9.1 研究应力状态的方法——单元体法
+
+### 9.1.1 单元体的概念
+
+为了研究构件内某一点处的应力状态，我们围绕该点截取一个无限小的正六面体，称为**单元体 (Elementary Block)**。
+
+- **微元性**：各面上的应力被认为是均匀分布的。
+- **平行性**：相对的两个面上的应力大小相等、方向相反（满足平衡条件）。
+
+### 9.1.2 应力的符号规定
+
+1. **正应力 $\sigma$**：拉应力为正（离开截面），压应力为负（指向截面）。
+2. **切应力 $\tau$**：使单元体或其局部产生顺时针转动趋势的切应力为正，反之为负。
+
+::: tip 切应力互等定理
+在相互垂直的两个平面上，切应力必然成对出现，且大小相等，方向垂直于两平面的交线，同时指向或同时背离该交线。
+
+$$
+\tau_{xy}=-\tau_{yx}
+$$
+:::
+
+## 9.2 解析法求解二向应力状态
+
+### 9.2.1 任意斜截面上的应力推导
+
+<img src="/mechanics/biaxial-stress.webp" alt="二向应力状态" width="520" loading="lazy" />
+
+*图 9.1　二向应力状态隔离体受力分析*
+
+设斜截面面积为 $dA$，由隔离体的静力平衡条件 $\sum F_n=0$ 和 $\sum F_t=0$ 可得：
+
+1. **法向平衡方程：**
+
+    $$
+    \begin{aligned}
+    \sigma_\alpha dA={}&\sigma_x(dA\sin\alpha)\sin\alpha+\sigma_y(dA\cos\alpha)\cos\alpha\\
+    &+\tau_{xy}(dA\sin\alpha)\cos\alpha+\tau_{yx}(dA\cos\alpha)\sin\alpha
+    \end{aligned}
+    $$
+
+    利用切应力互等定理 $\tau_{xy}=\tau_{yx}$，并引入倍角公式，化简为：
+
+    $$
+    \sigma_\alpha=\frac{\sigma_x+\sigma_y}{2}-\frac{\sigma_x-\sigma_y}{2}\cos 2\alpha+\tau_{xy}\sin 2\alpha
+    $$
+
+    注意：此处符号约定与常见的“拉正压负、顺时针为正”匹配，若你教材中 $\sigma_\alpha$ 表达式第一项为减号，只需将 $\alpha$ 的正方向反向即可。
+
+2. **切向平衡方程：**
+
+    沿 $t$ 轴（$n$ 轴顺时针 $90^\circ$）投影：
+
+    $$
+    \begin{aligned}
+    \tau_\alpha dA={}&\sigma_x(dA\sin\alpha)\cos\alpha-\sigma_y(dA\cos\alpha)\sin\alpha\\
+    &-\tau_{xy}(dA\sin\alpha)\sin\alpha+\tau_{yx}(dA\cos\alpha)\cos\alpha
+    \end{aligned}
+    $$
+
+    化简得：
+
+    $$
+    \tau_\alpha=-\frac{\sigma_x-\sigma_y}{2}\sin 2\alpha+\tau_{xy}\cos 2\alpha
+    $$
+
+上述公式表明，斜截面上的正应力 $\sigma_\alpha$ 和切应力 $\tau_\alpha$ 都是 $\alpha$ 的函数，由此可求极值并确定其所在位置。
+
+### 9.2.2 主应力与主平面
+
+::: info 主平面与主应力
+切应力 $\tau_\alpha$ 等于零的平面称为**主平面**，其上的正应力称为**主应力**。主应力按代数值大小排列为 $\sigma_1\ge\sigma_2\ge\sigma_3$。
+:::
+
+令切应力公式等于零，得主平面方位角 $\alpha_0$ 满足：
+
+$$
+\tan 2\alpha_0=\frac{2\tau_{xy}}{\sigma_x-\sigma_y}
+$$
+
+由上式可求得两个相差 $90^\circ$ 的角 $\alpha_0$。将 $\alpha_0$ 代入正应力公式，可得两个主应力值：
+
+$$
+\sigma_{\max,\min}=\frac{\sigma_x+\sigma_y}{2}\pm\sqrt{\left(\frac{\sigma_x-\sigma_y}{2}\right)^2+\tau_{xy}^2}
+$$
+
+在平面应力状态下，第三个主应力为零（若取 $z$ 方向），因此三个主应力为：
+
+$$
+\sigma_1=\sigma_{\max},\quad\sigma_2=0,\quad\sigma_3=\sigma_{\min}\quad(\text{按代数值排列})
+$$
+
+### 9.2.3 最大切应力
+
+对 $\tau_\alpha$ 求导并令其为零，可得最大切应力所在平面的方位 $\alpha_1$：
+
+$$
+\tan 2\alpha_1=-\frac{\sigma_x-\sigma_y}{2\tau_{xy}}
+$$
+
+比较主平面方位角公式可知，$\tan 2\alpha_1=-1/\tan 2\alpha_0$，故最大切应力所在平面与主平面成 $45^\circ$ 夹角。其值为：
+
+$$
+\tau_{\max}=\sqrt{\left(\frac{\sigma_x-\sigma_y}{2}\right)^2+\tau_{xy}^2}=\frac{\sigma_1-\sigma_3}{2}
+$$
+
+### 9.2.4 平面应力状态的正应力不变量
+
+在平面应力状态下，设单元体的 $x$、$y$ 方向正应力为 $\sigma_x$、$\sigma_y$，切应力为 $\tau_{xy}$，则任意角度 $\alpha$ 截面上的正应力为：
+
+$$
+\sigma_\alpha=\frac{\sigma_x+\sigma_y}{2}+\frac{\sigma_x-\sigma_y}{2}\cos 2\alpha+\tau_{xy}\sin 2\alpha
+$$
+
+对于与该截面垂直的截面（角度为 $\alpha+90^\circ$），有：
+
+$$
+\sigma_{\alpha+90^\circ}=\frac{\sigma_x+\sigma_y}{2}-\frac{\sigma_x-\sigma_y}{2}\cos 2\alpha-\tau_{xy}\sin 2\alpha
+$$
+
+两式相加得：
+
+$$
+\sigma_\alpha+\sigma_{\alpha+90^\circ}=\sigma_x+\sigma_y=\text{常数}
+$$
+
+该常数称为**第一应力不变量**，表明任意两个相互垂直截面上的正应力之和与截面方位无关。
+
+## 9.3 应力圆（莫尔圆）法
+
+::: info 说明
+解析法计算繁琐且直观性差。1882 年由德国工程师莫尔 (Otto Mohr) 提出的几何图解法，是分析应力状态最强大的直观工具。
+:::
+
+::: tip 莫尔圆的方程
+对解析法两公式移项并平方相加，消去 $2\alpha$，得到圆方程：
+
+$$
+\begin{aligned}
+&\left(\sigma_\alpha-\frac{\sigma_x+\sigma_y}{2}\right)^2+\tau_\alpha^2\\
+&\quad=\left(\frac{\sigma_x-\sigma_y}{2}\right)^2+\tau_{xy}^2
+\end{aligned}
+$$
+
+圆心位于 $\left(\dfrac{\sigma_x+\sigma_y}{2},0\right)$，半径 $R=\sqrt{\left(\dfrac{\sigma_x-\sigma_y}{2}\right)^2+\tau_{xy}^2}$。
+:::
+
+### 莫尔圆的作图步骤
+
+1. 建立 $\sigma$—$\tau$ 直角坐标系，$\sigma$ 轴向右为正，$\tau$ 轴向下为正（或向上，需统一）。
+2. 在 $\sigma$ 轴上标出 $A(\sigma_x,0)$、$B(\sigma_y,0)$。
+3. 过 $A$ 作垂线，取 $\tau_{xy}$ 的正负号（按约定）得点 $D(\sigma_x,\tau_{xy})$；过 $B$ 作垂线，取 $-\tau_{xy}$ 得点 $E(\sigma_y,-\tau_{xy})$。
+4. 连接 $DE$，与 $\sigma$ 轴交于圆心 $C$。
+5. 以 $C$ 为圆心，$CD$ 为半径画圆，即为应力圆。
+6. 圆与 $\sigma$ 轴的两个交点即为两个主应力值 $\sigma_1$ 和 $\sigma_3$。
+7. 从 $D$ 点沿圆周旋转 $2\alpha$（逆时针为正）得到斜截面上的应力点 $P$，其坐标即为 $\sigma_\alpha$ 和 $\tau_\alpha$。
+
+## 9.4 强度理论 (Strength Theories)
+
+### 9.4.1 破坏准则概述
+
+材料在外力作用下产生失效（塑性屈服或脆性断裂）的本质原因是什么？历史上提出了四大经典强度理论。对于复杂应力状态，需将多轴应力折算成单向拉伸时的等效应力 $\sigma_{ri}$，并与许用应力比较。
+
+::: info 第一强度理论（最大拉应力理论）
+断裂是由最大主应力引起的。当 $\sigma_1$ 达到材料单向拉伸时的强度极限时发生断裂。
+
+$$
+\sigma_{r1}=\sigma_1\le[\sigma]
+$$
+
+适用于脆性材料（如铸铁、石料），且 $\sigma_1$ 为拉应力。
+:::
+
+::: info 第二强度理论（最大拉应变理论）
+破坏是由最大主伸长应变引起的。当 $\varepsilon_1=\dfrac{1}{E}[\sigma_1-\mu(\sigma_2+\sigma_3)]$ 达到单向拉伸断裂时的应变值时发生断裂。
+
+$$
+\sigma_{r2}=\sigma_1-\mu(\sigma_2+\sigma_3)\le[\sigma]
+$$
+
+适用于脆性材料，但如今已较少使用，因与试验数据吻合不佳。
+:::
+
+::: info 第三强度理论（最大切应力理论）
+屈服是由最大切应力引起的。当 $\tau_{\max}=\dfrac{\sigma_1-\sigma_3}{2}$ 达到单向拉伸屈服时的 $\tau_s=\dfrac{\sigma_s}{2}$ 时发生屈服。
+
+$$
+\sigma_{r3}=\sigma_1-\sigma_3\le[\sigma]
+$$
+
+适用于塑性材料（如低碳钢），偏于安全，但未考虑中间主应力 $\sigma_2$ 的影响。
+:::
+
+::: info 第四强度理论（形状改变比能理论）
+屈服是由形状改变比能（畸变能）引起的。当畸变能达到单向拉伸屈服时的畸变能时发生屈服。
+
+$$
+\sigma_{r4}=\sqrt{\frac{1}{2}\left[(\sigma_1-\sigma_2)^2+(\sigma_2-\sigma_3)^2+(\sigma_3-\sigma_1)^2\right]}\le[\sigma]
+$$
+
+适用于塑性材料，较第三理论更符合试验结果，常用于对塑性材料的安全设计。
+:::
+
+::: warning 强度理论的选用建议
+- **脆性材料（铸铁、陶瓷）**：首选第一强度理论，若 $\sigma_1$ 为压应力，则可能发生剪断，可考虑莫尔强度理论。
+- **塑性材料（低碳钢、铝合金）**：优先采用第四强度理论，若需保守设计，可采用第三强度理论。
+- **复杂应力状态**：当主应力中有拉有压时，需综合考虑材料的拉压性能差异，可查阅莫尔强度理论（经验准则）。
+:::

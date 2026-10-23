@@ -15,7 +15,7 @@ const profile = {
   tagline: '一个对力学和机器人感兴趣的本科生~',
   facts: [
     '南京理工大学 · 力学与机器人方向',
-    '最近在做：ROS 2、多体系统动力学'
+    '最近在做：ROS 2、材料力学'
   ],
   github: 'https://github.com/weijianguizhou',
   email: 'wei_zhou@njust.edu.cn'
@@ -32,12 +32,12 @@ const projects: Project[] = [
     tone: 'sage'
   },
   {
-    title: '多体系统动力学',
-    cover: '动力学',
-    meta: '2026 年 9 月 · 课程',
-    desc: '多体系统动力学的课程笔记与推导。',
-    link: 'https://github.com/weijianguizhou/mutibodysysytemdynamics',
-    lang: 'TeX',
+    title: '材料力学（连载）',
+    cover: '材料力学',
+    meta: '2026 年 10 月 · 课程笔记',
+    desc: '从轴向拉压、扭转、弯曲到应力状态与能量法，13 章系统整理，公式全部排版好。',
+    link: '/mechanics/',
+    lang: 'MECHANICS',
     tone: 'mist'
   }
 ]

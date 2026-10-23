@@ -53,5 +53,5 @@ ROS 2 和 Ubuntu 是绑死的：**Ubuntu 26.04 → Lyrical，24.04 → Jazzy，2
 
 - [ ] 话题、服务、动作的区别与选择
 - [ ] 用 URDF 描述一个机器人，在 RViz 里看
-- [ ] Gazebo 仿真
+- [ ] MuJoCo 仿真
 - [ ] 把 ROS 2 接到真实硬件（串口 / CAN / 相机）

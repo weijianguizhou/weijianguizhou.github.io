@@ -28,6 +28,7 @@ export default defineConfig({
   ],
 
   markdown: {
+    math: true,
     lineNumbers: true
   },
 
@@ -35,12 +36,35 @@ export default defineConfig({
     siteTitle: SITE.name,
 
     nav: [
+      { text: '材料力学', link: '/mechanics/' },
       { text: 'ROS 2', link: '/ros2/' },
       { text: '写作', link: '/posts/' },
       { text: '关于', link: '/about' }
     ],
 
     sidebar: {
+      '/mechanics/': [
+        {
+          text: '材料力学',
+          items: [
+            { text: '开始之前', link: '/mechanics/' },
+            { text: '第一章 绪论', link: '/mechanics/ch-01-introduction' },
+            { text: '第二章 材料力学的一些基本', link: '/mechanics/ch-02-basics' },
+            { text: '第三章 轴向拉伸与压缩', link: '/mechanics/ch-03-axial' },
+            { text: '第四章 剪切', link: '/mechanics/ch-04-shear' },
+            { text: '第五章 扭转', link: '/mechanics/ch-05-torsion' },
+            { text: '第六章 弯曲内力', link: '/mechanics/ch-06-bending-internal' },
+            { text: '第七章 弯曲应力', link: '/mechanics/ch-07-bending-stress' },
+            { text: '第八章 弯曲变形', link: '/mechanics/ch-08-bending-deformation' },
+            { text: '第九章 应力状态分析和强度理论', link: '/mechanics/ch-09-stress-state' },
+            { text: '第十章 组合变形', link: '/mechanics/ch-10-combined' },
+            { text: '第十一章 压杆稳定性', link: '/mechanics/ch-11-buckling' },
+            { text: '第十二章 能量法', link: '/mechanics/ch-12-energy' },
+            { text: '第十三章 静不定问题', link: '/mechanics/ch-13-statically-indeterminate' },
+            { text: '附录 A 补充材料', link: '/mechanics/ch-14-appendix' }
+          ]
+        }
+      ],
       '/ros2/': [
         {
           text: 'ROS 2 学习记录',
