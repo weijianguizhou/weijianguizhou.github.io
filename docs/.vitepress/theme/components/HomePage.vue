@@ -84,9 +84,9 @@ const notes: Project[] = [
   {
     title: '工程数学',
     cover: '工程数学',
-    meta: '2026 · 复变 / 变换 / 场论',
-    desc: '复变函数、级数、留数、Fourier 与 Laplace 变换、场论，整份一页读完。',
-    link: '/notes/engineering-math.html',
+    meta: '2026 · 11 章连载',
+    desc: '复变函数、级数、留数、Fourier 与 Laplace 变换、场论，按章整理。',
+    link: '/notes/engineering-math/',
     lang: 'ENGINEERING MATH',
     tone: 'mist',
     badge: '已学完',

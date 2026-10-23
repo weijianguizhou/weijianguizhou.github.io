@@ -66,7 +66,7 @@ export default defineConfig({
           { text: '常微分方程', link: '/notes/ode/' },
           { text: '概率论', link: '/notes/probability/' },
           { text: '数理统计', link: '/notes/statistics/' },
-          { text: '工程数学', link: '/notes/engineering-math.html' }
+          { text: '工程数学', link: '/notes/engineering-math/' }
         ]
       },
       { text: '写作', link: '/posts/' },
@@ -166,6 +166,25 @@ export default defineConfig({
             { text: '第四章 高阶微分方程', link: '/notes/ode/ch-04-higher-order' },
             { text: '第五章 线性微分方程组', link: '/notes/ode/ch-05-linear-systems' },
             { text: '第六章 非线性微分方程', link: '/notes/ode/ch-06-nonlinear' }
+          ]
+        }
+      ],
+      '/notes/engineering-math/': [
+        {
+          text: '工程数学',
+          items: [
+            { text: '开始之前', link: '/notes/engineering-math/' },
+            { text: '第一章 复数域与复变函数', link: '/notes/engineering-math/ch-01-complex-field' },
+            { text: '第二章 复变函数基础', link: '/notes/engineering-math/ch-02-complex-function' },
+            { text: '第三章 解析函数', link: '/notes/engineering-math/ch-03-analytic' },
+            { text: '第四章 共形映射', link: '/notes/engineering-math/ch-04-conformal' },
+            { text: '第五章 复积分', link: '/notes/engineering-math/ch-05-integral' },
+            { text: '第六章 级数', link: '/notes/engineering-math/ch-06-series' },
+            { text: '第七章 留数', link: '/notes/engineering-math/ch-07-residue' },
+            { text: '第八章 Fourier 变换', link: '/notes/engineering-math/ch-08-fourier' },
+            { text: '第九章 Laplace 变换', link: '/notes/engineering-math/ch-09-laplace' },
+            { text: '第十章 Z 变换', link: '/notes/engineering-math/ch-10-z-transform' },
+            { text: '第十一章 场论', link: '/notes/engineering-math/ch-11-field' }
           ]
         }
       ],

@@ -1,16 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""把 工程数学/*.tex 转成一页 VitePress markdown（docs/notes/engineering-math.md）。
+"""把 工程数学/*.tex 拆成 VitePress 连载：docs/notes/engineering-math/ 下每章一页 + 目录页。
 
 用法：python scripts/tex2md_engineering_math.py（需要 pandoc 3.x）
-
-流程：
-  tex -> 自定义环境改写成 quote -> pandoc 转 gfm -> 后处理成站点能吃的格式
-
-后处理负责三件事：
-  1. pandoc 的 ``` math 围栏（可能带引用前缀/缩进）-> $$ 块
-  2. pandoc 的 $`x`$ 行内公式 -> $x$
-  3. 数学里的 {{ 拆开，避免被 VitePress 当 Vue 插值
+流程：tex -> 自定义环境改写成 quote -> pandoc 转 gfm -> 公式规范化 -> 按章拆页
 """
 import re
 import subprocess
@@ -20,14 +13,22 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 TEX = ROOT / "工程数学"
 TMP = ROOT / ".tmp" / "tex2md"
-OUT = ROOT / "docs" / "notes" / "engineering-math.md"
+OUTDIR = ROOT / "docs" / "notes" / "engineering-math"
 
 CHAPTERS = [
-    "前言", "绪论",
-    "复变函数/复数域与复变函数", "复变函数/复变函数基础", "复变函数/解析函数",
-    "复变函数/共形映射", "复变函数/复积分",
-    "级数", "留数", "Fourier 变换", "Laplace 变换", "Z 变换", "场论", "附录",
+    ("复变函数/复数域与复变函数", "ch-01-complex-field"),
+    ("复变函数/复变函数基础", "ch-02-complex-function"),
+    ("复变函数/解析函数", "ch-03-analytic"),
+    ("复变函数/共形映射", "ch-04-conformal"),
+    ("复变函数/复积分", "ch-05-integral"),
+    ("级数", "ch-06-series"),
+    ("留数", "ch-07-residue"),
+    ("Fourier 变换", "ch-08-fourier"),
+    ("Laplace 变换", "ch-09-laplace"),
+    ("Z 变换", "ch-10-z-transform"),
+    ("场论", "ch-11-field"),
 ]
+FRONT_RELS = ["前言", "绪论"]
 
 KEEP_ENVS = {
     "enumerate", "itemize", "description", "align", "align*", "aligned", "aligned*",
@@ -37,7 +38,6 @@ KEEP_ENVS = {
     "flushleft", "flushright", "minipage", "quote", "quotation", "verbatim",
     "lstlisting", "tikzpicture", "thebibliography", "document",
 }
-
 LABELS = {
     "definition": "定义", "axiom": "公理", "theorem": "定理", "proposition": "命题",
     "lemma": "引理", "property": "性质", "corollary": "推论", "example": "例",
@@ -45,47 +45,41 @@ LABELS = {
     "remark": "注", "note": "注", "keybox": "", "tcolorbox": "",
     "warning": "注意", "tip": "提示", "intro": "",
 }
+DD = "$$"
 
 
-def strip_comments(s: str) -> str:
+def strip_comments(s):
     return "\n".join(l for l in s.split("\n") if not re.match(r"^\s*%", l))
 
 
-def rewrite_envs(s: str) -> str:
+def rewrite_envs(s):
     def repl_begin(m):
         name = m.group(1).strip().rstrip("*")
-        args = m.group(2) or ""
         if name in KEEP_ENVS:
             return m.group(0)
-        label = LABELS.get(name, "")
+        args = m.group(2) or ""
         tm = re.search(r"title\s*=\s*\{?([^,}\]]+)", args)
-        title = tm.group(1).strip() if tm else ""
-        head = title or label
+        head = (tm.group(1).strip() if tm else "") or LABELS.get(name, "")
         return "\\begin{quote}" + ("\\\\\\textbf{" + head + "}" if head else "")
 
     s = re.sub(r"\\begin\{([A-Za-z*]+)\}(\[[^\]]*\])?", repl_begin, s)
-    s = re.sub(
+    return re.sub(
         r"\\end\{([A-Za-z*]+)\}",
         lambda m: m.group(0) if m.group(1).strip().rstrip("*") in KEEP_ENVS else "\\end{quote}",
         s,
     )
-    return s
 
 
-def drop_noise(s: str) -> str:
-    s = re.sub(r"\\includegraphics(\[[^\]]*\])?\{[^}]*\}", "", s)
-    for pat in (r"\\label\{[^}]*\}", r"\\index\{[^}]*\}", r"\\vspace\*?\{[^}]*\}",
-                r"\\hspace\*?\{[^}]*\}", r"\\setcounter\{[^}]*\}\{[^}]*\}",
-                r"\\clearpage|\\newpage|\\pagebreak"):
+def drop_noise(s):
+    for pat in (r"\\includegraphics(\[[^\]]*\])?\{[^}]*\}", r"\\label\{[^}]*\}",
+                r"\\index\{[^}]*\}", r"\\vspace\*?\{[^}]*\}", r"\\hspace\*?\{[^}]*\}",
+                r"\\setcounter\{[^}]*\}\{[^}]*\}", r"\\clearpage|\\newpage|\\pagebreak"):
         s = re.sub(pat, "", s)
     return s
 
 
-def tex_to_md(tex_path: Path) -> str:
-    s = tex_path.read_text(encoding="utf-8", errors="replace")
-    s = strip_comments(s)
-    s = rewrite_envs(s)
-    s = drop_noise(s)
+def tex_to_md(tex_path):
+    s = drop_noise(rewrite_envs(strip_comments(tex_path.read_text(encoding="utf-8", errors="replace"))))
     TMP.mkdir(parents=True, exist_ok=True)
     src = TMP / (tex_path.stem + ".tex")
     src.write_text(s, encoding="utf-8")
@@ -95,11 +89,11 @@ def tex_to_md(tex_path: Path) -> str:
         capture_output=True, text=True, encoding="utf-8", errors="replace",
     )
     if r.returncode != 0:
-        raise SystemExit(f"pandoc failed on {tex_path.name}:\n{r.stderr[:2000]}")
+        raise SystemExit(f"pandoc failed on {tex_path.name}:\n{r.stderr[:1500]}")
     return r.stdout
 
 
-def unquote(line: str) -> str:
+def unquote(line):
     prev = None
     while prev != line:
         prev = line
@@ -107,33 +101,40 @@ def unquote(line: str) -> str:
     return line
 
 
-def fix_math(md: str) -> str:
-    lines = md.split("\n")
-    out, i = [], 0
+def fix_math(md):
+    lines, out, i = md.split("\n"), [], 0
     while i < len(lines):
-        stripped = unquote(lines[i]).strip()
-        if stripped in ("``` math", "```math"):
-            # 找闭合围栏（最多向下 60 行）
+        if unquote(lines[i]).strip() in ("``` math", "```math"):
             j = i + 1
-            while j < len(lines) and j - i < 60:
-                if re.fullmatch(r"```+", unquote(lines[j]).strip()):
-                    break
+            while j < len(lines) and j - i < 60 and not re.fullmatch(r"```+", unquote(lines[j]).strip()):
                 j += 1
             if j < len(lines) and j - i < 60:
-                body = [unquote(l) for l in lines[i + 1:j]]
-                out += ["$$"] + body + ["$$"]
+                out += [DD] + [unquote(l) for l in lines[i + 1:j]] + [DD]
                 i = j + 1
                 continue
         out.append(lines[i])
         i += 1
-    md = "\n".join(out)
-
-    md = re.sub(r"\$`(.+?)`\$", lambda m: "$" + m.group(1).replace("\n", " ") + "$", md, flags=re.S)
-    md = md.replace("{{", "{ {")
-    return md
+    text = "\n".join(out)
+    text = re.sub(r"\$`(.+?)`\$", lambda m: "$" + m.group(1).replace("\n", " ") + "$", text, flags=re.S)
+    return text.replace("{{", "{ {")
 
 
-def demote(md: str) -> str:
+def normalize_math_blocks(text):
+    toks = [m.start() for m in re.finditer(re.escape(DD), text)]
+    if len(toks) % 2:
+        print("  !! $$ 奇数，最后一对不完整", file=sys.stderr)
+    out, pos = [], 0
+    for k in range(0, len(toks) - 1, 2):
+        a, b = toks[k], toks[k + 1]
+        out.append(re.sub(r"(?m)^\s*>\s*$", "", text[pos:a]))
+        out.append("\n\n" + DD + "\n" + text[a + 2:b].strip("\n") + "\n" + DD + "\n\n")
+        pos = b + 2
+    out.append(text[pos:])
+    res = re.sub(r"[ \t]+\n", "\n", "".join(out))
+    return re.sub(r"\n{3,}", "\n\n", res)
+
+
+def demote(md):
     out, in_code = [], False
     for line in md.split("\n"):
         if line.startswith("```"):
@@ -144,46 +145,57 @@ def demote(md: str) -> str:
     return "\n".join(out)
 
 
-def main() -> None:
-    parts = []
-    for rel in CHAPTERS:
+def split_title(md):
+    lines = md.split("\n")
+    for idx, line in enumerate(lines):
+        m = re.match(r"^#\s+(.+?)\s*$", line)
+        if m:
+            return m.group(1), "\n".join(lines[idx + 1:]).strip()
+    return None, md.strip()
+
+
+def yaml_str(s):
+    return '"' + s.replace('"', '\\"') + '"'
+
+
+def main():
+    OUTDIR.mkdir(parents=True, exist_ok=True)
+    old = ROOT / "docs" / "notes" / "engineering-math.md"
+    if old.exists():
+        old.unlink()
+        print(f"removed {old.name}")
+
+    chapters = []
+    for rel, slug in CHAPTERS:
         p = TEX / (rel + ".tex")
         if not p.exists():
             print(f"skip missing {p}", file=sys.stderr)
             continue
-        md = demote(fix_math(tex_to_md(p)))
-        parts.append(md.strip())
+        title, body = split_title(normalize_math_blocks(fix_math(tex_to_md(p))))
+        title = title or rel
+        chapters.append((slug, title))
+        page = (f"---\ntitle: {yaml_str(title)}\ndescription: {yaml_str('工程数学 · ' + title)}\n---\n\n"
+                f"# {title}\n\n{body}\n")
+        (OUTDIR / f"{slug}.md").write_text(page, encoding="utf-8")
+        print(f"  {slug}.md  {len(page.splitlines())} lines  {title}")
 
-    front = [
-        "---",
-        "title: 工程数学",
-        "description: 工程数学课程完整笔记：复变函数、积分变换与场论（已学完）",
-        "---",
-        "",
-        "# 工程数学",
-        "",
-        "复变函数、级数、留数、积分变换与场论，一页读完。",
-        "",
-        "::: tip 原稿 PDF",
-        "同一份笔记的 PDF 版：[工程数学.pdf](/notes/engineering-math.pdf)",
-        ":::",
-        "",
-    ]
-    body = "\n\n".join(parts)
-    text = "\n".join(front) + "\n" + body + "\n"
-    OUT.write_text(text, encoding="utf-8")
-
-    # 自检
-    problems = []
-    if "``` math" in text:
-        problems.append(f"残留未转换围栏 {text.count('``` math')} 处")
-    if "{{" in text:
-        problems.append(f"残留 {{{{ {text.count('{{')} 处")
-    if text.count("$$") % 2:
-        problems.append("$$ 数量为奇数，定界符不配对")
-    print(f"wrote {OUT} ({len(text.splitlines())} lines), "
-          f"$$={text.count('$$')}, "
-          + ("; ".join(problems) if problems else "self-check ok"))
+    front_parts = []
+    for rel in FRONT_RELS:
+        p = TEX / (rel + ".tex")
+        if not p.exists():
+            continue
+        title, body = split_title(normalize_math_blocks(fix_math(tex_to_md(p))))
+        if body.strip():
+            front_parts.append(demote(body))
+    rows = "\n".join(f"| [{t}](/notes/engineering-math/{s}.html) |" for s, t in chapters)
+    index = (
+        "---\ntitle: 工程数学\ndescription: 工程数学课程完整笔记：复变函数、积分变换与场论（已学完）\n---\n\n"
+        "# 工程数学\n\n复变函数、级数、留数、积分变换与场论，按章整理，方便回查。\n\n"
+        "::: tip 原稿 PDF\n同一份笔记的 PDF 版：[工程数学.pdf](/notes/engineering-math.pdf)\n:::\n\n"
+        "## 章节\n\n| 章节 |\n| --- |\n" + rows + "\n\n## 说明\n\n" + "\n\n".join(front_parts) + "\n"
+    )
+    (OUTDIR / "index.md").write_text(index, encoding="utf-8")
+    print(f"  index.md  {len(index.splitlines())} lines, {len(chapters)} chapters")
 
 
 if __name__ == "__main__":
