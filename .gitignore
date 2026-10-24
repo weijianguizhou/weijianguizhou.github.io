@@ -14,3 +14,17 @@ Thumbs.db
 
 # 临时目录（构建绕行 / 预览截图）
 .tmp/
+
+# LaTeX 编译中间产物
+*.aux
+*.log
+*.toc
+*.xdv
+*.synctex.gz
+*.fls
+*.fdb_latexmk
+*.out
+*.nav
+*.snm
+*.bbl
+*.blg
