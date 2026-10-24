@@ -5,7 +5,7 @@ description: 指标表示、张量运算、Kronecker δ 与置换符号
 
 # 第二章 张量代数基础
 
-<img src="/fluids/index-order.webp" alt="指标顺序" loading="lazy" />
+<Figure src="/fluids/index-order.webp" alt="指标顺序" caption="图 2.1　指标顺序（自由指标与哑指标）" />
 
 之前学过的物理量分为标量和向量，其实可以都归结于张量。
 
@@ -148,5 +148,5 @@ $$
 
 如下图，满足顺时针关系时为1，逆时针为-1。
 
-<img src="/fluids/index-order.webp" alt="指标顺序" loading="lazy" />
+<Figure src="/fluids/index-order.webp" alt="指标顺序" caption="图 2.2　置换符号的顺时针与逆时针约定" />
 

@@ -21,7 +21,7 @@ $$\mathbf{F}=\mathbf{A}\cdot\mathbf{B}=\mathbf{AB}$$
 
 与门逻辑符号如下。
 
-<img src="/digital/and-circuit.webp" alt="与逻辑电路" loading="lazy" />
+<Figure src="/digital/and-circuit.webp" alt="与门逻辑符号" caption="图 2.1　与门逻辑符号" />
 
 与逻辑运算真值表如下：
 
@@ -40,7 +40,7 @@ $$\mathbf{F}=\mathbf{A}+\mathbf{B}$$
 
 或门逻辑符号如下：
 
-<img src="/digital/or-circuit.webp" alt="或逻辑电路" loading="lazy" />
+<Figure src="/digital/or-circuit.webp" alt="或门逻辑符号" caption="图 2.2　或门逻辑符号" />
 
 或逻辑运算真值表如下：
 
@@ -61,7 +61,7 @@ $$\mathbf{F}=\overline{\mathbf{A}}$$
 
 非门逻辑符号如下：
 
-<img src="/digital/not-circuit.webp" alt="非逻辑电路" loading="lazy" />
+<Figure src="/digital/not-circuit.webp" alt="非门逻辑符号" caption="图 2.3　非门逻辑符号" />
 
 非逻辑运算真值表如下：
 
@@ -78,7 +78,7 @@ $$\mathbf{F}=\overline{\mathbf{A}}$$
 
 $$\mathbf{F}=\overline{\mathbf{AB}}$$
 
-<img src="/digital/nand-circuit.webp" alt="与非逻辑电路" loading="lazy" />
+<Figure src="/digital/nand-circuit.webp" alt="与非门逻辑符号" caption="图 2.4　与非门逻辑符号" />
 
 与非逻辑真值表如下：
 
@@ -95,7 +95,7 @@ $$\mathbf{F}=\overline{\mathbf{AB}}$$
 
 $$\mathbf{F}=\overline{\mathbf{A}+\mathbf{B}}$$
 
-<img src="/digital/nor-circuit.webp" alt="或非逻辑电路" loading="lazy" />
+<Figure src="/digital/nor-circuit.webp" alt="或非门逻辑符号" caption="图 2.5　或非门逻辑符号" />
 
 或非逻辑真值表如下：
 
@@ -112,7 +112,7 @@ $$\mathbf{F}=\overline{\mathbf{A}+\mathbf{B}}$$
 
 $$\mathbf{F}=\overline{\mathbf{AB}+\mathbf{CD}}$$
 
-<img src="/digital/and-or-not-symbol.webp" alt="与或非门逻辑符号" loading="lazy" />
+<Figure src="/digital/and-or-not-symbol.webp" alt="与或非门逻辑符号" caption="图 2.6　与或非门逻辑符号" />
 
 与或非逻辑真值表如下：
 
@@ -145,7 +145,7 @@ $$\mathbf{F}=\overline{\mathbf{A}}\mathbf{B}+\mathbf{A}\overline{\mathbf{B}}=\ma
 
 异或门逻辑符号如下：
 
-<img src="/digital/xor-circuit.webp" alt="异或逻辑电路" loading="lazy" />
+<Figure src="/digital/xor-circuit.webp" alt="异或门逻辑符号" caption="图 2.7　异或门逻辑符号" />
 
 异或逻辑真值表如下：
 
@@ -170,7 +170,7 @@ $$\mathbf{A}\oplus\mathbf{B}=\overline{\mathbf{A}\odot\mathbf{B}}$$
 
 同或门逻辑符号如下：
 
-<img src="/digital/xnor-circuit.webp" alt="同或逻辑电路" loading="lazy" />
+<Figure src="/digital/xnor-circuit.webp" alt="同或门逻辑符号" caption="图 2.8　同或门逻辑符号" />
 
 同或逻辑真值表如下：
 
@@ -232,7 +232,7 @@ $$\mathbf{F}_{2}=\mathbf{f}_{2}(\mathbf{A}_{1},\mathbf{A}_{2},\mathbf{A}_{3},\ld
 
 设 $\mathbf{F}$ 为任意逻辑表达式，若将 $\mathbf{F}$ 中所有运算符、常量及变量作如下变换：
 
-<img src="/digital/inverse-function.webp" alt="反函数定义" loading="lazy" />
+<Figure src="/digital/inverse-function.webp" alt="反函数的定义" caption="图 2.9　反函数的定义" />
 
 则所得新的逻辑式即为 $\mathbf{F}$ 的反函数，记为 $\overline{\mathbf{F}}$。
 
@@ -244,7 +244,7 @@ $$\mathbf{F}_{2}=\mathbf{f}_{2}(\mathbf{A}_{1},\mathbf{A}_{2},\mathbf{A}_{3},\ld
 
 设 $\mathbf{F}$ 为任意逻辑表达式，若将 $\mathbf{F}$ 中所有运算符和常量作如下变换：
 
-<img src="/digital/dual-function.webp" alt="对偶式定义" loading="lazy" />
+<Figure src="/digital/dual-function.webp" alt="对偶式的定义" caption="图 2.10　对偶式的定义" />
 
 则所得新的逻辑表达式即为 $\mathbf{F}$ 的对偶式，记为 $\mathbf{F}'$。
 

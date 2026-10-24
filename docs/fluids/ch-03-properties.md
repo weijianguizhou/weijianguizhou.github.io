@@ -38,7 +38,7 @@ $$
 即分子自由程/流动特征长度
 :::
 
-<img src="/fluids/scale-levels.webp" alt="空间尺度的三个层次" loading="lazy" />
+<Figure src="/fluids/scale-levels.webp" alt="空间尺度的三个层次" caption="图 3.1　空间尺度的三个层次" />
 
 ### 流体微团及流体质点
 #### 流体微团
@@ -187,7 +187,7 @@ $$
 \boldsymbol{T}(\boldsymbol{n})=\lim _{\delta A \rightarrow 0} \frac{\delta \boldsymbol{F}}{\delta A}
 $$
 
-<img src="/fluids/stress.webp" alt="应力" loading="lazy" />
+<Figure src="/fluids/stress.webp" alt="应力" caption="图 3.2　应力" />
 
 **注意：**
 
@@ -203,7 +203,7 @@ $$
 
 只要知道一点的应力状态，就可以确定通过该点任意面上的应力
 
-<img src="/fluids/stress-state.webp" alt="一点的应力状态" loading="lazy" />
+<Figure src="/fluids/stress-state.webp" alt="一点的应力状态" caption="图 3.3　一点的应力状态" />
 
 采用指标表示:
 
