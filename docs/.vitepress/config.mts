@@ -1,5 +1,6 @@
 import { defineConfig } from 'vitepress'
 import { katex } from '@mdit/plugin-katex'
+import container from 'markdown-it-container'
 
 /* ============================================================
  * TODO：以后改名字 / 联系方式的唯一入口
@@ -10,6 +11,19 @@ const SITE = {
   description: '魏舟的个人主页：力学、机器人、仿真与笔记',
   github: 'https://github.com/weijianguizhou',
   email: 'wei_zhou@njust.edu.cn'
+}
+
+/* ============================================================
+ * 语义块类型：定义 / 定理 / 证明 / 例题 / 注
+ * 用法：::: definition 轴力 … :::
+ * 第一行冒号后的第一个词是类型，其余文字作为块标题，不写标题则用默认词
+ * ============================================================ */
+const CALLOUTS: Record<string, string> = {
+  definition: '定义',
+  theorem: '定理',
+  proof: '证明',
+  example: '例题',
+  remark: '注'
 }
 
 export default defineConfig({
@@ -49,6 +63,21 @@ export default defineConfig({
           '\\Q': '\\mathbb{Q}'
         }
       })
+
+      // 语义块：::: definition 轴力 … :::
+      // 与 VitePress 自带的 info/tip/warning/danger 并存，只是多了「学术笔记」用的五种
+      for (const [kind, label] of Object.entries(CALLOUTS)) {
+        md.use(container, kind, {
+          render(tokens: any[], idx: number) {
+            const token = tokens[idx]
+            if (token.nesting === 1) {
+              const title = token.info.trim().slice(kind.length).trim() || label
+              return `<div class="nb nb-${kind}"><p class="nb-title">${title}</p>\n`
+            }
+            return '</div>\n'
+          }
+        })
+      }
     }
   },
 

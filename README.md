@@ -19,7 +19,7 @@ my-blog/
 │  │     ├─ Layout.vue             # 首页走自定义布局，其余页面走 VitePress 默认布局
 │  │     ├─ custom.css             # 全站配色 / 衬线字体 / 纸感导航
 │  │     └─ components/
-│  │        └─ HomePage.vue        # 首页：姓名、身份、头像、Work 卡片列表
+│  │        └─ HomePage.vue        # 首页：姓名/身份/头像 + 分区大卡片（点开展开课程卡片）
 │  ├─ index.md                     # 首页（只放 frontmatter：customLayout: home）
 │  ├─ about.md                     # 关于页
 │  ├─ posts/                       # 写作（Markdown 文章）
@@ -56,15 +56,28 @@ my-blog/
 
 | 想改什么 | 打开哪里 |
 | --- | --- |
-| 首页姓名、身份、邮箱、笔记卡片 | [`docs/.vitepress/theme/components/HomePage.vue`](docs/.vitepress/theme/components/HomePage.vue) 顶部的 `profile` 和 `notes` 数组 |
+| 首页姓名、身份、邮箱、笔记分区与卡片 | [`docs/.vitepress/theme/components/HomePage.vue`](docs/.vitepress/theme/components/HomePage.vue) 顶部的 `profile` 和 `sections` 数组 |
 | 站点标题、导航、页脚、页面元信息 | [`docs/.vitepress/config.mts`](docs/.vitepress/config.mts) 顶部的 `SITE` 与 `themeConfig` |
 | 「关于」页正文 | [`docs/about.md`](docs/about.md) |
 
-首页的 `notes` 数组每项长这样，改文字/日期/链接即可，**不用动样式**：
+首页把 8 门笔记收进 **4 个分区大卡片**（机器人 / 电子 / 力学与工程 / 数学基础）：点分区标题展开，里面才是课程小卡片；手风琴式一次只开一个，默认展开第一个。结构在 `HomePage.vue` 顶部的 `sections` 数组里：
 
 ```ts
 {
-  title: '常微分方程',            // 卡片标题
+  id: 'mechanics',                  // 唯一 id，用于 aria-controls
+  title: '力学与工程',
+  en: 'MECHANICS & ENGINEERING',
+  desc: '从材料力学的强度、刚度、稳定性，到流体力学的连续介质模型与张量。',
+  tone: 'clay',                     // 大卡片色调：sand / sage / clay / stone / mist
+  notes: [ /* 课程小卡片，字段见下 */ ]
+}
+```
+
+课程小卡片每项长这样，改文字/日期/链接即可，**不用动样式**：
+
+```ts
+{
+  title: '常微分方程',            // 小卡片标题
   cover: '常微分方程',            // 封面上显示的大字（汉字水印取首字）
   meta: '2026 · 6 章',           // 灰色小字
   desc: '初等积分法、解的存在定理、高阶方程……',
@@ -72,13 +85,14 @@ my-blog/
   lang: 'ODE',                   // 封面左上角的小标签
   tone: 'stone',                 // 封面色调：sand / sage / clay / stone / mist
   badge: '已学完',                // 可选：小徽章（连载 / 已学完）
+  chapters: 6,                   // 章数，用于分区右上角「N 门 · M 章」统计
   image: '/notes/ode-lorenz.png' // 可选：鼠标悬停时浮现的代表图
 }
 ```
 
-当前首页是 **8 张笔记卡片**：ROS 2、流体力学、数字电路（连载）+ 材料力学、常微分方程、工程数学、概率论、数理统计（已学完）。鼠标移上卡片会浮现该笔记的代表图，移开淡回排版封面——这个效果由 CSS 的 `:hover` / `:focus-visible` 驱动，不依赖 JS，触屏设备用 `:active` 兜底。
+展开面板的高度动画用纯 CSS（`grid-template-rows: 0fr → 1fr`），不依赖 JS 测量；鼠标移到课程卡片上会浮现该笔记的代表图，移开淡回排版封面——由 `:hover` / `:focus-visible` 驱动，触屏设备用 `:active` 兜底。
 
-**加新卡片**：往 `notes` 数组追加一项，把代表图放进 `docs/public/` 下面（`image` 写 `/xxx.png`）；想让卡片在导航里也有入口，再去 `config.mts` 的 `nav` / `sidebar` 补条目。
+**加一门课**：把它追加到对应分区的 `notes` 数组里；**加一个分区**：往 `sections` 追加一项（`id` 起唯一名字），再把课程卡片放进它的 `notes`。想让分区在导航里也有入口，再去 `config.mts` 的 `nav` / `sidebar` 补条目。
 
 ## 本地预览
 

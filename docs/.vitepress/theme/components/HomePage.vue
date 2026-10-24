@@ -1,5 +1,7 @@
 <script setup lang="ts">
-type Project = {
+import { computed, ref } from 'vue'
+
+type Note = {
   title: string
   cover: string
   meta: string
@@ -9,6 +11,16 @@ type Project = {
   tone: string
   image?: string
   badge?: string
+  chapters: number
+}
+
+type Section = {
+  id: string
+  title: string
+  en: string
+  desc: string
+  tone: string
+  notes: Note[]
 }
 
 const profile = {
@@ -23,103 +35,158 @@ const profile = {
   email: 'wei_zhou@njust.edu.cn'
 }
 
-// 所有笔记都做成卡片。image 是「鼠标悬停时浮现的那张代表图」，
-// 移开鼠标后卡片回到默认的纯排版封面（CSS 过渡，不依赖 JS）。
-const notes: Project[] = [
+// 首页只放三个大分区，点开才展开里面的课程卡片
+const sections: Section[] = [
   {
-    title: 'ROS 2 学习记录（连载）',
-    cover: 'ROS 2',
-    meta: '2026 年 10 月 · 7 章连载',
-    desc: '从 Ubuntu、WSL 环境一路到 ROS 2 架构与编译，全是踩过的坑。',
-    link: '/ros2/',
-    lang: 'UBUNTU 26.04',
+    id: 'robotics',
+    title: '机器人',
+    en: 'ROBOTICS',
+    desc: 'ROS 2 从 Ubuntu、WSL 环境一路到节点编译的完整记录，全是踩过的坑。',
     tone: 'sage',
-    badge: '连载',
-    image: '/ros2/talker-listener.webp'
+    notes: [
+      {
+        title: 'ROS 2 学习记录（连载）',
+        cover: 'ROS 2',
+        meta: '2026 年 10 月 · 7 章连载',
+        desc: '从 Ubuntu、WSL 环境一路到 ROS 2 架构与编译，全是踩过的坑。',
+        link: '/ros2/',
+        lang: 'UBUNTU 26.04',
+        tone: 'sage',
+        badge: '连载',
+        chapters: 7,
+        image: '/ros2/talker-listener.webp'
+      }
+    ]
   },
   {
-    title: '流体力学（连载）',
-    cover: '流体力学',
-    meta: '2026 年 10 月 · 课程笔记',
-    desc: '从连续介质模型、粘性到张量代数，公式都排版好了。',
-    link: '/fluids/',
-    lang: 'FLUID MECHANICS',
+    id: 'electronics',
+    title: '电子',
+    en: 'ELECTRONICS',
+    desc: '数字电路：数制与编码、布尔代数与逻辑门，配逻辑电路图。',
     tone: 'mist',
-    badge: '连载',
-    image: '/fluids/stress-state.webp'
+    notes: [
+      {
+        title: '数字电路（连载）',
+        cover: '数字电路',
+        meta: '2026 年 10 月 · 课程笔记',
+        desc: '数制与编码、布尔代数与逻辑门，配逻辑电路图。',
+        link: '/digital/',
+        lang: 'DIGITAL CIRCUITS',
+        tone: 'sand',
+        badge: '连载',
+        chapters: 2,
+        image: '/digital/and-circuit.webp'
+      }
+    ]
   },
   {
-    title: '数字电路（连载）',
-    cover: '数字电路',
-    meta: '2026 年 10 月 · 课程笔记',
-    desc: '数制与编码、布尔代数与逻辑门，配逻辑电路图。',
-    link: '/digital/',
-    lang: 'DIGITAL CIRCUITS',
-    tone: 'sand',
-    badge: '连载',
-    image: '/digital/and-circuit.webp'
-  },
-  {
-    title: '材料力学',
-    cover: '材料力学',
-    meta: '2026 · 13 章 + 附录',
-    desc: '从轴向拉压到能量法，低碳钢拉伸曲线、应力单元体都在里面。',
-    link: '/notes/mechanics/',
-    lang: 'MECHANICS',
+    id: 'mechanics',
+    title: '力学与工程',
+    en: 'MECHANICS & ENGINEERING',
+    desc: '从材料力学的强度、刚度、稳定性，到流体力学的连续介质模型与张量。',
     tone: 'clay',
-    badge: '已学完',
-    image: '/mechanics/mild-steel-curve.webp'
+    notes: [
+      {
+        title: '材料力学',
+        cover: '材料力学',
+        meta: '2026 · 13 章 + 附录',
+        desc: '从轴向拉压到能量法，低碳钢拉伸曲线、应力单元体都在里面。',
+        link: '/notes/mechanics/',
+        lang: 'MECHANICS',
+        tone: 'clay',
+        badge: '已学完',
+        chapters: 14,
+        image: '/mechanics/mild-steel-curve.webp'
+      },
+      {
+        title: '流体力学（连载）',
+        cover: '流体力学',
+        meta: '2026 年 10 月 · 课程笔记',
+        desc: '从连续介质模型、粘性到张量代数，公式都排版好了。',
+        link: '/fluids/',
+        lang: 'FLUID MECHANICS',
+        tone: 'mist',
+        badge: '连载',
+        chapters: 3,
+        image: '/fluids/stress-state.webp'
+      }
+    ]
   },
   {
-    title: '常微分方程',
-    cover: '常微分方程',
-    meta: '2026 · 6 章',
-    desc: '初等积分法、解的存在定理、高阶方程、线性方程组与非线性方程。',
-    link: '/notes/ode/',
-    lang: 'ODE',
-    tone: 'stone',
-    badge: '已学完',
-    image: '/notes/ode-lorenz.png'
-  },
-  {
-    title: '工程数学',
-    cover: '工程数学',
-    meta: '2026 · 11 章连载',
-    desc: '复变函数、级数、留数、Fourier 与 Laplace 变换、场论，按章整理。',
-    link: '/notes/engineering-math/',
-    lang: 'ENGINEERING MATH',
-    tone: 'mist',
-    badge: '已学完',
-    image: '/notes/emath-fourier.png'
-  },
-  {
-    title: '概率论',
-    cover: '概率论',
-    meta: '2026 · 4 章',
-    desc: '随机事件、随机变量、多维随机变量与数字特征。',
-    link: '/notes/probability/',
-    lang: 'PROBABILITY',
+    id: 'math',
+    title: '数学基础',
+    en: 'MATHEMATICS',
+    desc: '工程数学、常微分方程、概率论与数理统计：公式推导和速查表按章整理。',
     tone: 'sage',
-    badge: '已学完',
-    image: '/notes/prob-1.webp'
-  },
-  {
-    title: '数理统计',
-    cover: '数理统计',
-    meta: '2026 · 3 章',
-    desc: '基本概念、参数估计与假设检验，配 χ² 与 t 分布图。',
-    link: '/notes/statistics/',
-    lang: 'STATISTICS',
-    tone: 'clay',
-    badge: '已学完',
-    image: '/notes/chi2-density.webp'
+    notes: [
+      {
+        title: '工程数学',
+        cover: '工程数学',
+        meta: '2026 · 11 章连载',
+        desc: '复变函数、级数、留数、Fourier 与 Laplace 变换、场论，按章整理。',
+        link: '/notes/engineering-math/',
+        lang: 'ENGINEERING MATH',
+        tone: 'mist',
+        badge: '已学完',
+        chapters: 11,
+        image: '/notes/emath-fourier.png'
+      },
+      {
+        title: '常微分方程',
+        cover: '常微分方程',
+        meta: '2026 · 6 章',
+        desc: '初等积分法、解的存在定理、高阶方程、线性方程组与非线性方程。',
+        link: '/notes/ode/',
+        lang: 'ODE',
+        tone: 'stone',
+        badge: '已学完',
+        chapters: 6,
+        image: '/notes/ode-lorenz.png'
+      },
+      {
+        title: '概率论',
+        cover: '概率论',
+        meta: '2026 · 4 章',
+        desc: '随机事件、随机变量、多维随机变量与数字特征。',
+        link: '/notes/probability/',
+        lang: 'PROBABILITY',
+        tone: 'sage',
+        badge: '已学完',
+        chapters: 4,
+        image: '/notes/prob-1.webp'
+      },
+      {
+        title: '数理统计',
+        cover: '数理统计',
+        meta: '2026 · 3 章',
+        desc: '基本概念、参数估计与假设检验，配 χ² 与 t 分布图。',
+        link: '/notes/statistics/',
+        lang: 'STATISTICS',
+        tone: 'clay',
+        badge: '已学完',
+        chapters: 3,
+        image: '/notes/chi2-density.webp'
+      }
+    ]
   }
 ]
 
-const year = new Date().getFullYear()
+// 默认展开第一个分区，让首屏有内容；之后手风琴式一次只开一个
+const openId = ref<string | null>(sections[0].id)
 
-// 站内链接不开新标签页，站外链接才开
+function toggle(id: string) {
+  openId.value = openId.value === id ? null : id
+}
+
 const isExternal = (link: string) => /^https?:\/\//.test(link)
+const totalChapters = computed(() => sections.reduce((n, s) => n + chaptersOf(s), 0))
+const totalNotes = computed(() => sections.reduce((n, s) => n + s.notes.length, 0))
+
+function chaptersOf(s: Section) {
+  return s.notes.reduce((n, item) => n + item.chapters, 0)
+}
+
+const year = new Date().getFullYear()
 </script>
 
 <template>
@@ -146,45 +213,92 @@ const isExternal = (link: string) => /^https?:\/\//.test(link)
       </header>
 
       <section class="av-work">
-        <h2>笔记</h2>
-        <p class="av-work-intro">
-          <a href="/posts/">写作</a>、课程笔记，和最近的学习记录。全部代码在
-          <a :href="`${profile.github}?tab=repositories`" target="_blank" rel="noreferrer">GitHub</a>。
-          鼠标移到卡片上，会浮现这份笔记里的一张代表图；移开就收回去。
-        </p>
+        <div class="av-work-head">
+          <h2>笔记</h2>
+          <p class="av-work-intro">
+            {{ totalNotes }} 门课、约 {{ totalChapters }} 章，按方向分成 {{ sections.length }} 个分区。
+            点开分区看课程卡片，鼠标移到卡片上会浮现这份笔记的代表图。
+            全部代码在
+            <a :href="`${profile.github}?tab=repositories`" target="_blank" rel="noreferrer">GitHub</a>。
+          </p>
+        </div>
 
-        <div class="av-list">
-          <article v-for="p in notes" :key="p.title" class="av-item">
-            <a
-              class="av-cover"
-              :class="`tone-${p.tone}`"
-              :data-ghost="p.cover.slice(0, 1)"
-              :href="p.link"
-              :target="isExternal(p.link) ? '_blank' : undefined"
-              :rel="isExternal(p.link) ? 'noreferrer' : undefined"
+        <div class="av-sections">
+          <article
+            v-for="s in sections"
+            :key="s.id"
+            class="av-section"
+            :class="[`tone-${s.tone}`, { 'is-open': openId === s.id }]"
+          >
+            <button
+              type="button"
+              class="av-section-head"
+              :aria-expanded="openId === s.id"
+              :aria-controls="`panel-${s.id}`"
+              @click="toggle(s.id)"
             >
-              <img
-                v-if="p.image"
-                class="av-cover-img"
-                :src="p.image"
-                :alt="`${p.title} 代表图`"
-                loading="lazy"
-                decoding="async"
-              />
-              <span class="av-cover-lang">{{ p.lang }}</span>
-              <span class="av-cover-title">{{ p.cover }}</span>
-            </a>
-            <h3 class="av-item-title">
-              <a
-                :href="p.link"
-                :target="isExternal(p.link) ? '_blank' : undefined"
-                :rel="isExternal(p.link) ? 'noreferrer' : undefined"
-              >{{ p.title }}</a>
-            </h3>
-            <p class="av-item-meta">
-              <span v-if="p.badge" class="av-badge">{{ p.badge }}</span>{{ p.meta }}
-            </p>
-            <p class="av-item-desc">{{ p.desc }}</p>
+              <span class="av-section-ghost" aria-hidden="true">{{ s.title.slice(0, 1) }}</span>
+              <span class="av-section-main">
+                <span class="av-section-en">{{ s.en }}</span>
+                <span class="av-section-title">{{ s.title }}</span>
+                <span class="av-section-desc">{{ s.desc }}</span>
+                <span class="av-section-tags">
+                  <span v-for="n in s.notes" :key="n.title" class="av-chip">{{ n.cover }}</span>
+                </span>
+              </span>
+              <span class="av-section-side">
+                <span class="av-section-count">
+                  {{ s.notes.length }} 门 · {{ chaptersOf(s) }} 章
+                </span>
+                <span class="av-chevron" aria-hidden="true" />
+              </span>
+            </button>
+
+            <div :id="`panel-${s.id}`" class="av-panel" :class="{ 'is-open': openId === s.id }">
+              <div class="av-panel-clip">
+                <div class="av-panel-body">
+                  <div class="av-list" :class="{ 'is-single': s.notes.length === 1 }">
+                    <div
+                      v-for="p in s.notes"
+                      :key="p.title"
+                      class="av-item"
+                      :class="{ 'is-feature': s.notes.length === 1 }"
+                    >
+                      <a
+                        class="av-cover"
+                        :class="`tone-${p.tone}`"
+                        :data-ghost="p.cover.slice(0, 1)"
+                        :href="p.link"
+                        :target="isExternal(p.link) ? '_blank' : undefined"
+                        :rel="isExternal(p.link) ? 'noreferrer' : undefined"
+                      >
+                        <img
+                          v-if="p.image"
+                          class="av-cover-img"
+                          :src="p.image"
+                          :alt="`${p.title} 代表图`"
+                          loading="lazy"
+                          decoding="async"
+                        />
+                        <span class="av-cover-lang">{{ p.lang }}</span>
+                        <span class="av-cover-title">{{ p.cover }}</span>
+                      </a>
+                      <h3 class="av-item-title">
+                        <a
+                          :href="p.link"
+                          :target="isExternal(p.link) ? '_blank' : undefined"
+                          :rel="isExternal(p.link) ? 'noreferrer' : undefined"
+                        >{{ p.title }}</a>
+                      </h3>
+                      <p class="av-item-meta">
+                        <span v-if="p.badge" class="av-badge">{{ p.badge }}</span>{{ p.meta }}
+                      </p>
+                      <p class="av-item-desc">{{ p.desc }}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </article>
         </div>
       </section>
@@ -279,12 +393,12 @@ h1 {
   border: 1px solid var(--av-border);
 }
 
-/* ---------- work ---------- */
+/* ---------- 笔记区 ---------- */
 .av-work {
   margin-top: 3.5rem;
 }
 
-.av-work h2 {
+.av-work-head h2 {
   margin: 0 0 0.45rem;
   font-size: 1.5rem;
   font-weight: 600;
@@ -292,8 +406,9 @@ h1 {
 }
 
 .av-work-intro {
-  margin: 0 0 2.2rem;
+  margin: 0 0 1.8rem;
   font-size: 0.9rem;
+  line-height: 1.75;
   color: var(--av-muted);
 }
 
@@ -303,21 +418,190 @@ h1 {
   text-underline-offset: 2px;
 }
 
+/* ---------- 分区大卡片 ---------- */
+.av-sections {
+  display: grid;
+  gap: 1rem;
+}
+
+.av-section {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--av-border);
+  border-radius: 12px;
+  background: var(--av-card);
+  background-image: linear-gradient(135deg, rgba(0, 0, 0, 0.015), rgba(0, 0, 0, 0.045));
+  transition: border-color 0.18s ease, background-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.av-section:hover {
+  border-color: var(--av-muted);
+}
+
+.av-section.is-open {
+  border-color: var(--av-fg);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+}
+
+.av-section-head {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1.2rem;
+  width: 100%;
+  padding: 1.3rem 1.45rem;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.av-section-head:focus-visible {
+  outline: 2px solid var(--av-accent);
+  outline-offset: -2px;
+}
+
+.av-section-ghost {
+  position: absolute;
+  right: 1rem;
+  bottom: -1.4rem;
+  font-size: 6.6rem;
+  line-height: 1;
+  font-weight: 700;
+  color: var(--av-fg);
+  opacity: 0.04;
+  pointer-events: none;
+  user-select: none;
+  transition: opacity 0.2s ease;
+}
+
+.av-section.is-open .av-section-ghost {
+  opacity: 0.055;
+}
+
+.av-section-main {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.28rem;
+  min-width: 0;
+}
+
+.av-section-en {
+  font-family: var(--vp-font-family-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--av-muted);
+}
+
+.av-section-title {
+  font-size: 1.32rem;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  line-height: 1.35;
+}
+
+.av-section-desc {
+  max-width: 34rem;
+  font-size: 0.88rem;
+  line-height: 1.7;
+  color: var(--av-sub);
+}
+
+.av-section-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.55rem;
+}
+
+.av-chip {
+  display: inline-block;
+  padding: 0.1rem 0.5rem;
+  border: 1px solid var(--av-border);
+  border-radius: 999px;
+  background: var(--av-bg);
+  font-size: 0.72rem;
+  line-height: 1.6;
+  color: var(--av-sub);
+}
+
+.av-section-side {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.7rem;
+  flex: 0 0 auto;
+  padding-top: 0.15rem;
+}
+
+.av-section-count {
+  font-family: var(--vp-font-family-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  color: var(--av-muted);
+  white-space: nowrap;
+}
+
+.av-chevron {
+  width: 8px;
+  height: 8px;
+  margin-right: 2px;
+  border-right: 1.5px solid var(--av-sub);
+  border-bottom: 1.5px solid var(--av-sub);
+  transform: rotate(45deg);
+  transition: transform 0.22s ease;
+}
+
+.av-section.is-open .av-chevron {
+  transform: rotate(225deg);
+}
+
+/* 展开面板：grid 0fr → 1fr 的纯 CSS 高度动画 */
+.av-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.38s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.av-panel.is-open {
+  grid-template-rows: 1fr;
+}
+
+.av-panel-clip {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.av-panel-body {
+  padding: 0.2rem 1.45rem 1.6rem;
+}
+
+/* ---------- 分区内的课程卡片 ---------- */
 .av-list {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 2.4rem 1.6rem;
+  gap: 2rem 1.6rem;
   align-items: start;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--av-border);
 }
 
 @media (min-width: 640px) {
   .av-list {
     grid-template-columns: 1fr 1fr;
   }
-}
 
-.av-item {
-  margin-bottom: 0;
+  .av-list.is-single {
+    grid-template-columns: 1fr;
+  }
 }
 
 .av-cover {
@@ -330,7 +614,7 @@ h1 {
   padding: 1.15rem 1.3rem;
   border: 1px solid var(--av-border);
   border-radius: 10px;
-  background: var(--av-card);
+  background: var(--av-bg);
   background-image: linear-gradient(135deg, rgba(0, 0, 0, 0.015), rgba(0, 0, 0, 0.05));
   color: var(--av-fg);
   text-decoration: none;
@@ -348,6 +632,7 @@ h1 {
   opacity: 0.05;
   pointer-events: none;
   user-select: none;
+  transition: opacity 0.32s ease;
 }
 
 .av-cover:hover {
@@ -355,7 +640,7 @@ h1 {
   box-shadow: 0 8px 22px rgba(0, 0, 0, 0.07);
 }
 
-/* ---------- 悬停浮现代表图 ---------- */
+/* 悬停浮现代表图 */
 .av-cover-img {
   position: absolute;
   inset: 0;
@@ -369,7 +654,6 @@ h1 {
   pointer-events: none;
 }
 
-/* 压在图片上的一层暗渐变，保证浮起时标题仍然看得清 */
 .av-cover::before {
   content: '';
   position: absolute;
@@ -392,10 +676,6 @@ h1 {
   position: relative;
   z-index: 2;
   transition: color 0.32s ease;
-}
-
-.av-cover::after {
-  transition: opacity 0.32s ease;
 }
 
 .av-cover:hover .av-cover-img,
@@ -464,6 +744,40 @@ h1 {
   font-weight: 600;
 }
 
+/* 分区里只有一门课时，卡片转成「封面在左、文字在右」的横向大卡，避免右半边空着 */
+@media (min-width: 640px) {
+  .av-item.is-feature {
+    display: grid;
+    grid-template-columns: 14rem minmax(0, 1fr);
+    grid-template-rows: auto auto 1fr;
+    gap: 0.15rem 1.5rem;
+    align-items: start;
+  }
+
+  .av-item.is-feature .av-cover {
+    grid-column: 1;
+    grid-row: 1 / span 3;
+    aspect-ratio: 4 / 3;
+  }
+
+  .av-item.is-feature .av-item-title {
+    grid-column: 2;
+    grid-row: 1;
+    margin-top: 0.15rem;
+  }
+
+  .av-item.is-feature .av-item-meta {
+    grid-column: 2;
+    grid-row: 2;
+  }
+
+  .av-item.is-feature .av-item-desc {
+    grid-column: 2;
+    grid-row: 3;
+    max-width: 30rem;
+  }
+}
+
 .av-item-title a {
   color: var(--av-fg);
   text-decoration: none;
@@ -489,7 +803,7 @@ h1 {
   font-size: 0.7rem;
   line-height: 1.5;
   color: var(--av-sub);
-  background: var(--av-card);
+  background: var(--av-bg);
   vertical-align: 1px;
 }
 
@@ -532,12 +846,38 @@ h1 {
     border-radius: 8px;
   }
 
+  .av-section-head {
+    flex-direction: column;
+    gap: 0.9rem;
+    padding: 1.15rem 1.1rem;
+  }
+
+  .av-section-side {
+    flex-direction: row;
+    align-items: center;
+    gap: 0.9rem;
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .av-section-ghost {
+    font-size: 4.6rem;
+    bottom: -0.8rem;
+  }
+
+  .av-panel-body {
+    padding: 0 1.1rem 1.3rem;
+  }
+
   .av-cover-title {
     font-size: 1.2rem;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .av-panel,
+  .av-chevron,
+  .av-section,
   .av-cover,
   .av-cover::before,
   .av-cover::after,
@@ -552,7 +892,7 @@ h1 {
   }
 }
 
-/* 触屏设备没有 hover，保持纯排版封面即可，不做额外展开 */
+/* 触屏设备没有 hover，用 :active 兜底 */
 @media (hover: none) {
   .av-cover:active .av-cover-img {
     opacity: 1;
