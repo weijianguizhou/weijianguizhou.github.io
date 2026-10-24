@@ -6,9 +6,9 @@ import container from 'markdown-it-container'
  * TODO：以后改名字 / 联系方式的唯一入口
  * ============================================================ */
 const SITE = {
-  name: '魏舟',
-  en: 'Wei Zhou',
-  description: '魏舟的个人主页：力学、机器人、仿真与笔记',
+  name: '爱吃烧饼的大熊猫',
+  en: 'Sesame Panda',
+  description: '爱吃烧饼的大熊猫的笔记站：力学、机器人、仿真与笔记',
   github: 'https://github.com/weijianguizhou',
   email: 'wei_zhou@njust.edu.cn'
 }
@@ -85,6 +85,7 @@ export default defineConfig({
     siteTitle: SITE.name,
 
     nav: [
+      { text: '普通物理', link: '/posts/physics-electromagnetism' },
       { text: '流体力学', link: '/fluids/' },
       { text: '数字电路', link: '/digital/' },
       { text: 'ROS 2', link: '/ros2/' },
@@ -98,8 +99,7 @@ export default defineConfig({
           { text: '工程数学', link: '/notes/engineering-math/' }
         ]
       },
-      { text: '写作', link: '/posts/' },
-      { text: '关于', link: '/about' }
+      { text: '一些涩话', link: '/posts/' }
     ],
 
     sidebar: {
@@ -136,6 +136,14 @@ export default defineConfig({
             { text: '第五章 · Ubuntu 环境下编程', link: '/ros2/ch-05-ubuntu-programming' },
             { text: '第六章 · ROS 2 体验与系统架构', link: '/ros2/ch-06-ros2-experience' },
             { text: '第七章 · 用 CMake + ament 编译节点', link: '/ros2/ch-07-cmake-ament' }
+          ]
+        }
+      ],
+      '/notes/math-analysis/': [
+        {
+          text: '数学分析',
+          items: [
+            { text: '第一章 函数极限与连续性', link: '/notes/math-analysis/ch-01-limits' }
           ]
         }
       ],
@@ -219,10 +227,10 @@ export default defineConfig({
       ],
       '/posts/': [
         {
-          text: '写作',
+          text: '一些涩话',
           items: [
             { text: '全部文章', link: '/posts/' },
-            { text: '你好，世界', link: '/posts/hello-world' },
+            { text: '你好，拜访我的人', link: '/posts/hello-world' },
             { text: '我是怎么用 Markdown 写作的', link: '/posts/writing-with-markdown' }
           ]
         }

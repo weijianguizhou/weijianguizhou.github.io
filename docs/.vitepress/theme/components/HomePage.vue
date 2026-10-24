@@ -24,8 +24,8 @@ type Section = {
 }
 
 const profile = {
-  name: '魏舟',
-  en: 'Wei Zhou',
+  name: '爱吃烧饼的大熊猫',
+  en: 'Sesame Panda',
   tagline: '一个对力学和机器人感兴趣的本科生~',
   facts: [
     '南京理工大学 · 力学与机器人方向',
@@ -80,6 +80,27 @@ const sections: Section[] = [
     ]
   },
   {
+    id: 'physics',
+    title: '物理',
+    en: 'PHYSICS',
+    desc: '普通物理课程笔记：静电场、电磁感应、热辐射、原子物理与物理实验，公式按篇排版。',
+    tone: 'stone',
+    notes: [
+      {
+        title: '普通物理笔记',
+        cover: '普通物理',
+        meta: '2026 · 4 篇：电磁学 / 量子 / 原子 / 实验',
+        desc: '四篇独立笔记：电磁学、量子物理、原子物理与九个普通物理实验的复习。',
+        link: '/posts/physics-electromagnetism',
+        lang: 'GENERAL PHYSICS',
+        tone: 'stone',
+        badge: '笔记',
+        chapters: 4,
+        image: '/physics/rutherford-scattering.webp'
+      }
+    ]
+  },
+  {
     id: 'mechanics',
     title: '力学与工程',
     en: 'MECHANICS & ENGINEERING',
@@ -119,6 +140,30 @@ const sections: Section[] = [
     desc: '工程数学、常微分方程、概率论与数理统计：公式推导和速查表按章整理。',
     tone: 'sage',
     notes: [
+      {
+        title: '数学分析',
+        cover: '数学分析',
+        meta: '2026 · 第 1 章',
+        desc: '第一章：函数极限与连续性——极限的 ε-δ 定义、无穷小量的阶、连续函数与闭区间上的性质，配 TikZ 重绘示意图。',
+        link: '/notes/math-analysis/ch-01-limits',
+        lang: 'MATHEMATICAL ANALYSIS',
+        tone: 'stone',
+        badge: '更新中',
+        chapters: 1,
+        image: '/math-analysis/fig-03-36ad41c2.webp'
+      },
+      {
+        title: '高等代数笔记',
+        cover: '高等代数',
+        meta: '2026 · 11 章 + 4 附录',
+        desc: '多项式、行列式、矩阵、线性方程组、二次型、线性空间与线性变换、λ-矩阵、欧氏空间、双线性函数与对偶空间，附四个附录。',
+        link: '/posts/linear-algebra',
+        lang: 'HIGHER ALGEBRA',
+        tone: 'sage',
+        badge: '已学完',
+        chapters: 11,
+        image: '/notes/linalg.webp'
+      },
       {
         title: '工程数学',
         cover: '工程数学',
@@ -204,9 +249,7 @@ const year = new Date().getFullYear()
             <span class="av-sep">·</span>
             <a :href="`mailto:${profile.email}`">{{ profile.email }}</a>
             <span class="av-sep">·</span>
-            <a href="/posts/">写作</a>
-            <span class="av-sep">·</span>
-            <a href="/about.html">关于</a>
+            <a href="/posts/">一些涩话</a>
           </p>
         </div>
         <img class="av-photo" src="/avatar.jpg" :alt="profile.name" width="168" height="168" />
