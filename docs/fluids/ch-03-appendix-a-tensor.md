@@ -1,11 +1,11 @@
 ---
-title: 第三章 张量代数基础
-description: 指标表示、张量运算、Kronecker δ 与置换符号
+title: 附录 A 张量代数基础
+description: 附录 A · 指标表示、张量运算、Kronecker δ 与置换符号
 ---
 
-# 第二章 张量代数基础
+# 附录 A 张量代数基础
 
-<Figure src="/fluids/index-order.webp" alt="指标顺序" caption="图 2.1　指标顺序（自由指标与哑指标）" />
+<Figure src="/fluids/index-order.webp" alt="指标顺序（自由指标与哑指标）" caption="图 A.1　指标顺序（自由指标与哑指标）" />
 
 之前学过的物理量分为标量和向量，其实可以都归结于张量。
 
@@ -102,10 +102,9 @@ $$
 **两个张量放在一起不做任何表示（指标不重复）**
 
 ### 指标表示规则
-
 1. 每一项中，同一指标最多出现两次
-  1. 出现一次的指标是自由指标，可以任意取值
-  2. 出现两次的指标是哑指标，自动求和，触发爱因斯坦求和约定
+   1. 出现一次的指标是自由指标，可以任意取值
+   2. 出现两次的指标是哑指标，自动求和，触发爱因斯坦求和约定
 2. 指标平衡：每一项中，自由指标数相同且一一对应。
 
 ## 向量乘法与指标运算
@@ -120,7 +119,7 @@ $$
 - **混合积**：$\boldsymbol{a}\times\boldsymbol{b}\cdot\boldsymbol{c}=a_{i}b_{j}c_{k}\varepsilon_{ijk}$
 
 两个重要符号：
-### Kronecker δ 符号
+### *Kronecker*$\delta$符号
 
 $$
 \boldsymbol{e}_{i}\boldsymbol{e}_{j}=\delta_{ij}= \begin{cases} 1, & i = j \\ 0, & i \neq j \end{cases}
@@ -128,10 +127,9 @@ $$
 
 这是一个单位阵。
 **说明**：
-
 1. $\delta_{ij}=\delta_{ji}$
 2. $a_{i}\delta_{ij}=a_{j},\quad A_{mi}\delta_{ij}=A_{mj}$，*Kronecker*$\delta$符号有换脚标的一个效果。
-    例：$\boldsymbol{a}\boldsymbol{e}_{j}=a_{i}\boldsymbol{e}_{i}\boldsymbol{e}_{j}=a_{i}\delta_{ij}=a_{j}$
+      例：$\boldsymbol{a}\boldsymbol{e}_{j}=a_{i}\boldsymbol{e}_{i}\boldsymbol{e}_{j}=a_{i}\delta_{ij}=a_{j}$
 
 ### 置换符号$\varepsilon$
 
@@ -147,6 +145,5 @@ $$
 $$
 
 如下图，满足顺时针关系时为1，逆时针为-1。
-
-<Figure src="/fluids/index-order.webp" alt="指标顺序" caption="图 2.2　置换符号的顺时针与逆时针约定" />
+<Figure src="/fluids/index-order.webp" alt="指标顺序（自由指标与哑指标）" caption="图 A.2　指标顺序（自由指标与哑指标）" />
 

@@ -123,12 +123,12 @@ const sections: Section[] = [
         title: '流体力学（连载）',
         cover: '流体力学',
         meta: '2026 年 10 月 · 课程笔记',
-        desc: '从连续介质模型、粘性到张量代数，公式都排版好了。',
+        desc: '从连续介质模型、粘性到界面现象，张量代数与场论放在附录，公式都排版好了。',
         link: '/fluids/',
         lang: 'FLUID MECHANICS',
         tone: 'mist',
         badge: '连载',
-        chapters: 3,
+        chapters: 2,
         image: '/fluids/stress-state.webp'
       }
     ]
@@ -157,7 +157,7 @@ const sections: Section[] = [
         cover: '高等代数',
         meta: '2026 · 11 章 + 4 附录',
         desc: '多项式、行列式、矩阵、线性方程组、二次型、线性空间与线性变换、λ-矩阵、欧氏空间、双线性函数与对偶空间，附四个附录。',
-        link: '/posts/linear-algebra',
+        link: '/notes/linalg/',
         lang: 'HIGHER ALGEBRA',
         tone: 'sage',
         badge: '已学完',

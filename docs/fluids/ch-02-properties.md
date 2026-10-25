@@ -1,9 +1,9 @@
 ---
 title: 第二章 流体的物理性质
-description: 连续介质模型、粘性、压缩性，以及体积力与表面力
+description: 连续介质模型、粘性、压缩性，体积力与表面力，以及界面现象（表面张力、接触角、毛细现象）
 ---
 
-# 第三章 流体的物理性质
+# 第二章 流体的物理性质
 
 ## 流体的连续介质模型
 什么是固体？什么是流体？
@@ -12,12 +12,19 @@ description: 连续介质模型、粘性、压缩性，以及体积力与表面�
 
 流体力学研究的是宏观的性质，我们从宏观的视角去重新认识流体。
 
+按**能否通过静止变形抵抗剪切**，对三态作宏观区分：
+
+| 分类 | 能否通过静止变形抵抗剪切 | 固定形状 | 固定体积 |
+| :--- | :---: | :---: | :---: |
+| 固体 | 能 | 有 | 有 |
+| 液体（流体） | 不能 | 无 | 有 |
+| 气体（流体） | 不能 | 无 | 无 |
+
 **流体的宏观性质：** 没有固定的形状，不一定具有固定的体积，且不能通过静止变形抵抗剪切。
 
 **流体的分子输运性质：** 通过随机运动交换质量，动量，能量。对应的宏观效应是扩散，粘性和热传导。
 
 ### 连续介质模型
-
 1. 流体是连续分布的物质，它可以无限分割为具有一定质量的宏观微元体（物理模型）
 
 2. 在不发生化学反应和离解等非平衡热力学过程的运动流体中，微元体内流体状态服从热力学关系(仅有两个热力学参数是独立的，且与流体的历史无关)；
@@ -28,8 +35,7 @@ description: 连续介质模型、粘性、压缩性，以及体积力与表面�
 而王先智《物理流体力学》给出了流体力学适用条件为：体积元尺寸比分子尺寸大两到三个数量级。
 
 为了衡量连续介质模型是否适用，给出了
-
-::: info 努森数
+::: definition 努森数
 
 $$
 Kn=\frac{\lambda}{L}
@@ -38,16 +44,15 @@ $$
 即分子自由程/流动特征长度
 :::
 
-<Figure src="/fluids/scale-levels.webp" alt="空间尺度的三个层次" caption="图 3.1　空间尺度的三个层次" />
+<Figure src="/fluids/scale-kn.webp" alt="空间尺度与 Kn 数" caption="图 2.1　空间尺度与 Kn 数" />
 
 ### 流体微团及流体质点
 #### 流体微团
-
-::: info 流体微团
+::: definition 流体微团
 把流体无限分割为具有一定质量的微元，它是研究流体运动的最小单元，称为“流体微团”
 :::
 
-::: tip
+::: remark 注
 流体微团应是宏观上无限小，微观上无限大的质量体
 :::
 
@@ -69,9 +74,12 @@ $$
 ### 流体的易流动性
 流体在任意微小的剪切力作用下发生连续不断变形的性质。这是流体的本质属性。即流体无法通过静止变形抵抗剪切。
 
-### 流体的粘性
+::: info 注
+静止流体中**不存在切应力**。
+:::
 
-::: info 粘性
+### 流体的粘性
+::: definition 粘性
 流体运动时，流体微团之间具有抵抗相互滑移运动的属性，称为流体的粘性。
 :::
 
@@ -79,7 +87,7 @@ $$
 
 **无滑移边界：** 物体表面的流体速度总是与物体速度一致。
 
-::: info 牛顿内摩擦定律
+::: theorem 牛顿内摩擦定律
 
 $$
 \tau=\mu\frac{dU}{dy}
@@ -99,9 +107,12 @@ $$
 $$
 
 常温常压下：
-
 - 液体：$\theta \uparrow \quad \mu \downarrow \quad \rho \downarrow \quad v \downarrow$
 - 气体：$\theta \uparrow \quad \mu \uparrow \quad \rho \downarrow \quad v \uparrow$
+
+::: info 与 Hooke 定律的类比
+牛顿内摩擦定律中切应力与**变形速率**（速度梯度）呈线性关系，其地位相当于固体的 Hooke 定律（应力与应变成线性）。但并非所有流体都满足该线性关系，不满足者称为**非牛顿流体**。
+:::
 
 ### 流体的压缩性
 由于压强变化而引起流体体积变化的性质
@@ -120,9 +131,10 @@ $$
 **理想气体状态方程：**
 
 $$
-p=\rho R \theta
+pV=mR\theta \quad\Longleftrightarrow\quad p=\rho R\theta
 $$
 
+（$m$ 为气体质量，由 $\rho=m/V$ 两种形式等价）
 - R:气体常数（空气：R=287 $J/(kg\cdot K)$
 
 **不可压缩流体：** 流体运动过程中密度相对变化微小的流体
@@ -133,19 +145,16 @@ $$
 
 ### 理想流体
 **粘性系数等于零**的流体称为理想流体。理想流体也不考虑流体的扩散和热传导性质。
-
 - 人们为简化实际问题所提出的的一种抽象模型
 - 可用于粘性系数较小、远离固壁、速度梯度较小情况
 
 ## 作用在流体上的体积力和表面力
 在流体中，任取一流体微团，其上受到两种外力：
-
 - 第一种外力作用在流体微团的质心上，与流体微团的体积成正比，称为体积力，属于非接触力；
 - 第二种外力是周围流体或物体作用在流体微团表面上的力，与力的作用面大小成正比，称为表面力，是接触力。
 
 ### 体积力和体积力强度
 #### 几种体积力
-
 1. 地球引力场中流体微团受到的引力与它的质量成正比
 
 $$
@@ -175,7 +184,6 @@ $$
 $$
 
 #### 体积力合力及合力矩（有限体积的流体）
-
 - 主失：$\boldsymbol{F}=\int_{V} \boldsymbol{f}_{V} \mathrm{~d} V$
 - 主矩：$\boldsymbol{M}=\int_{V} \boldsymbol{r} \times \boldsymbol{f}_{V} \mathrm{~d} V$
 
@@ -187,23 +195,21 @@ $$
 \boldsymbol{T}(\boldsymbol{n})=\lim _{\delta A \rightarrow 0} \frac{\delta \boldsymbol{F}}{\delta A}
 $$
 
-<Figure src="/fluids/stress.webp" alt="应力" caption="图 3.2　应力" />
+<Figure src="/fluids/stress-vector.webp" alt="应力矢量" caption="图 2.2　应力矢量" />
 
 **注意：**
-
 1. 应力和它的作用面的方向有关；
 2. $\boldsymbol{T}(\boldsymbol{n})$是向量，可分解为沿作用面的法向分量（正应力）和切向分量（切应力）。
-  - 正应力：$T(\boldsymbol{n}, \boldsymbol{n})=\boldsymbol{T}(\boldsymbol{n}) \cdot \boldsymbol{n}$
-  - 切应力：$T(\boldsymbol{n}, \boldsymbol{t})=\boldsymbol{T}(\boldsymbol{n}) \cdot \boldsymbol{t}$
-  - 切应力：$T(\boldsymbol{n}, \boldsymbol{s})=\boldsymbol{T}(\boldsymbol{n}) \cdot \boldsymbol{s}$
+   - 正应力：$T(\boldsymbol{n}, \boldsymbol{n})=\boldsymbol{T}(\boldsymbol{n}) \cdot \boldsymbol{n}$
+   - 切应力：$T(\boldsymbol{n}, \boldsymbol{t})=\boldsymbol{T}(\boldsymbol{n}) \cdot \boldsymbol{t}$
+   - 切应力：$T(\boldsymbol{n}, \boldsymbol{s})=\boldsymbol{T}(\boldsymbol{n}) \cdot \boldsymbol{s}$
 
 ### 一点上的应力张量及其性质
 #### 一点的应力状态
 一点上三个相互垂直平面上的应力向量称为一点的应力状态
 
 只要知道一点的应力状态，就可以确定通过该点任意面上的应力
-
-<Figure src="/fluids/stress-state.webp" alt="一点的应力状态" caption="图 3.3　一点的应力状态" />
+<Figure src="/fluids/stress-state.webp" alt="一点的应力状态" caption="图 2.3　一点的应力状态" />
 
 采用指标表示:
 
@@ -220,7 +226,7 @@ $$
 \delta A_{i}=\delta A n_{i}
 $$
 
-平衡方程：
+平衡方程（用牛顿第二定律推导）：
 
 $$
 \boldsymbol{T}(\boldsymbol{n})=\boldsymbol{T}_{1} n_{1}+\boldsymbol{T}_{2} n_{2}+\boldsymbol{T}_{3} n_{3}=n_{i} \boldsymbol{T}_{i}
@@ -258,7 +264,7 @@ $$
 
 即 $\boldsymbol{T}(\boldsymbol{n})$ 的分量就是把 $n_{i} T_{i j}$ 作为自由指标 $j$ 写开。
 
-::: info 切应力互等定理
+::: theorem 切应力互等定理
 
 $$
 T_{i j}=T_{j i}
@@ -288,7 +294,7 @@ $$
 \boldsymbol{T}(\boldsymbol{n})=n_{i} \boldsymbol{T}_{i}=n_{i} T_{i j} \boldsymbol{e}_{j}=\left(n_{k} \delta_{i k}\right) T_{i j} \boldsymbol{e}_{j}=n_{k}\left(\boldsymbol{e}_{k} \cdot \boldsymbol{e}_{i}\right) T_{i j} \boldsymbol{e}_{j}=n_{k} \boldsymbol{e}_{k} \cdot\left(T_{i j} \boldsymbol{e}_{i} \boldsymbol{e}_{j}\right)=\boldsymbol{n} \cdot\left(T_{i j} \boldsymbol{e}_{i} \boldsymbol{e}_{j}\right)
 $$
 
-::: info 应力张量实体
+::: definition 应力张量实体
 
 $$
 \boldsymbol{T}=T_{i j} \boldsymbol{e}_{i} \boldsymbol{e}_{j}
@@ -313,3 +319,145 @@ T(\boldsymbol{n}, \boldsymbol{s})=\boldsymbol{T}(\boldsymbol{n}) \cdot \boldsymb
 $$
 
 这与前文应力分量 $T(\boldsymbol{n}, \boldsymbol{t})=\boldsymbol{T}(\boldsymbol{n}) \cdot \boldsymbol{t}$ 的约定一致。
+
+## 流体的界面现象与性质
+::: definition 界面现象
+流体和固体，或流体和另一种互不掺混的流体，交界面处的力学和热力学现象。
+:::
+
+宏观的微元界面两侧的流体应处于热力学平衡状态，即两侧流体分子运动处于统计平衡态，因此两侧的物理量之间存在确定的关系。
+
+### 界面上流体温度和速度的连续性
+
+界面两侧流体的温度相等、速度相等：
+
+$$
+\theta^{+}=\theta^{-},\qquad \boldsymbol{U}^{+}=\boldsymbol{U}^{-}
+$$
+
+在流-固界面上，该条件即固壁上的无滑移条件：$\theta=\theta_{w}$，$\boldsymbol{U}=\boldsymbol{U}_{w}$。
+
+界面两侧作用于同一面元的应力矢量等值反向（暂不计及表面张力，计及表面张力时的修正见第 3 节），即
+
+$$
+\boldsymbol{T}^{+}(\boldsymbol{n})=-\boldsymbol{T}^{-}(-\boldsymbol{n})
+$$
+
+由 $\boldsymbol{T}(-\boldsymbol{n})=-\boldsymbol{T}(\boldsymbol{n})$，上式等价于 $\boldsymbol{T}^{+}(\boldsymbol{n})=\boldsymbol{T}^{-}(\boldsymbol{n})$，写成分量形式即正应力与两个切应力分量连续：
+
+$$
+\begin{aligned}
+T^{+}(\boldsymbol{n},\boldsymbol{n})&=T^{-}(\boldsymbol{n},\boldsymbol{n})\\
+T^{+}(\boldsymbol{n},\boldsymbol{t})&=T^{-}(\boldsymbol{n},\boldsymbol{t}),\qquad T^{+}(\boldsymbol{n},\boldsymbol{s})=T^{-}(\boldsymbol{n},\boldsymbol{s})
+\end{aligned}
+$$
+
+对于理想流体，粘性为零，界面上允许速度滑移，速度连续条件退化为**不可穿透条件**；不计表面张力时，两流体界面上的法向应力（压强）仍然连续：
+
+$$
+\boldsymbol{U}^{+}\cdot\boldsymbol{n}=\boldsymbol{U}^{-}\cdot\boldsymbol{n},\qquad p^{+}=p^{-}
+$$
+
+### 表面张力
+
+在界面上取微元弧 $\mathrm{d}\boldsymbol{x}$，作用在该弧上的表面张力为
+
+$$
+\delta\boldsymbol{\Gamma}=\gamma\,\mathrm{d}\boldsymbol{x}\times\boldsymbol{n},\qquad \left|\delta\boldsymbol{\Gamma}\right|=\gamma\left|\mathrm{d}\boldsymbol{x}\right|
+$$
+
+其中 $\gamma$ 称为**表面张力系数**；表面张力位于界面的切平面内，并垂直于分割线。
+
+### 表面张力与应力平衡（Young–Laplace 方程）
+
+设界面凸面一侧的压强为 $p_{+}$、凹面一侧的压强为 $p_{-}$，则曲界面两侧存在压强跃变：
+
+$$
+\Delta p=p_{-}-p_{+}=\gamma\left(\frac{1}{R_{1}}+\frac{1}{R_{2}}\right)
+$$
+
+其中 $R_{1}$、$R_{2}$ 为曲面的两个主曲率半径；凸面一侧压强小，凹面一侧压强大。对球面 $R_{1}=R_{2}=R$，有 $\Delta p=2\gamma/R$。
+
+**推导（微元曲面上的力平衡）：** 任取一微元曲面，使其边界曲线平行于 $xy$ 平面。设曲面方程为 $z=f(x,y)$，原点取在曲面上，$z$ 轴由凹面指向凸面，则
+
+$$
+f(0,0)=0,\qquad \frac{\partial f}{\partial x}(0,0)=\frac{\partial f}{\partial y}(0,0)=0
+$$
+
+界面的单位法向为
+
+$$
+\boldsymbol{n}=\frac{-f_{x}\,\boldsymbol{i}-f_{y}\,\boldsymbol{j}+\boldsymbol{k}}{\sqrt{1+{f_{x}}^{2}+{f_{y}}^{2}}}
+=\boldsymbol{k}-f_{x}\,\boldsymbol{i}-f_{y}\,\boldsymbol{j}+O(r^{2})
+$$
+
+边界上的表面张力合力为
+
+$$
+\begin{aligned}
+\boldsymbol{F}_{\gamma}
+&=\oint_{C}\gamma\,\mathrm{d}\boldsymbol{l}\times\boldsymbol{n}
+=\gamma\oint_{C}\left(f_{x}\,\mathrm{d}y-f_{y}\,\mathrm{d}x\right)\boldsymbol{k}\\
+&=\gamma\iint_{A}\left(\frac{\partial^{2}f}{\partial x^{2}}+\frac{\partial^{2}f}{\partial y^{2}}\right)\mathrm{d}A\,\boldsymbol{k}
+=-\gamma\left(\frac{1}{R_{1}}+\frac{1}{R_{2}}\right)A\,\boldsymbol{k}
+\end{aligned}
+$$
+
+其中第二个等号用到闭合曲线 $\oint_{C}\mathrm{d}x=\oint_{C}\mathrm{d}y=0$，第三个等号用到格林公式；又因 $z$ 轴由凹面指向凸面，$f_{xx}+f_{yy}=-(1/R_{1}+1/R_{2})$。
+
+<Figure src="/fluids/interface-stress.webp" alt="界面上的应力平衡" caption="图 2.4　界面上的应力平衡" />
+
+压强差产生的合力为 $\Delta p\,A\,\boldsymbol{k}$，由力平衡
+
+$$
+\Delta p\,A\,\boldsymbol{k}+\boldsymbol{F}_{\gamma}=0
+$$
+
+即得
+
+$$
+\Delta p=p_{-}-p_{+}=\gamma\left(\frac{1}{R_{1}}+\frac{1}{R_{2}}\right)
+$$
+
+写成分量形式，界面两侧的应力满足
+
+$$
+T^{+}(\boldsymbol{n},\boldsymbol{n})-T^{-}(\boldsymbol{n},\boldsymbol{n})=\gamma\left(\frac{1}{R_{1}}+\frac{1}{R_{2}}\right),\qquad T^{+}(\boldsymbol{n},\boldsymbol{t})=T^{-}(\boldsymbol{n},\boldsymbol{t}),\qquad T^{+}(\boldsymbol{n},\boldsymbol{s})=T^{-}(\boldsymbol{n},\boldsymbol{s})
+$$
+
+其中 $+$ 侧为凸面一侧。对理想流体 $T(\boldsymbol{n},\boldsymbol{n})=-p$，即回到 Young–Laplace 方程。
+
+### 接触角与毛细现象
+
+当三种互不掺混的介质共存时，两种流体的界面与固壁的交线称为**接触线**；在接触线上，流体界面切面与固壁表面切面的夹角（角内包含该流体）称为**接触角** $\theta$。$\theta<90^{\circ}$ 为浸润，$\theta>90^{\circ}$ 为不浸润。
+
+<Figure src="/fluids/contact-angle.webp" alt="接触角" caption="图 2.5　接触角" />
+
+将细管插入液体，管内液面高于或低于周围连通的液面，这种现象称为**毛细现象**。对浸润液体（$\theta<90^{\circ}$），管内弯月面近似为凹面朝上的球冠，两主曲率半径相等 $R_{1}=R_{2}=R$（曲率中心在气侧，即凹面一侧），且
+
+$$
+R=\frac{d}{2\cos\theta}
+$$
+
+其中 $d$ 为细管内径。由 Young–Laplace 方程
+
+$$
+\Delta p=p_{-}-p_{+}=\frac{2\gamma}{R}=\frac{4\gamma\cos\theta}{d}
+$$
+
+再由静力平衡（$h$ 为管内液面与管外液面的高度差，液面上升时 $h>0$）
+
+$$
+p_{-}=p_{+}+\rho g h
+$$
+
+得
+
+$$
+h=\frac{4\gamma\cos\theta}{\rho g d}
+$$
+
+对不浸润液体（$\theta>90^{\circ}$，如玻璃-水银），弯月面反向、曲率中心在液侧，$\cos\theta<0$，上式给出 $h<0$，即管内液面下降，且 $\left|h\right|=\dfrac{4\gamma\left|\cos\theta\right|}{\rho g d}$。
+
+<Figure src="/fluids/capillary.webp" alt="毛细现象" caption="图 2.6　毛细现象" />
+

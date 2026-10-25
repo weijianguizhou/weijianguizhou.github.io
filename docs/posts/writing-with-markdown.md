@@ -6,9 +6,9 @@ tags:
   - 写作
 ---
 
-# 我是怎么用 Markdown 写作的
+# 怎么用 Markdown 写作的
 
-这个博客的所有文章都是 Markdown 文件，改完存盘、推送到 GitHub 就自动发布。下面是我实际会用到的那部分语法——不用全记。
+这个博客的所有文章都是 Markdown 文件，改完存盘、推送到 GitHub 就自动发布。下面是实际会用到的那部分语法。
 
 ## 标题
 
@@ -72,11 +72,3 @@ def fib(n: int) -> int:
 ::: tip 小技巧
 这是提示框，支持 `tip` / `info` / `warning` / `danger` / `details` 五种。
 :::
-
-## 我自己的写作流程
-
-1. 在 `docs/posts/` 下新建 `xxx.md`，文件名用英文短横线，别用中文和空格。
-2. 文件开头写 frontmatter（`title`、`date`、`tags`）。
-3. 正文写完，在 `docs/posts/index.md` 里加一条链接。
-4. 在 `docs/.vitepress/config.mts` 的 sidebar 里加一条（想让它在侧栏出现的话）。
-5. `git add -A && git commit -m "post: xxx" && git push`，等 Actions 跑完就上线了。

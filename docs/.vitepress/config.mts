@@ -96,7 +96,8 @@ export default defineConfig({
           { text: '常微分方程', link: '/notes/ode/' },
           { text: '概率论', link: '/notes/probability/' },
           { text: '数理统计', link: '/notes/statistics/' },
-          { text: '工程数学', link: '/notes/engineering-math/' }
+          { text: '工程数学', link: '/notes/engineering-math/' },
+          { text: '高等代数', link: '/notes/linalg/' }
         ]
       },
       { text: '一些涩话', link: '/posts/' }
@@ -109,8 +110,9 @@ export default defineConfig({
           items: [
             { text: '开始之前', link: '/fluids/' },
             { text: '第一章 绪论', link: '/fluids/ch-01-intro' },
-            { text: '第二章 张量代数基础', link: '/fluids/ch-02-tensor' },
-            { text: '第三章 流体的物理性质', link: '/fluids/ch-03-properties' }
+            { text: '第二章 流体的物理性质', link: '/fluids/ch-02-properties' },
+            { text: '附录 A 张量代数基础', link: '/fluids/ch-03-appendix-a-tensor' },
+            { text: '附录 B 场论', link: '/fluids/ch-04-appendix-b-field' }
           ]
         }
       ],
@@ -136,6 +138,29 @@ export default defineConfig({
             { text: '第五章 · Ubuntu 环境下编程', link: '/ros2/ch-05-ubuntu-programming' },
             { text: '第六章 · ROS 2 体验与系统架构', link: '/ros2/ch-06-ros2-experience' },
             { text: '第七章 · 用 CMake + ament 编译节点', link: '/ros2/ch-07-cmake-ament' }
+          ]
+        }
+      ],
+      '/notes/linalg/': [
+        {
+          text: '高等代数',
+          items: [
+            { text: '开始之前', link: '/notes/linalg/' },
+            { text: '第一章 多项式', link: '/notes/linalg/ch-01-polynomial' },
+            { text: '第二章 行列式', link: '/notes/linalg/ch-02-determinant' },
+            { text: '第三章 矩阵', link: '/notes/linalg/ch-03-matrix' },
+            { text: '第四章 线性方程组', link: '/notes/linalg/ch-04-linear-systems' },
+            { text: '第五章 二次型', link: '/notes/linalg/ch-05-quadratic-forms' },
+            { text: '第六章 线性空间', link: '/notes/linalg/ch-06-linear-space' },
+            { text: '第七章 线性变换', link: '/notes/linalg/ch-07-linear-transformations' },
+            { text: '第八章 λ-矩阵与相似标准形', link: '/notes/linalg/ch-08-lambda-matrix' },
+            { text: '第九章 欧氏空间', link: '/notes/linalg/ch-09-euclidean-space' },
+            { text: '第十章 双线性函数与对偶空间', link: '/notes/linalg/ch-10-bilinear-dual' },
+            { text: '第十一章 解析几何', link: '/notes/linalg/ch-11-analytic-geometry' },
+            { text: '附录 A 定理与证明手法', link: '/notes/linalg/ch-12-appendix-a' },
+            { text: '附录 B 计算套路', link: '/notes/linalg/ch-13-appendix-b' },
+            { text: '附录 C 矩阵求导', link: '/notes/linalg/ch-14-appendix-c' },
+            { text: '附录 D 讲义里超出考纲的部分', link: '/notes/linalg/ch-15-appendix-d' },
           ]
         }
       ],
