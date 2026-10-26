@@ -21,6 +21,9 @@ type Section = {
   desc: string
   tone: string
   notes: Note[]
+  // 右侧「N 门 · M 章」的量词，默认是「门 / 章」；写作类分区用「种 / 篇」
+  noteUnit?: string
+  chapterUnit?: string
 }
 
 const profile = {
@@ -35,7 +38,7 @@ const profile = {
   email: 'wei_zhou@njust.edu.cn'
 }
 
-// 首页只放三个大分区，点开才展开里面的课程卡片
+// 首页按方向分成若干大分区，点开才展开里面的课程卡片
 const sections: Section[] = [
   {
     id: 'robotics',
@@ -87,18 +90,55 @@ const sections: Section[] = [
     tone: 'stone',
     notes: [
       {
-        title: '普通物理笔记',
-        cover: '普通物理',
-        meta: '2026 · 4 篇：电磁学 / 量子 / 原子 / 实验',
-        desc: '四篇独立笔记：电磁学、量子物理、原子物理与九个普通物理实验的复习。',
-        link: '/posts/physics-electromagnetism',
-        lang: 'GENERAL PHYSICS',
+        title: '电磁学笔记',
+        cover: '电磁学',
+        meta: '2026 · 静电场到电磁波',
+        desc: '静电场、导体与电介质、稳恒磁场、电磁感应、麦克斯韦方程组与电磁波。',
+        link: '/notes/physics-electromagnetism',
+        lang: 'ELECTROMAGNETISM',
         tone: 'stone',
         badge: '笔记',
-        chapters: 4,
+        chapters: 1,
+        image: '/physics/electric-field.jpg'
+      },
+      {
+        title: '量子物理笔记',
+        cover: '量子物理',
+        meta: '2026 · 热辐射到量子力学',
+        desc: '热辐射与光的粒子性、原子的核式结构、玻尔模型、物质波、量子力学基础。',
+        link: '/notes/physics-quantum',
+        lang: 'QUANTUM PHYSICS',
+        tone: 'mist',
+        badge: '笔记',
+        chapters: 1,
+        image: '/physics/compton-scattering.webp'
+      },
+      {
+        title: '原子物理笔记',
+        cover: '原子物理',
+        meta: '2026 · 碱金属到壳层结构',
+        desc: '碱金属原子、多电子原子、原子的壳层结构，含 LS 与 jj 耦合的能级图。',
+        link: '/notes/physics-atoms',
+        lang: 'ATOMIC PHYSICS',
+        tone: 'clay',
+        badge: '笔记',
+        chapters: 1,
         image: '/physics/rutherford-scattering.webp'
+      },
+      {
+        title: '普通物理实验',
+        cover: '物理实验',
+        meta: '2026 · 九个实验',
+        desc: '迈克尔逊干涉仪、衍射光栅、三棱镜等九个实验的原理与 MOOC 题整理。',
+        link: '/notes/physics-labs',
+        lang: 'PHYSICS LABS',
+        tone: 'sage',
+        badge: '实验',
+        chapters: 1,
+        image: '/physics/michelson-principle.webp'
       }
-    ]
+    ],
+    noteUnit: '篇'
   },
   {
     id: 'mechanics',
@@ -213,6 +253,97 @@ const sections: Section[] = [
         image: '/notes/chi2-density.webp'
       }
     ]
+  },
+  {
+    id: 'computer',
+    title: '计算机',
+    en: 'COMPUTER SCIENCE',
+    desc: '数据结构：从基本概念、线性表到树、图、查找与排序，配 C++ / Python 实现。',
+    tone: 'mist',
+    notes: [
+      {
+        title: '数据结构（10 章）',
+        cover: '数据结构',
+        meta: '2026 年 10 月 · 10 章 + 习题',
+        desc: '基本概念、线性表、栈与队列、数组、树、图、查找与排序，含原始笔记图示与课后习题解答。',
+        link: '/data-structures/',
+        lang: 'DATA STRUCTURES',
+        tone: 'sage',
+        badge: '连载',
+        chapters: 10,
+        image: '/data-structures/ch01-fig01.webp'
+      }
+    ]
+  },
+  {
+    id: 'writing',
+    title: '写作与排版',
+    en: 'WRITING & TYPESETTING',
+    desc: 'LaTeX、Markdown、Typst 三套写作工具的使用记录：装环境踩的坑、常用语法，和各自适合写什么。',
+    tone: 'sand',
+    notes: [
+      {
+        title: 'LaTeX 入门指南',
+        cover: 'LaTeX',
+        meta: '2026 年 10 月 · 入门手册',
+        desc: '从 TeX Live 装了 20 个小时，到公式、表格、交叉引用——写给朋友，也写给以后忘了命令的自己。',
+        link: '/writing/ch-01-latex',
+        lang: 'LATEX',
+        tone: 'sand',
+        badge: '入门',
+        chapters: 1,
+        image: '/writing/latex-cover.webp'
+      },
+      {
+        title: 'Markdown 小记',
+        cover: 'Markdown',
+        meta: '2026 年 9 月 · 语法与编辑器',
+        desc: 'Obsidian 和 VSCode 怎么选，标题、表格、公式怎么写；被同学问出来的速查小抄。',
+        link: '/writing/ch-02-markdown',
+        lang: 'MARKDOWN',
+        tone: 'sage',
+        badge: '小记',
+        chapters: 1,
+        image: '/writing/markdown-cover.webp'
+      },
+      {
+        title: 'Typst 初体验',
+        cover: 'Typst',
+        meta: '2026 年 10 月 · 新工具试写',
+        desc: '花一晚上照官方教程走了一遍：标记更轻、预览更实时，公式和图片还顺手吗？',
+        link: '/writing/ch-03-typst',
+        lang: 'TYPST',
+        tone: 'mist',
+        badge: '尝鲜',
+        chapters: 1,
+        image: '/writing/typst-glacier.webp'
+      }
+    ],
+    noteUnit: '种',
+    chapterUnit: '篇'
+  },
+  {
+    id: 'essays',
+    title: '随笔',
+    en: 'ESSAYS',
+    desc: '一些没头没尾的念头、读书与写作的碎片，顺手记在这里。',
+    tone: 'stone',
+    notes: [
+      {
+        title: '一些涩话',
+        cover: '随笔',
+        meta: '2026 年 10 月 · 随笔与自述',
+        desc: '自我介绍、日常随笔，以及“你好，拜访我的人”——写给朋友，也写给以后的自己。',
+        link: '/posts/',
+        lang: 'ESSAYS',
+        tone: 'clay',
+        badge: '随笔',
+        chapters: 2,
+        image: '/avatar.jpg'
+      }
+    ],
+    noteUnit: '篇',
+    chapterUnit: '则'
   }
 ]
 
@@ -259,7 +390,7 @@ const year = new Date().getFullYear()
         <div class="av-work-head">
           <h2>笔记</h2>
           <p class="av-work-intro">
-            {{ totalNotes }} 门课、约 {{ totalChapters }} 章，按方向分成 {{ sections.length }} 个分区。
+            {{ totalNotes }} 份笔记、约 {{ totalChapters }} 章内容，按方向分成 {{ sections.length }} 个分区。
             点开分区看课程卡片，鼠标移到卡片上会浮现这份笔记的代表图。
             全部代码在
             <a :href="`${profile.github}?tab=repositories`" target="_blank" rel="noreferrer">GitHub</a>。
@@ -291,7 +422,7 @@ const year = new Date().getFullYear()
               </span>
               <span class="av-section-side">
                 <span class="av-section-count">
-                  {{ s.notes.length }} 门 · {{ chaptersOf(s) }} 章
+                  {{ s.notes.length }} {{ s.noteUnit || '门' }} · {{ chaptersOf(s) }} {{ s.chapterUnit || '章' }}
                 </span>
                 <span class="av-chevron" aria-hidden="true" />
               </span>

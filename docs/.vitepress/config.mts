@@ -85,13 +85,15 @@ export default defineConfig({
     siteTitle: SITE.name,
 
     nav: [
-      { text: '普通物理', link: '/posts/physics-electromagnetism' },
+      { text: '普通物理', link: '/notes/physics-electromagnetism' },
       { text: '流体力学', link: '/fluids/' },
       { text: '数字电路', link: '/digital/' },
       { text: 'ROS 2', link: '/ros2/' },
       {
         text: '笔记',
         items: [
+          { text: '数据结构', link: '/data-structures/' },
+          { text: '写作与排版', link: '/writing/' },
           { text: '材料力学', link: '/notes/mechanics/' },
           { text: '常微分方程', link: '/notes/ode/' },
           { text: '概率论', link: '/notes/probability/' },
@@ -250,13 +252,42 @@ export default defineConfig({
           ]
         }
       ],
+      '/writing/': [
+        {
+          text: '写作与排版',
+          items: [
+            { text: '开始之前', link: '/writing/' },
+            { text: '一、LaTeX 入门指南', link: '/writing/ch-01-latex' },
+            { text: '二、Markdown 小记', link: '/writing/ch-02-markdown' },
+            { text: '三、Typst 初体验', link: '/writing/ch-03-typst' }
+          ]
+        }
+      ],
+      '/data-structures/': [
+        {
+          text: '数据结构',
+          items: [
+            { text: '开始之前', link: '/data-structures/' },
+            { text: '第一章 基本概念与算法分析', link: '/data-structures/ch-01-basics' },
+            { text: '第二章 线性表：顺序存储', link: '/data-structures/ch-02-sequential-list' },
+            { text: '第三章 线性表：链式存储', link: '/data-structures/ch-03-linked-list' },
+            { text: '第四章 栈', link: '/data-structures/ch-04-stack' },
+            { text: '第五章 队列', link: '/data-structures/ch-05-queue' },
+            { text: '第六章 数组与广义表', link: '/data-structures/ch-06-array-generalized-list' },
+            { text: '第七章 树与二叉树', link: '/data-structures/ch-07-tree' },
+            { text: '第八章 图', link: '/data-structures/ch-08-graph' },
+            { text: '第九章 查找', link: '/data-structures/ch-09-search' },
+            { text: '第十章 排序', link: '/data-structures/ch-10-sort' }
+          ]
+        }
+      ],
       '/posts/': [
         {
           text: '一些涩话',
           items: [
             { text: '全部文章', link: '/posts/' },
             { text: '你好，拜访我的人', link: '/posts/hello-world' },
-            { text: '我是怎么用 Markdown 写作的', link: '/posts/writing-with-markdown' }
+            { text: '日常随笔', link: '/posts/daily-note' }
           ]
         }
       ]

@@ -17,10 +17,10 @@ title: 一些涩话
 ## 课程笔记
 
 - [高等代数笔记](/notes/linalg/) — 多项式、行列式、矩阵、线性方程组、二次型、线性空间与线性变换、λ-矩阵与相似标准形、欧氏空间、双线性函数与对偶空间、解析几何，附四个附录
-- [电磁学笔记](/posts/physics-electromagnetism.html) — 静电场、导体与电介质、稳恒磁场、电磁感应、麦克斯韦方程组与电磁波
-- [量子物理笔记](/posts/physics-quantum.html) — 热辐射与光的粒子性、原子的核式结构、玻尔模型、物质波、量子力学基础
-- [原子物理笔记](/posts/physics-atoms.html) — 碱金属原子、多电子原子、原子的壳层结构
-- [普通物理实验复习](/posts/physics-labs.html) — 九个实验的原理与 MOOC 题整理
+- [电磁学笔记](/notes/physics-electromagnetism.html) — 静电场、导体与电介质、稳恒磁场、电磁感应、麦克斯韦方程组与电磁波
+- [量子物理笔记](/notes/physics-quantum.html) — 热辐射与光的粒子性、原子的核式结构、玻尔模型、物质波、量子力学基础
+- [原子物理笔记](/notes/physics-atoms.html) — 碱金属原子、多电子原子、原子的壳层结构
+- [普通物理实验复习](/notes/physics-labs.html) — 九个实验的原理与 MOOC 题整理
 
 ## 连载
 
