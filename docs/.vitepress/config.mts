@@ -93,6 +93,8 @@ export default defineConfig({
         text: '笔记',
         items: [
           { text: '数据结构', link: '/data-structures/' },
+          { text: 'Eigen 库', link: '/notes/eigen/' },
+          { text: 'Git 命令', link: '/notes/git/' },
           { text: '写作与排版', link: '/writing/' },
           { text: '材料力学', link: '/notes/mechanics/' },
           { text: '常微分方程', link: '/notes/ode/' },
@@ -249,6 +251,72 @@ export default defineConfig({
             { text: '第九章 Laplace 变换', link: '/notes/engineering-math/ch-09-laplace' },
             { text: '第十章 Z 变换', link: '/notes/engineering-math/ch-10-z-transform' },
             { text: '第十一章 场论', link: '/notes/engineering-math/ch-11-field' }
+          ]
+        }
+      ],
+      '/notes/eigen/': [
+        {
+          text: 'Eigen 库使用指南',
+          items: [
+            { text: '开始之前', link: '/notes/eigen/' }
+          ]
+        },
+        {
+          text: '基础入门',
+          items: [
+            { text: '第一章 Matrix 类', link: '/notes/eigen/ch-01-matrix' },
+            { text: '第二章 矩阵与向量运算', link: '/notes/eigen/ch-02-vector-ops' },
+            { text: '第三章 数组类与系数运算', link: '/notes/eigen/ch-03-array' }
+          ]
+        },
+        {
+          text: '高级操作',
+          items: [
+            { text: '第四章 块操作', link: '/notes/eigen/ch-04-block' },
+            { text: '第五章 高级初始化', link: '/notes/eigen/ch-05-init' },
+            { text: '第六章 切片与索引', link: '/notes/eigen/ch-06-slice' },
+            { text: '第七章 归约、访问者与广播', link: '/notes/eigen/ch-07-reduction' }
+          ]
+        },
+        {
+          text: '线性求解',
+          items: [
+            { text: '第八章 分解概述与选择', link: '/notes/eigen/ch-08-decomposition' },
+            { text: '第九章 LU 分解', link: '/notes/eigen/ch-09-lu' },
+            { text: '第十章 QR 分解与最小二乘', link: '/notes/eigen/ch-10-qr' },
+            { text: '第十一章 Cholesky 分解', link: '/notes/eigen/ch-11-cholesky' },
+            { text: '第十二章 SVD 分解', link: '/notes/eigen/ch-12-svd' },
+            { text: '第十三章 特征值与特征向量', link: '/notes/eigen/ch-13-eigen' }
+          ]
+        },
+        {
+          text: '几何变换',
+          items: [
+            { text: '第十四章 旋转的表达', link: '/notes/eigen/ch-14-rotation' },
+            { text: '第十五章 仿射变换', link: '/notes/eigen/ch-15-affine' },
+            { text: '第十六章 几何实战', link: '/notes/eigen/ch-16-geometry' }
+          ]
+        },
+        {
+          text: '实战应用',
+          items: [
+            { text: '第十七章 最小二乘与 PCA', link: '/notes/eigen/ch-17-least-squares-pca' },
+            { text: '第十八章 卡尔曼滤波与点云配准', link: '/notes/eigen/ch-18-kalman-icp' },
+            { text: '第十九章 数值求解与性能技巧', link: '/notes/eigen/ch-19-numerics' }
+          ]
+        }
+      ],
+      '/notes/git/': [
+        {
+          text: 'Git 命令笔记',
+          items: [
+            { text: '开始之前', link: '/notes/git/' },
+            { text: '第一章 安装与全局配置', link: '/notes/git/ch-01-install' },
+            { text: '第二章 首次初始化与日常流程', link: '/notes/git/ch-02-workflow' },
+            { text: '第三章 版本回溯与远程同步', link: '/notes/git/ch-03-history' },
+            { text: '第四章 常见报错处理', link: '/notes/git/ch-04-errors' },
+            { text: '第五章 .gitignore 配置', link: '/notes/git/ch-05-gitignore' },
+            { text: '第六章 Windows 高频踩坑', link: '/notes/git/ch-06-windows' }
           ]
         }
       ],

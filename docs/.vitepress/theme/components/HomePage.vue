@@ -258,7 +258,7 @@ const sections: Section[] = [
     id: 'computer',
     title: '计算机',
     en: 'COMPUTER SCIENCE',
-    desc: '数据结构：从基本概念、线性表到树、图、查找与排序，配 C++ / Python 实现。',
+    desc: '数据结构、Eigen 库与 Git：从基本概念、矩阵分解到版本管理，配 C++ 实现与命令速查。',
     tone: 'mist',
     notes: [
       {
@@ -272,6 +272,29 @@ const sections: Section[] = [
         badge: '连载',
         chapters: 10,
         image: '/data-structures/ch01-fig01.webp'
+      },
+      {
+        title: 'Eigen 库使用指南（19 章）',
+        cover: 'Eigen',
+        meta: '2026 年 10 月 · 19 章',
+        desc: '从 Matrix 类、块操作与归约，到 LU / QR / SVD 分解、旋转与仿射变换，再到卡尔曼滤波与点云配准。',
+        link: '/notes/eigen/',
+        lang: 'EIGEN / C++',
+        tone: 'clay',
+        badge: '连载',
+        chapters: 19,
+        image: '/eigen/eigen.png'
+      },
+      {
+        title: 'Git 命令笔记（6 章）',
+        cover: 'Git',
+        meta: '2026 年 10 月 · 6 章',
+        desc: '安装与全局配置、日常四步、版本回溯、常见报错处理与 .gitignore，附 Windows 高频踩坑。',
+        link: '/notes/git/',
+        lang: 'GIT',
+        tone: 'stone',
+        badge: '速查',
+        chapters: 6
       }
     ]
   },
