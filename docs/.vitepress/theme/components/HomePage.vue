@@ -65,19 +65,19 @@ const sections: Section[] = [
     id: 'electronics',
     title: '电子',
     en: 'ELECTRONICS',
-    desc: '数字电路：数制与编码、布尔代数与逻辑门，配逻辑电路图。',
+    desc: '数字电路：数制与编码、布尔代数、组合与时序逻辑，配电路图与芯片符号。',
     tone: 'mist',
     notes: [
       {
         title: '数字电路（连载）',
         cover: '数字电路',
-        meta: '2026 年 10 月 · 课程笔记',
-        desc: '数制与编码、布尔代数与逻辑门，配逻辑电路图。',
+        meta: '2026 · 5 章',
+        desc: '数制与编码、布尔代数、组合与时序逻辑，配电路图与芯片符号。',
         link: '/digital/',
         lang: 'DIGITAL CIRCUITS',
         tone: 'sand',
         badge: '连载',
-        chapters: 2,
+        chapters: 5,
         image: '/digital/and-circuit.webp'
       }
     ]

@@ -126,7 +126,10 @@ export default defineConfig({
           items: [
             { text: '开始之前', link: '/digital/' },
             { text: '第一章 数制与 BCD 码', link: '/digital/ch-01-number-systems' },
-            { text: '第二章 布尔代数', link: '/digital/ch-02-boolean-algebra' }
+            { text: '第二章 布尔代数', link: '/digital/ch-02-boolean-algebra' },
+            { text: '第三章 组合逻辑电路', link: '/digital/ch-03-combinational-logic' },
+            { text: '第四章 时序逻辑电路引论', link: '/digital/ch-04-sequential-intro' },
+            { text: '第五章 时序逻辑电路的分析与设计', link: '/digital/ch-05-sequential-analysis-design' }
           ]
         }
       ],

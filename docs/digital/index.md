@@ -13,6 +13,9 @@ description: 数字电路课程笔记。先把数制、编码和补码这些表�
 | --- | --- |
 | [第一章 数制与 BCD 码](/digital/ch-01-number-systems.html) | 常用数制、进制转换、原码反码补码，以及 BCD 码与格雷码 |
 | [第二章 布尔代数](/digital/ch-02-boolean-algebra.html) | 基本与复合逻辑运算、逻辑电平、反函数与对偶式 |
+| [第三章 组合逻辑电路](/digital/ch-03-combinational-logic.html) | 组合逻辑电路的分析与设计、编码器、译码器、数据选择器、加法器与数值比较器 |
+| [第四章 时序逻辑电路引论](/digital/ch-04-sequential-intro.html) | 时序电路的结构模型、状态表与状态图、锁存器与各类触发器 |
+| [第五章 时序逻辑电路的分析与设计](/digital/ch-05-sequential-analysis-design.html) | 寄存器、计数器、序列信号发生器，以及同步时序电路的分析与设计 |
 
 ::: tip 怎么读
 按顺序读：前面的章节是后面章节的基础。
