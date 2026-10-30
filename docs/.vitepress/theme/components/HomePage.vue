@@ -174,6 +174,27 @@ const sections: Section[] = [
     ]
   },
   {
+    id: 'control',
+    title: '控制',
+    en: 'CONTROL ENGINEERING',
+    desc: '古典控制理论：建模、时域响应、频率特性、稳定性、误差、校正与根轨迹，配方块图与曲线。',
+    tone: 'sand',
+    notes: [
+      {
+        title: '控制工程基础（连载）',
+        cover: '控制工程',
+        meta: '2026 年 10 月 · 8 章 + 例题',
+        desc: '从微分方程与传递函数讲起，走完时域、频域、稳定性、稳态误差、校正与根轨迹，附典型例题。',
+        link: '/control/',
+        lang: 'CONTROL ENGINEERING',
+        tone: 'stone',
+        badge: '连载',
+        chapters: 9,
+        image: '/control/thermostat-system.webp'
+      }
+    ]
+  },
+  {
     id: 'math',
     title: '数学基础',
     en: 'MATHEMATICS',
@@ -295,6 +316,17 @@ const sections: Section[] = [
         tone: 'stone',
         badge: '速查',
         chapters: 6
+      },
+      {
+        title: 'Linux 使用教程（连载）',
+        cover: 'Linux',
+        meta: '2026 年 10 月 · 10 章',
+        desc: '操作系统概念、文件系统与权限、Shell 脚本、包管理与系统运维，每章配实操示例和习题。',
+        link: '/linux/',
+        lang: 'LINUX',
+        tone: 'mist',
+        badge: '连载',
+        chapters: 10
       }
     ]
   },

@@ -838,8 +838,8 @@ def bfs_traverse_list(adj: list):
 
 | 表示法 | DFS | BFS |
 |---|---|---|
-| **邻接矩阵** | $O(|V|^2)$ | $O(|V|^2)$ |
-| **邻接表** | $O(|V| + |E|)$ | $O(|V| + |E|)$ |
+| **邻接矩阵** | $O(\vert V\vert^2)$ | $O(\vert V\vert^2)$ |
+| **邻接表** | $O(\vert V\vert + \vert E\vert)$ | $O(\vert V\vert + \vert E\vert)$ |
 
 - 每个顶点访问一次：$O(|V|)$。
 - 邻接矩阵中找邻接点需扫描整行，每条边各被检查一次为 $O(|E|)$（但扫描整行的开销是 $O(|V|^2)$）。
@@ -1199,8 +1199,8 @@ if __name__ == "__main__":
 
 | 算法 | 时间复杂度 | 适应范围 | 特点 |
 |---|---|---|---|
-| **Prim** | $O(|V|^2)$ 或 $O(|E| \log |V|)$ | 稠密图 | 不断加点，中间结果总是一棵树 |
-| **Kruskal** | $O(|E| \log |E|)$ | 稀疏图 | 不断加边，中间结果是森林 |
+| **Prim** | $O(\vert V\vert^2)$ 或 $O(\vert E\vert \log \vert V\vert)$ | 稠密图 | 不断加点，中间结果总是一棵树 |
+| **Kruskal** | $O(\vert E\vert \log \vert E\vert)$ | 稀疏图 | 不断加边，中间结果是森林 |
 
 ---
 
@@ -1895,10 +1895,10 @@ def bellman_ford(V: int, edges: list, src: int) -> list:
 
 | 算法 | 适用条件 | 时间复杂度 | 特点 |
 |---|---|---|---|
-| **Dijkstra** | 非负权，单源 | $O(|V|^2)$ 或 $O((|V|+|E|)\log |V|)$ | 贪心，最常用 |
-| **Floyd-Warshall** | 所有点对 | $O(|V|^3)$ | 动态规划，可处理负权但不能有负环 |
-| **Bellman-Ford** | 单源，可含负权 | $O(|V| \cdot |E|)$ | 能检测负权回路 |
-| **SPFA** | Bellman-Ford 队列优化 | 平均 $O(|E|)$，最坏 $O(|V| \cdot |E|)$ | 实际常比 Bellman-Ford 快 |
+| **Dijkstra** | 非负权，单源 | $O(\vert V\vert^2)$ 或 $O((\vert V\vert+\vert E\vert)\log \vert V\vert)$ | 贪心，最常用 |
+| **Floyd-Warshall** | 所有点对 | $O(\vert V\vert^3)$ | 动态规划，可处理负权但不能有负环 |
+| **Bellman-Ford** | 单源，可含负权 | $O(\vert V\vert \cdot \vert E\vert)$ | 能检测负权回路 |
+| **SPFA** | Bellman-Ford 队列优化 | 平均 $O(\vert E\vert)$，最坏 $O(\vert V\vert \cdot \vert E\vert)$ | 实际常比 Bellman-Ford 快 |
 
 ---
 

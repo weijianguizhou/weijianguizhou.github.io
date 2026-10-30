@@ -88,6 +88,8 @@ export default defineConfig({
       { text: '普通物理', link: '/notes/physics-electromagnetism' },
       { text: '流体力学', link: '/fluids/' },
       { text: '数字电路', link: '/digital/' },
+      { text: '控制工程', link: '/control/' },
+      { text: 'Linux', link: '/linux/' },
       { text: 'ROS 2', link: '/ros2/' },
       {
         text: '笔记',
@@ -120,6 +122,24 @@ export default defineConfig({
           ]
         }
       ],
+      '/linux/': [
+        {
+          text: 'Linux 使用教程',
+          items: [
+            { text: '开始之前', link: '/linux/' },
+            { text: '第一章 Linux 概述与安装', link: '/linux/ch-01-linux-overview' },
+            { text: '第二章 文件系统与目录结构', link: '/linux/ch-02-filesystem' },
+            { text: '第三章 文件与目录操作', link: '/linux/ch-03-file-operations' },
+            { text: '第四章 文本处理', link: '/linux/ch-04-text-processing' },
+            { text: '第五章 用户与权限管理', link: '/linux/ch-05-users-permissions' },
+            { text: '第六章 进程管理', link: '/linux/ch-06-process-management' },
+            { text: '第七章 Shell 脚本基础', link: '/linux/ch-07-shell-scripting' },
+            { text: '第八章 软件包管理', link: '/linux/ch-08-package-management' },
+            { text: '第九章 网络与远程操作', link: '/linux/ch-09-network-remote' },
+            { text: '第十章 系统管理与性能监控', link: '/linux/ch-10-system-monitoring' }
+          ]
+        }
+      ],
       '/digital/': [
         {
           text: '数字电路',
@@ -130,6 +150,23 @@ export default defineConfig({
             { text: '第三章 组合逻辑电路', link: '/digital/ch-03-combinational-logic' },
             { text: '第四章 时序逻辑电路引论', link: '/digital/ch-04-sequential-intro' },
             { text: '第五章 时序逻辑电路的分析与设计', link: '/digital/ch-05-sequential-analysis-design' }
+          ]
+        }
+      ],
+      '/control/': [
+        {
+          text: '控制工程基础',
+          items: [
+            { text: '开始之前', link: '/control/' },
+            { text: '第一章 概论', link: '/control/ch-01-intro' },
+            { text: '第二章 控制系统的动态数学模型', link: '/control/ch-02-model' },
+            { text: '第三章 时域瞬态响应分析', link: '/control/ch-03-time-response' },
+            { text: '第四章 控制系统的频率特性', link: '/control/ch-04-frequency' },
+            { text: '第五章 控制系统的稳定性分析', link: '/control/ch-05-stability' },
+            { text: '第六章 控制系统的误差分析和计算', link: '/control/ch-06-error' },
+            { text: '第七章 控制系统的综合与校正', link: '/control/ch-07-compensation' },
+            { text: '第八章 根轨迹法', link: '/control/ch-08-root-locus' },
+            { text: '附录 A 典型例题讲解', link: '/control/ch-09-examples' }
           ]
         }
       ],
