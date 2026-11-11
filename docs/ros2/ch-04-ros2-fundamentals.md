@@ -1,0 +1,193 @@
+---
+title: 第四章 · ROS 2 基础
+description: 装好 ROS 2 Jazzy，跑通 talker/listener、turtlesim 和 rqt，再从分层架构一路看到 DDS 与 DCPS 通信模型
+---
+
+# 第四章 · ROS 2 基础
+
+## 4.1 ROS 2 的下载
+
+首先启动 WSL 中的 Ubuntu，打开终端，输入下面的指令。
+
+第一步是确保使用的环境支持 UTF-8 编码。
+
+```bash
+locale  # check for UTF-8
+
+sudo apt update && sudo apt install locales
+sudo locale-gen en_US en_US.UTF-8
+sudo update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
+export LANG=en_US.UTF-8
+
+locale  # verify settings
+```
+
+第二步是启用所需存储库，将 ROS 2 apt 软件仓库添加到系统中。
+
+```bash
+sudo apt install software-properties-common
+sudo add-apt-repository universe
+```
+
+ros-apt-source 软件包为各种 ROS 存储库提供密钥和 apt 源配置。
+
+安装 ros2-apt-source 软件包将为您的系统配置 ROS 2 软件仓库。当 ROS 软件仓库发布此软件包的新版本时，软件仓库配置将自动更新。
+
+```bash
+sudo apt update && sudo apt install curl -y
+export ROS_APT_SOURCE_VERSION=$(curl -s https://api.github.com/repos/ros-infrastructure/ros-apt-source/releases/latest | grep -F "tag_name" | awk -F'"' '{print $4}')
+curl -L -o /tmp/ros2-apt-source.deb "https://github.com/ros-infrastructure/ros-apt-source/releases/download/${ROS_APT_SOURCE_VERSION}/ros2-apt-source_${ROS_APT_SOURCE_VERSION}.$(. /etc/os-release && echo ${UBUNTU_CODENAME:-${VERSION_CODENAME}})_all.deb"
+sudo dpkg -i /tmp/ros2-apt-source.deb
+```
+
+设置好软件仓库后，更新 apt 软件仓库缓存，并安装 ROS 2。
+
+```bash
+sudo apt update
+sudo apt install ros-jazzy-desktop
+```
+
+## 4.2 ROS 2 体验
+
+### 你说我听
+
+游戏内容很简单：我们启动两个节点，一个节点负责发消息（说），一个节点负责收消息（听）。
+
+1. 启动一个终端，快捷键 `Ctrl+Alt+T`。
+2. 在终端中启动倾听者：`ros2 run demo_nodes_py listener`
+3. 再启动一个新终端，快捷键 `Ctrl+Alt+T`。
+4. 在新终端中启动说话者：`ros2 run demo_nodes_cpp talker`
+
+观察一下现象，talker 节点每数一个数，倾听节点每一次都能听到一个，是不是很神奇。
+
+![你说我听](/ros2/talker-listener.webp)
+
+### 涂鸦乌龟
+
+打开终端 `Ctrl+Alt+T`，输入下面的指令：
+
+```bash
+ros2 run turtlesim turtlesim_node
+```
+
+如下图所示：
+
+![海龟模拟器](/ros2/turtlesim.webp)
+
+点一下原来的终端，按 `Ctrl+Shift+T` 打开一个新的标签页，输入：
+
+```bash
+ros2 run turtlesim turtle_teleop_key
+```
+
+### RQT 可视化
+
+保持前面两个游戏在运行状态，打开终端，输入 `rqt`。
+
+打开之后选择插件 Introspection / Node Graph，刷新一下，即可看见两个节点间的通信关系。
+
+![RQT Node Graph 可视化](/ros2/rqt-node-graph.webp)
+
+## 4.3 ROS 2 系统架构
+
+前面两个小游戏你已经玩过了，节点能跑起来，rqt 里也能看到它们之间的连线。不过这些都还停留在“会用”的层面。这一节我们把 ROS 2 拆开，从整体框架上看一看它到底由哪几层构成，以及为什么要这样分层。
+
+### 分层架构总览
+
+ROS 2 的整体结构可以用一张“千层饼”式的图来描述，从上到下依次是：应用层、ROS 2 客户端库、客户端库核心 rcl、中间件抽象层 RMW、DDS 实现层、操作系统层。相邻两层之间是双向的调用关系：上层向下层提出请求，下层把结果和事件回传给上层。
+
+![ROS 2 的分层架构。自下而上依次是操作系统层、DDS 实现层、中间件抽象层 RMW、客户端库 RCL 以及最顶端的应用层，相邻两层之间为双向调用关系](/ros2/ros2-architecture.webp)
+
+图中两侧的括号标出了各层的归属：从应用层到客户端库核心 rcl，这三层是 ROS 2 官方自己实现的；中间件抽象层 RMW 是统一接口；最下面的 DDS 实现层则来自第三方。接下来我们自下而上，一层一层地看。
+
+### 操作系统层
+
+这一层最好理解。ROS 2 自己并不是一个操作系统，它只是跑在 Linux、Windows 或 macOS 之上的一个中间件框架。真正去驱动硬件、管理进程、收发底层网络数据包这些脏活累活，全部交给操作系统来完成。也正因为如此，ROS 2 才能在这么多平台上跑起来：只要那个平台提供的系统调用和网络协议栈足够完整，上面的各层就可以原封不动地搬过去。
+
+顺带说一句，我们在第一章里折腾 WSL 里的 Ubuntu，其实就是在给上面的几层准备一块合适的“地基”。
+
+### DDS 实现层
+
+想弄懂这一层，你得先回答两个问题：DDS 到底是什么？以及为什么 ROS 2 里会同时存在好几套 DDS 实现？
+
+#### DDS 是什么
+
+DDS，全称 Data Distribution Service，中文叫“数据分发服务”，是由对象管理组 OMG（Object Management Group）在 2003 年发布、2007 年修订的一套分布式系统通信标准。
+
+它的通信方式和 ROS 里的话题发布订阅几乎一模一样：一方把数据“发布”到某个主题上，关心这个主题的另一方“订阅”后就能收到，双方不需要事先知道对方是谁。除此之外，DDS 还提供了相当丰富的服务质量（QoS）策略，用来规定通信的可靠性、持久性、传输方式等要求。
+
+正因为设计理念如此契合，ROS 2 干脆不再自己另造一套通信协议，而是直接把 DDS 拿来当作底层的通信支柱。
+
+#### 为什么会有多套 DDS 实现
+
+DDS 只是一份标准文档，标准本身不能运行，得有人照着它写出真正的程序，这些程序就叫“DDS 实现”。目前常见的实现有 eProsima 的 Fast DDS、Eclipse 的 Cyclone DDS、RTI 的 Connext DDS 等。它们遵守同一份标准，但侧重点各不相同：有的偏重性能，有的体积小巧，有的面向商用场景提供技术支持。
+
+既然标准是统一的，那多准备几套实现就不会给上层添麻烦，想换随时换。至于这些差异是怎么被“抹平”的，就要看下面这一层了。
+
+### 中间件抽象层 RMW
+
+RMW 是 ROS Middleware 的缩写，也就是中间件抽象层。它的作用可以用一句话概括：**给上面一个统一的接口，把下面各家的差异藏起来**。
+
+为什么不直接把 DDS 暴露给上层呢？因为直接用 DDS 其实挺麻烦的。创建一次通信要设置分区、主题名称、发现模式、消息类型等一大堆参数，还要记得在不用的时候逐项清理。这些琐碎而重复的配置如果让每个写节点的同学自己处理，代码会变得又臭又长。
+
+于是 ROS 2 在这中间加了一层 RMW：它定义好一套固定的接口，无论底下换成 Fast DDS 还是 Cyclone DDS，上层看到的 API 都完全一样。那些繁琐的配置也就顺理成章地在 RMW 和 RCL 里统一完成了。
+
+```bash
+# 查看当前使用的 DDS 实现
+ros2 doctor --report | grep middleware
+
+# 通过环境变量切换（需要系统里已安装对应的 DDS）
+export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
+```
+
+### 客户端库 RCL 与语言绑定
+
+RCL 是 ROS Client Library 的缩写，也就是 ROS 2 客户端库。它建立在 RMW 之上，把 ROS 里的节点、话题、服务、参数、Action 这些概念包装成一套好用的 API。
+
+这里有个细节值得留意：RCL 的底层实现是用 C 语言写的，因为 C 是众多高级语言的“共同祖先”，基于它再去封装其它语言会轻松很多。所以官方的 rclpy（Python）和 rclcpp（C++）都是直接建立在这套 C 实现之上的。这也是为什么后面我们用两种语言写节点时，代码结构会如此相似。
+
+社区还用同样的方式把 ROS 2 搬到了更多语言和平台上，比如在 Android 应用或网页里也能和 ROS 2 通信：
+
+| 语言 | 客户端库 | 项目地址 |
+| --- | --- | --- |
+| Python | rclpy | [ros2/rclpy](https://github.com/ros2/rclpy) |
+| C++ | rclcpp | [ros2/rclcpp](https://github.com/ros2/rclcpp) |
+| Java | rcljava | [esteve/ros2_java](https://github.com/esteve/ros2_java) |
+| Rust | rclrust | [ros2-rust/ros2_rust](https://github.com/ros2-rust/ros2_rust) |
+| Node.js | rclnodejs | [RobotWebTools/rclnodejs](https://github.com/RobotWebTools/rclnodejs) |
+| Go | rclgo | [juaruipav/rclgo](https://github.com/juaruipav/rclgo) |
+| Lua | rcllua | [jbbjarnason/rcllua](https://github.com/jbbjarnason/rcllua) |
+| Kotlin | rclkin | [ros2java-alfred/ros2_kotlin](https://github.com/ros2java-alfred/ros2_kotlin) |
+| Swift | rclswift | [atyshka/ros2_swift](https://github.com/atyshka/ros2_swift) |
+| C# | rclcs | [RobotecAI/ros2cs](https://github.com/RobotecAI/ros2cs) |
+
+### 应用层
+
+最上面就是我们自己写代码、以及 rqt、命令行工具这些开发工具所在的层了。本书后面写的所有节点代码，其实都住在这里。它们不需要关心底下的通信是怎么实现的，只要调用客户端库提供的 API 就好，这也正是分层带来的好处。
+
+## 4.4 ROS 2 中间件 DDS 架构
+
+### 中间件
+
+中间件是一种独立的系统软件或服务程序，分布式应用软件借助这种软件在不同的技术之间共享资源。中间件位于客户机/服务器的操作系统之上，管理计算机资源和网络通讯。是连接两个独立应用程序或独立系统的软件。相连接的系统，即使它们具有不同的接口，但通过中间件相互之间仍能交换信息。执行中间件的一个关键途径是信息传递。通过中间件，应用程序可以工作于多平台或 OS 环境。
+
+![这是在说什么，怎么一个字都听不懂（）](/ros2/panda.webp)
+
+## 4.5 DDS 和 ROS 2 架构
+
+ROS 2 为每家 DDS 供应商都开发了对应的 `DDS_Interface` 即 DDS 接口层，然后通过 DDS Abstract 抽象层来统一 DDS 的 API。
+
+![ROS 2 DDS 架构](/ros2/ros2-dds-arch.webp)
+
+## 4.6 DDS 通信模型
+
+核心模型 DCPS：以数据为中心的发布订阅。
+
+DCPS 模型通过主题实现发布者与订阅者的解耦，核心构成包括：
+
+- 域（Domain）：作为逻辑隔离的通信平面，只有相同域 ID 下的节点才能互相发现和通信，解决多系统同网络下的隔离问题。
+- 主题（Topic）：是连接发布者与订阅者的逻辑纽带，对数据做分类标记，是发布和订阅匹配的唯一依据，发布者只需要发布对应主题的数据，所有订阅该主题的节点都会自动收到数据。
+- 发布者/数据写入器（Publisher/DataWriter）：由发布者创建 DataWriter，实际负责数据的发送。
+- 订阅者/数据读取器（Subscriber/DataReader）：由订阅者创建 DataReader，实际负责接收对应主题的数据。
+
+这种模式下发布者和订阅者不需要知道对方的地址信息，仅通过主题完成匹配，能够轻松构建复杂的多对多通信关系，实现系统的高度解耦。

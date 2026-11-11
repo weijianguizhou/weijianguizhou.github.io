@@ -26,7 +26,7 @@ title: 一些涩话
 
 - [流体力学](/fluids/) — 从连续介质模型与流体的物理性质出发，共两章，另附张量代数与场论两个附录
 - [数字电路](/digital/) — 先把数制、编码与补码弄扎实，再进入布尔代数与逻辑门，共两章
-- [ROS 2 学习记录](/ros2/) — 在 Windows + WSL 2 上从零配置 ROS 2 Lyrical（Ubuntu 26.04），共七章
+- [ROS 2 学习记录](/ros2/) — 在 Windows + WSL 2 上从零配置 ROS 2 Jazzy（Ubuntu 24.04），共五章
 
 ## 现在在做什么
 

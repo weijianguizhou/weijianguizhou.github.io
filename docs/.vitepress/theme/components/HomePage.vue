@@ -1,16 +1,11 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+import { useData } from 'vitepress'
 import VPNavBarSearch from 'vitepress/dist/client/theme-default/components/VPNavBarSearch.vue'
 
 /* ============================================================
- * 首页。改内容只看这一段的三个数组：profile / recent / sections
+ * 首页。改内容只看这一段的三个对象：profile / recent / sections
  * ============================================================ */
-
-/** 索引区外观：
- *  'list'  —— 单列细线目录，一屏能看到 5 个方向（默认，最安静）
- *  'cards' —— 双列带封面图的卡片，点开变全宽
- */
-const INDEX_STYLE: 'list' | 'cards' = 'list'
 
 type Tone = 'sage' | 'mist' | 'stone' | 'clay' | 'sand' | 'violet' | 'teal' | 'amber' | 'umber'
 
@@ -34,14 +29,29 @@ type Section = {
   desc: string
   tone: Tone
   notes: Note[]
-  /** 收尾卡：跨列显示，右侧补一段「关于本站」 */
   closing?: boolean
 }
+
+const toneMap: Record<Tone, string> = {
+  sage: '#6f7d5e',
+  mist: '#7c8a8a',
+  stone: '#8a8274',
+  clay: '#a06a4f',
+  sand: '#b08a5a',
+  violet: '#7b6b8a',
+  teal: '#4f7d78',
+  amber: '#a9793f',
+  umber: '#7a5a44'
+}
+
+const toneColor = (tone: Tone) => toneMap[tone]
 
 const profile = {
   name: '爱吃烧饼的大熊猫',
   en: 'Sesame Panda',
   tagline: '一个对力学和机器人感兴趣的本科生~',
+  bio: '我是南京理工大学的一名本科生，平时关心力学、机器人和控制。这个站点用来整理学过的课程、做过的项目和踩过的坑，也记录一些还没想清楚的问题。',
+  portrait: '/ros2/panda.webp',
   facts: ['南京理工大学', '力学与机器人'],
   github: 'https://github.com/weijianguizhou',
   email: 'wei_zhou@njust.edu.cn'
@@ -60,8 +70,9 @@ const topLinks = [
   { text: '随笔', link: '/posts/' }
 ]
 
-/** 最近更新：手动维护，一条一行，按时间倒序 */
+/** 最近校订：手动维护，一条一行，按时间倒序 */
 const recent = [
+  { tag: 'ROS 2', title: 'ROS 2 连载重排为 5 章，统一 Ubuntu 24.04 + Jazzy', link: '/ros2/', date: '11-11' },
   { tag: '控制', title: '控制工程：第八章 根轨迹法与典型例题', link: '/control/', date: '10-30' },
   { tag: 'Linux', title: '新增 Linux 使用教程（10 章连载）', link: '/linux/', date: '10-30' },
   { tag: '数字电路', title: '补入第三至五章：组合逻辑、时序分析与设计', link: '/digital/', date: '10-28' },
@@ -69,25 +80,25 @@ const recent = [
   { tag: '数据结构', title: '上线数据结构连载（10 章）与随笔分区', link: '/data-structures/', date: '10-26' }
 ]
 
-/** 九个方向。tone 决定卡片底色和左侧色条 */
+/** 九个方向 */
 const sections: Section[] = [
   {
     id: 'robotics',
     title: '机器人',
     en: 'ROBOTICS',
-    desc: 'ROS 2 从 Ubuntu、WSL 环境一路到节点编译的完整记录，全是踩过的坑。',
+    desc: 'ROS 2 从 Ubuntu、WSL 环境一路到节点与架构的完整记录，全是踩过的坑。',
     tone: 'sage',
     notes: [
       {
         title: 'ROS 2 学习记录（连载）',
         cover: 'ROS 2',
-        meta: '2026 年 10 月 · 7 章',
-        desc: '从 Ubuntu、WSL 环境一路到 ROS 2 架构与编译，全是踩过的坑。',
+        meta: '2026 年 11 月 · 5 章',
+        desc: '从 Ubuntu、WSL 环境一路到 ROS 2 架构与节点，全是踩过的坑。',
         link: '/ros2/',
-        lang: 'UBUNTU 26.04',
+        lang: 'UBUNTU 24.04',
         tone: 'sage',
         badge: '连载',
-        chapters: 7,
+        chapters: 5,
         image: '/ros2/talker-listener.webp'
       }
     ]
@@ -432,7 +443,9 @@ const sections: Section[] = [
 /* ============================================================
  * 逻辑：手风琴一次只开一个；统计数字从 sections 算
  * ============================================================ */
-const openId = ref<string | null>(null)
+const { isDark } = useData()
+
+const openId = ref<string | null>('robotics')
 
 function toggle(id: string) {
   openId.value = openId.value === id ? null : id
@@ -445,1109 +458,1280 @@ const totalNotes = computed(() => sections.reduce((n, s) => n + s.notes.length, 
 const totalChapters = computed(() => sections.reduce((n, s) => n + chaptersOf(s), 0))
 const totalSections = sections.length
 
-/** 卡片样式下每条分区顶部的代表图：取第一篇有图的笔记 */
-const stripOf = (s: Section) => s.notes.find((n) => n.image)?.image
+const shortMeta = (p: Note) => {
+  const core = p.meta.replace(/^2026(\s*年\s*\d+\s*月)?\s*·\s*/, '')
+  return p.badge ? `${core} · ${p.badge}` : core
+}
+
+const formatDate = (d: string) => d.replace('-', '.')
 
 const year = new Date().getFullYear()
 </script>
 
 <template>
-  <div class="page" :class="`style-${INDEX_STYLE}`">
-    <!-- ===== 刊头：刊名 + 联系方式 + 方向行（不吸顶） ===== -->
-    <header class="mast">
-      <div class="wrap">
-        <div class="mast-top">
-          <a class="mast-name" href="/">{{ profile.en }}</a>
-          <div class="mast-meta">
-            <a :href="profile.github" target="_blank" rel="noreferrer">GitHub ↗</a>
-            <span class="dot">·</span>
+  <div class="home-root" :class="{ 'is-dark': isDark }">
+    <div class="grain" aria-hidden="true" />
+
+    <!-- ===== 刊头 ===== -->
+    <header class="masthead">
+      <div class="page masthead-inner">
+        <div class="masthead-top">
+          <a class="brand" href="#top">
+            <span class="brand-en">{{ profile.en }}</span>
+            <span class="brand-cn">个人笔记</span>
+          </a>
+          <div class="masthead-meta">
+            <span>南京</span>
+            <span>{{ year }}</span>
+          </div>
+          <div class="masthead-actions">
             <VPNavBarSearch />
+            <button
+              class="theme-toggle"
+              type="button"
+              :aria-label="isDark ? '切换到浅色模式' : '切换到深色模式'"
+              @click="isDark = !isDark"
+            >
+              {{ isDark ? '浅色' : '深色' }}
+            </button>
           </div>
         </div>
-        <nav class="mast-nav">
-          <a v-for="l in topLinks" :key="l.link" :href="l.link">{{ l.text }}</a>
+        <nav class="topnav" aria-label="主导航">
+          <a v-for="(l, idx) in topLinks" :key="l.link" :href="l.link">
+            <span>{{ String(idx + 1).padStart(2, '0') }}</span>{{ l.text }}
+          </a>
         </nav>
       </div>
     </header>
 
-    <div class="wrap">
+    <main id="top">
       <!-- ===== Hero ===== -->
-      <section class="hero">
-        <div class="hero-main">
+      <section class="hero page">
+        <div class="hero-copy">
+          <p class="kicker"><span class="kicker-line" />Personal Notes / 个人笔记</p>
           <h1>{{ profile.name }}</h1>
+          <p class="hero-en">{{ profile.en }}</p>
           <p class="tagline">{{ profile.tagline }}</p>
-          <ul class="facts">
-            <li v-for="f in profile.facts" :key="f">{{ f }}</li>
-          </ul>
-          <p class="contact">
-            <a :href="profile.github" target="_blank" rel="noreferrer">GitHub</a>
-            <span class="dot">·</span>
-            <a :href="`mailto:${profile.email}`">{{ profile.email }}</a>
-            <span class="dot">·</span>
-            <a href="/posts/">一些涩话</a>
-          </p>
+          <p class="hero-bio">{{ profile.bio }}</p>
+          <div class="hero-meta">
+            <div class="facts">
+              <span v-for="f in profile.facts" :key="f">{{ f }}</span>
+            </div>
+            <div class="contacts">
+              <a :href="profile.github" target="_blank" rel="noreferrer">GitHub ↗</a>
+              <a :href="`mailto:${profile.email}`">Email ↗</a>
+              <a href="/posts/">一些涩话 ↗</a>
+            </div>
+          </div>
         </div>
-        <div class="hero-side">
-          <img class="photo" src="/avatar.jpg" :alt="profile.name" width="132" height="132" />
-          <dl class="stats">
-            <div><dt>{{ totalNotes }}</dt><dd>份笔记</dd></div>
-            <div><dt>{{ totalChapters }}</dt><dd>章正文</dd></div>
-            <div><dt>{{ totalSections }}</dt><dd>个方向</dd></div>
-          </dl>
+        <aside class="hero-side">
+          <figure class="portrait">
+            <img :src="profile.portrait" :alt="profile.name" width="400" height="287" />
+            <figcaption>{{ profile.en }} · {{ year }}</figcaption>
+          </figure>
+          <div class="stats">
+            <div>
+              <strong>{{ String(totalNotes).padStart(2, '0') }}</strong>
+              <span>篇笔记</span>
+            </div>
+            <div>
+              <strong>{{ totalChapters }}</strong>
+              <span>章</span>
+            </div>
+            <div>
+              <strong>{{ String(totalSections).padStart(2, '0') }}</strong>
+              <span>个方向</span>
+            </div>
+          </div>
+        </aside>
+      </section>
+
+      <!-- ===== 最近校订 ===== -->
+      <section class="recent page">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">§ 01 · Recently Revised</p>
+            <h2>最近校订</h2>
+          </div>
+          <p class="section-note">{{ String(recent.length).padStart(2, '0') }} 条 · {{ year }} 年 11 月</p>
+        </div>
+        <div class="revision-list">
+          <a v-for="r in recent" :key="r.title" class="revision" :href="r.link">
+            <time>{{ formatDate(r.date) }}</time>
+            <span class="rev-tag">{{ r.tag }}</span>
+            <span class="rev-title">{{ r.title }}</span>
+            <span class="rev-arrow">↗</span>
+          </a>
         </div>
       </section>
 
-      <!-- ===== 最近更新 ===== -->
-      <section class="recent">
-        <div class="sec-head">
-          <h2>最近更新</h2>
-          <span class="en">RECENT</span>
-          <span class="rule" />
-        </div>
-        <ul class="upd">
-          <li v-for="r in recent" :key="r.title">
-            <a :href="r.link">
-              <span class="upd-tag">{{ r.tag }}</span>
-              <span class="upd-title">{{ r.title }}</span>
-              <span class="upd-date">{{ r.date }}</span>
-            </a>
-          </li>
-        </ul>
-      </section>
-
-      <!-- ===== 索引 ===== -->
-      <section class="index">
-        <div class="sec-head">
-          <h2>全部笔记</h2>
-          <span class="en">INDEX</span>
-          <span class="rule" />
-          <span class="more">点开看课程卡片</span>
+      <!-- ===== 全部笔记（目录式手风琴） ===== -->
+      <section class="index page">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">§ 02 · Index / 目录</p>
+            <h2>全部笔记</h2>
+          </div>
+          <p class="section-note">{{ String(totalSections).padStart(2, '0') }} 个方向 · {{ totalNotes }} 份笔记</p>
         </div>
 
-        <div class="grid">
+        <div class="index-list">
           <article
             v-for="(s, i) in sections"
             :key="s.id"
-            class="card"
-            :class="[`t-${s.tone}`, { 'is-open': openId === s.id, 'is-closing': s.closing }]"
+            class="index-item"
+            :class="{ open: openId === s.id }"
+            :style="{ '--tone': toneColor(s.tone) }"
           >
-            <div v-if="INDEX_STYLE === 'cards' && stripOf(s)" class="strip">
-              <span class="num">{{ String(i + 1).padStart(2, '0') }}</span>
-              <img :src="stripOf(s)" :alt="`${s.title}代表图`" loading="lazy" decoding="async" />
-            </div>
-
             <button
+              class="index-head"
               type="button"
-              class="card-head"
               :aria-expanded="openId === s.id"
               :aria-controls="`panel-${s.id}`"
               @click="toggle(s.id)"
             >
-              <span class="card-idx">{{ String(i + 1).padStart(2, '0') }}</span>
-              <span class="card-main">
-                <span class="card-en">{{ s.en }}</span>
-                <span class="card-title">{{ s.title }}</span>
-                <span class="card-desc">{{ s.desc }}</span>
-                <span v-if="INDEX_STYLE === 'cards'" class="card-chips">
-                  <span v-for="n in s.notes" :key="n.title" class="chip">{{ n.cover }}</span>
-                </span>
-
-                <span v-if="s.closing" class="closing">
-                  <span class="closing-p">
-                    这个站是我本科阶段学习笔记的公开存档：用 VitePress 写成，公式走 KaTeX，
-                    图片压成 webp。写得不一定对，但都是我真正算过一遍的东西。
-                  </span>
-                  <span class="closing-links">
-                    <a :href="profile.github" target="_blank" rel="noreferrer">GitHub</a>
-                    <a :href="`mailto:${profile.email}`">邮件</a>
-                    <a href="/posts/">随笔</a>
-                    <a href="/about">关于</a>
-                  </span>
-                </span>
+              <span class="index-num">{{ String(i + 1).padStart(2, '0') }}</span>
+              <span class="index-main">
+                <span class="index-en"><i />{{ s.en }}</span>
+                <span class="index-title">{{ s.title }}</span>
+                <span class="index-desc">{{ s.desc }}</span>
               </span>
-              <span class="card-right">
-                <span class="count">{{ s.notes.length }} 份 · {{ chaptersOf(s) }} 章</span>
-                <span class="chev" aria-hidden="true" />
-              </span>
+              <span class="index-count">{{ s.notes.length }} 份 · {{ chaptersOf(s) }} 章</span>
+              <span class="chevron" aria-hidden="true" />
             </button>
 
-            <div :id="`panel-${s.id}`" class="panel">
-              <div class="panel-clip">
-                <div class="panel-body">
-                  <div class="notes" :class="{ one: s.notes.length === 1 }">
-                    <div v-for="p in s.notes" :key="p.title" class="note" :class="`t-${p.tone}`">
-                      <a
-                        class="cover"
-                        :href="p.link"
-                        :target="isExternal(p.link) ? '_blank' : undefined"
-                        :rel="isExternal(p.link) ? 'noreferrer' : undefined"
-                      >
-                        <img v-if="p.image" :src="p.image" :alt="`${p.title} 代表图`" loading="lazy" />
-                        <span class="cover-lang">{{ p.lang }}</span>
-                      </a>
-                      <h3>
-                        <a
-                          :href="p.link"
-                          :target="isExternal(p.link) ? '_blank' : undefined"
-                          :rel="isExternal(p.link) ? 'noreferrer' : undefined"
-                        >{{ p.title }}</a>
-                      </h3>
-                      <p class="note-meta">
-                        <span v-if="p.badge" class="badge">{{ p.badge }}</span>{{ p.meta }}
-                      </p>
-                      <p class="note-desc">{{ p.desc }}</p>
-                    </div>
-                  </div>
+            <div :id="`panel-${s.id}`" class="index-panel">
+              <div class="index-panel-inner">
+                <div class="toc" :class="{ single: s.notes.length === 1 }">
+                  <a
+                    v-for="(p, j) in s.notes"
+                    :key="p.title"
+                    class="toc-row"
+                    :href="p.link"
+                    :target="isExternal(p.link) ? '_blank' : undefined"
+                    :rel="isExternal(p.link) ? 'noreferrer' : undefined"
+                  >
+                    <span class="toc-num">{{ String(j + 1).padStart(2, '0') }}</span>
+                    <span class="toc-title">{{ p.title }}</span>
+                    <span class="toc-meta">{{ shortMeta(p) }}</span>
+                    <img
+                      v-if="p.image"
+                      class="toc-thumb"
+                      :src="p.image"
+                      :alt="`${p.title} 代表图`"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                    <span
+                      v-else
+                      class="toc-thumb placeholder"
+                      :style="{ '--tone': toneColor(p.tone) }"
+                    >{{ p.cover.slice(0, 1) }}</span>
+                  </a>
                 </div>
               </div>
             </div>
           </article>
         </div>
       </section>
-    </div>
 
-    <footer class="foot">
-      <div class="wrap">
-        <span>© {{ year }} {{ profile.name }}</span>
-        <span>用 VitePress 搭建 · 部署在 GitHub Pages</span>
-      </div>
-    </footer>
+      <!-- ===== Colophon ===== -->
+      <footer class="colophon page">
+        <div class="colophon-mark">Sesame Panda · Colophon</div>
+        <div class="colophon-grid">
+          <div>
+            <h3>排印</h3>
+            <p>VitePress 排印，KaTeX 排公式；纸张纹理、页边线与目录版式为本页手写。</p>
+          </div>
+          <div>
+            <h3>字体</h3>
+            <p>标题与正文使用 Palatino / 思源宋体回退，标签与数字使用无衬线体与等宽体。</p>
+          </div>
+          <div>
+            <h3>版权</h3>
+            <p>© {{ year }} {{ profile.name }}。内容未经许可请勿转载，欢迎来信讨论。</p>
+          </div>
+        </div>
+        <div class="colophon-bottom">
+          <span>南京 · {{ year }}</span>
+          <span>
+            Made with care, revised slowly.
+            <a href="/about">关于</a> · <a href="#top">回到页首 ↑</a>
+          </span>
+        </div>
+      </footer>
+    </main>
   </div>
 </template>
 
 <style scoped>
-/* ===== 骨架 ===== */
-.page {
+.home-root {
+  --paper: #f8f3e7;
+  --paper-deep: #f1ead9;
+  --ink: #1d1a14;
+  --sub: #4a4438;
+  --muted: #7a7263;
+  --border: #ded5c3;
+  --border-soft: #e9e1d1;
+  --card: #f2ebdc;
+  --accent: #9a3b2a;
+  --accent-soft: rgba(154, 59, 42, 0.075);
+  --accent-line: rgba(154, 59, 42, 0.32);
+  --serif: "et-book", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, "Songti SC", "Noto Serif SC", "Source Han Serif SC", "SimSun", serif;
+  --sans: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  --mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace;
+  --wrap: 1120px;
+  --measure: 39rem;
+
   min-height: 100vh;
-  background: var(--av-bg);
-  color: var(--av-fg);
+  position: relative;
+  background:
+    radial-gradient(1100px 560px at 50% -12%, rgba(154, 59, 42, 0.045), transparent 62%),
+    var(--paper);
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 16px;
+  line-height: 1.75;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
-.wrap {
-  max-width: 68rem;
+.home-root.is-dark,
+:global(html.dark) .home-root {
+  --paper: #17140e;
+  --paper-deep: #1d1911;
+  --ink: #eee7d7;
+  --sub: #c9c0ae;
+  --muted: #948a78;
+  --border: #332e24;
+  --border-soft: #29251d;
+  --card: #1e1a13;
+  --accent: #d98a72;
+  --accent-soft: rgba(217, 138, 114, 0.1);
+  --accent-line: rgba(217, 138, 114, 0.34);
+
+  background:
+    radial-gradient(1100px 560px at 50% -12%, rgba(217, 138, 114, 0.055), transparent 62%),
+    var(--paper);
+}
+
+.home-root ::selection {
+  background: var(--accent);
+  color: var(--paper);
+}
+
+.home-root a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.home-root img {
+  display: block;
+  max-width: 100%;
+}
+
+.home-root button {
+  font: inherit;
+  color: inherit;
+}
+
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.08;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.92' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
+}
+
+.home-root.is-dark .grain,
+:global(html.dark) .home-root .grain {
+  opacity: 0.1;
+  mix-blend-mode: screen;
+  filter: invert(1);
+}
+
+.page {
+  width: 100%;
+  max-width: var(--wrap);
   margin: 0 auto;
-  padding: 0 2rem;
+  padding-left: 40px;
+  padding-right: 40px;
+  position: relative;
+  z-index: 1;
 }
 
-/* ===== 刊头 ===== */
-.mast {
-  border-bottom: 1px solid var(--av-border);
+/* ---------- masthead ---------- */
+.masthead {
+  border-bottom: 1px solid var(--border);
+  position: relative;
+  z-index: 2;
 }
 
-.mast .wrap {
-  padding-top: 1.5rem;
-  padding-bottom: 0.9rem;
+.masthead-inner {
+  padding-top: 1.15rem;
 }
 
-.mast-top {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 2rem;
-}
-
-.mast-name {
-  font-family: var(--av-mono);
-  font-size: 0.68rem;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--av-sub);
-  white-space: nowrap;
-}
-
-.mast-name:hover {
-  color: var(--av-fg);
-}
-
-.mast-meta {
+.masthead-top {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding-bottom: 0.95rem;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: baseline;
   gap: 0.7rem;
-  font-family: var(--av-sans);
-  font-size: 0.76rem;
-  color: var(--av-muted);
   white-space: nowrap;
 }
 
-.mast-meta a:hover {
-  color: var(--av-fg);
+.brand-en {
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
 }
 
-.mast-meta .dot {
-  color: var(--av-border);
+.brand-cn {
+  font-family: var(--sans);
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  color: var(--muted);
 }
 
-/* 刊头里的搜索：去掉默认的方框胶囊，只留一行文字 */
-.mast-meta :deep(.VPNavBarSearch) {
+.brand-cn::before {
+  content: '/';
+  margin-right: 0.7rem;
+  color: var(--border);
+}
+
+.masthead-meta {
+  font-family: var(--mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.16em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+.masthead-meta span + span::before {
+  content: '·';
+  margin: 0 0.55rem;
+  color: var(--border);
+}
+
+.masthead-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.masthead-actions :deep(.VPNavBarSearch) {
   padding-left: 0;
   flex-grow: 0;
 }
 
-.mast-meta :deep(.DocSearch-Button) {
+.masthead-actions :deep(.DocSearch-Button) {
   height: auto;
-  padding: 0;
-  border: 0;
-  border-radius: 0;
+  padding: 0.28rem 0.68rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
   background: transparent;
-  font-size: 0.76rem;
-  color: var(--av-muted);
+  font-family: var(--sans);
+  font-size: 0.66rem;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
 }
 
-.mast-meta :deep(.DocSearch-Button:hover) {
-  background: transparent;
-  color: var(--av-fg);
+.masthead-actions :deep(.DocSearch-Button:hover) {
+  color: var(--accent);
+  border-color: var(--accent-line);
+  background: var(--accent-soft);
 }
 
-.mast-meta :deep(.DocSearch-Button-Keys),
-.mast-meta :deep(.DocSearch-Search-Icon) {
+.masthead-actions :deep(.DocSearch-Button-Keys),
+.masthead-actions :deep(.DocSearch-Search-Icon) {
   display: none;
 }
 
-.mast-meta :deep(.DocSearch-Button-Placeholder) {
-  font-size: 0.76rem;
+.masthead-actions :deep(.DocSearch-Button-Placeholder) {
+  font-size: 0.66rem;
   padding: 0;
 }
 
-.mast-nav {
+.theme-toggle {
+  appearance: none;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0.28rem 0.76rem;
+  font-family: var(--sans);
+  font-size: 0.66rem;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+
+.theme-toggle:hover {
+  color: var(--accent);
+  border-color: var(--accent-line);
+  background: var(--accent-soft);
+}
+
+.topnav {
   display: flex;
   flex-wrap: wrap;
-  gap: 1.45rem;
-  margin-top: 0.85rem;
-  font-family: var(--av-sans);
-  font-size: 0.82rem;
-  color: var(--av-sub);
+  gap: 0.35rem 1.45rem;
+  padding: 0.7rem 0 0.85rem;
+  border-top: 1px solid var(--border-soft);
 }
 
-.mast-nav a {
-  position: relative;
-  padding-bottom: 1px;
+.topnav a {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.38rem;
+  font-family: var(--sans);
+  font-size: 0.76rem;
+  color: var(--sub);
+  letter-spacing: 0.03em;
+  transition: color 0.2s;
 }
 
-.mast-nav a::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  height: 1px;
-  width: 0;
-  background: currentColor;
-  transition: width 0.2s ease;
+.topnav a span {
+  font-family: var(--mono);
+  font-size: 0.56rem;
+  color: var(--accent);
+  opacity: 0.8;
 }
 
-.mast-nav a:hover {
-  color: var(--av-accent);
+.topnav a:hover {
+  color: var(--accent);
 }
 
-.mast-nav a:hover::after {
-  width: 100%;
-}
-
-/* ===== Hero ===== */
+/* ---------- hero ---------- */
 .hero {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 2.5rem;
+  grid-template-columns: minmax(0, 1fr) 272px;
+  gap: 4.2rem;
   align-items: start;
-  padding: 2.9rem 0 2.2rem;
+  padding-top: 4.2rem;
+  padding-bottom: 3.6rem;
+}
+
+.hero-copy {
+  max-width: 44rem;
+}
+
+.kicker {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin: 0 0 1.35rem;
+  font-family: var(--sans);
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.kicker-line {
+  display: inline-block;
+  width: 2.4rem;
+  height: 1px;
+  background: var(--accent-line);
 }
 
 h1 {
-  margin: 0 0 0.5rem;
-  font-size: 2.55rem;
-  line-height: 1.15;
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  margin: 0;
+  font-family: var(--serif);
+  font-size: clamp(2.55rem, 5.55vw, 4.75rem);
+  font-weight: 500;
+  line-height: 1.08;
+  letter-spacing: 0.015em;
+}
+
+.hero-en {
+  margin: 0.65rem 0 0;
+  font-family: var(--sans);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  color: var(--muted);
 }
 
 .tagline {
-  margin: 0 0 1rem;
-  font-size: 1.02rem;
-  color: var(--av-sub);
+  margin: 1.55rem 0 0;
+  font-size: 1.18rem;
+  color: var(--sub);
+  letter-spacing: 0.01em;
+}
+
+.hero-bio {
+  max-width: var(--measure);
+  margin: 1.15rem 0 0;
+  padding-left: 1rem;
+  border-left: 2px solid var(--accent-line);
+  font-size: 0.98rem;
+  line-height: 1.95;
+  color: var(--sub);
+}
+
+.hero-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem 1.4rem;
+  margin-top: 1.65rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-soft);
+  font-family: var(--sans);
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+  color: var(--muted);
 }
 
 .facts {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.4rem;
-  margin: 0 0 1.1rem;
-  padding: 0;
-  list-style: none;
-}
-
-.facts li {
-  font-family: var(--av-sans);
-  font-size: 0.76rem;
-  color: var(--av-sub);
-  border: 1px solid var(--av-border);
-  border-radius: 999px;
-  padding: 0.16rem 0.6rem;
-  background: var(--av-card);
-}
-
-.contact {
-  display: flex;
-  flex-wrap: wrap;
   align-items: center;
-  gap: 0.55rem;
-  margin: 0;
-  font-family: var(--av-sans);
-  font-size: 0.84rem;
-  color: var(--av-muted);
+  gap: 0.5rem 1rem;
 }
 
-.contact a {
-  color: var(--av-fg);
-  border-bottom: 1px solid var(--av-border);
-  padding-bottom: 1px;
-  white-space: nowrap;
+.facts span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-.contact a:hover {
-  border-bottom-color: var(--av-fg);
+.facts span::before {
+  content: '';
+  width: 4px;
+  height: 4px;
+  background: var(--accent);
+  border-radius: 50%;
+  opacity: 0.7;
 }
 
-.contact .dot {
-  color: var(--av-border);
-}
-
-.hero-side {
+.contacts {
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
   gap: 1.1rem;
 }
 
-.photo {
-  width: 132px;
-  height: 132px;
+.contacts a {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.1rem;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.contacts a:hover {
+  color: var(--accent);
+  border-color: var(--accent-line);
+}
+
+.hero-side {
+  padding-top: 0.45rem;
+}
+
+.portrait {
+  margin: 0;
+  padding: 10px 10px 8px;
+  background: #fffdf7;
+  border: 1px solid var(--border);
+  box-shadow: 0 22px 46px -28px rgba(29, 26, 20, 0.5);
+  transform: rotate(-1.4deg);
+  transition: transform 0.55s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.55s;
+}
+
+.home-root.is-dark .portrait,
+:global(html.dark) .home-root .portrait {
+  background: #242017;
+}
+
+.portrait:hover {
+  transform: rotate(0deg) translateY(-2px);
+  box-shadow: 0 28px 52px -26px rgba(0, 0, 0, 0.55);
+}
+
+.portrait img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
   object-fit: cover;
-  border-radius: 12px;
-  border: 1px solid var(--av-border);
+  filter: sepia(0.06) contrast(0.99) saturate(0.94);
+}
+
+.portrait figcaption {
+  margin-top: 0.55rem;
+  font-family: var(--mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.18em;
+  text-align: center;
+  color: var(--muted);
+  text-transform: uppercase;
 }
 
 .stats {
-  display: flex;
-  gap: 1.4rem;
-  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin-top: 1.55rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--ink);
 }
 
 .stats div {
-  border-left: 1px solid var(--av-border);
-  padding-left: 1rem;
+  padding-left: 0.8rem;
+  border-left: 1px solid var(--border);
 }
 
-.stats dt {
-  font-family: var(--av-mono);
-  font-size: 1.28rem;
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  line-height: 1.2;
+.stats div:first-child {
+  padding-left: 0;
+  border-left: 0;
 }
 
-.stats dd {
-  margin: 0;
-  font-family: var(--av-sans);
-  font-size: 0.72rem;
-  color: var(--av-muted);
-  letter-spacing: 0.04em;
+.stats strong {
+  display: block;
+  font-family: var(--serif);
+  font-size: 1.38rem;
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
 }
 
-/* ===== 区块标题 ===== */
-.sec-head {
+.stats span {
+  display: block;
+  margin-top: 0.28rem;
+  font-family: var(--sans);
+  font-size: 0.56rem;
+  letter-spacing: 0.14em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+/* ---------- sections ---------- */
+.section-head {
   display: flex;
-  align-items: baseline;
-  gap: 0.8rem;
-  margin: 0 0 1.1rem;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding-bottom: 0.7rem;
+  border-bottom: 1px solid var(--ink);
 }
 
-.sec-head h2 {
-  margin: 0;
-  font-size: 1.18rem;
-  font-weight: 650;
-  letter-spacing: -0.01em;
-}
-
-.sec-head .en {
-  font-family: var(--av-mono);
-  font-size: 0.64rem;
-  letter-spacing: 0.18em;
+.eyebrow {
+  margin: 0 0 0.35rem;
+  font-family: var(--sans);
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.24em;
   text-transform: uppercase;
-  color: var(--av-muted);
+  color: var(--accent);
 }
 
-.sec-head .rule {
-  flex: 1;
-  height: 1px;
-  background: var(--av-border);
+.section-head h2 {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: 2.15rem;
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
 }
 
-.sec-head .more {
-  font-family: var(--av-sans);
-  font-size: 0.76rem;
-  color: var(--av-muted);
+.section-note {
+  margin: 0 0 0.18rem;
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  white-space: nowrap;
 }
 
-/* ===== 最近更新 ===== */
 .recent {
-  padding-bottom: 2.6rem;
+  padding-top: 3.2rem;
 }
 
-.upd {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  border-top: 1px solid var(--av-border);
+.revision-list {
+  margin-top: 0.15rem;
 }
 
-.upd li {
-  border-bottom: 1px solid var(--av-border);
-}
-
-.upd a {
+.revision {
   display: grid;
-  grid-template-columns: 6rem 1fr auto;
+  grid-template-columns: 4.2rem 7.5rem minmax(0, 1fr) 1.4rem;
+  align-items: baseline;
   gap: 1rem;
-  align-items: center;
-  padding: 0.62rem 0;
+  padding: 0.92rem 0.4rem 0.92rem 0;
+  border-bottom: 1px solid var(--border-soft);
+  transition: background 0.2s, padding-left 0.2s;
 }
 
-.upd a:hover .upd-title {
-  color: var(--av-accent);
+.revision:hover {
+  background: var(--accent-soft);
+  padding-left: 0.5rem;
 }
 
-.upd-tag {
-  font-family: var(--av-mono);
+.revision time {
+  font-family: var(--mono);
   font-size: 0.64rem;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+
+.rev-tag {
+  font-family: var(--sans);
+  font-size: 0.6rem;
   letter-spacing: 0.1em;
+  color: var(--accent);
   text-transform: uppercase;
-  color: var(--av-muted);
 }
 
-.upd-title {
-  font-size: 0.94rem;
-  transition: color 0.16s ease;
+.rev-title {
+  font-size: 1.02rem;
+  line-height: 1.55;
+  color: var(--sub);
+  transition: color 0.2s;
 }
 
-.upd-date {
-  font-family: var(--av-mono);
-  font-size: 0.7rem;
-  color: var(--av-muted);
+.revision:hover .rev-title {
+  color: var(--ink);
 }
 
-/* ===== 方向配色：真实色相，深浅各一套 ===== */
-.t-sage   { --tone: #4e6852; --tint: #e9eee7; }
-.t-mist   { --tone: #546876; --tint: #e8edf0; }
-.t-stone  { --tone: #585c68; --tint: #e9eaee; }
-.t-clay   { --tone: #7e5240; --tint: #f3e9e3; }
-.t-sand   { --tone: #78603c; --tint: #f4eddd; }
-.t-violet { --tone: #5a5470; --tint: #eae8f1; }
-.t-teal   { --tone: #456b6b; --tint: #e5efed; }
-.t-amber  { --tone: #8a6b34; --tint: #f5eedb; }
-.t-umber  { --tone: #6b5b52; --tint: #efe9e5; }
+.rev-arrow {
+  font-family: var(--sans);
+  font-size: 0.8rem;
+  color: var(--muted);
+  text-align: right;
+  transition: transform 0.2s, color 0.2s;
+}
 
-:global(html.dark) .t-sage   { --tone: #8fb397; --tint: #1b211c; }
-:global(html.dark) .t-mist   { --tone: #93b0c2; --tint: #1a2126; }
-:global(html.dark) .t-stone  { --tone: #9aa0b0; --tint: #1c1e23; }
-:global(html.dark) .t-clay   { --tone: #c09079; --tint: #271a15; }
-:global(html.dark) .t-sand   { --tone: #c3a066; --tint: #272115; }
-:global(html.dark) .t-violet { --tone: #a49dc4; --tint: #1e1b26; }
-:global(html.dark) .t-teal   { --tone: #7fb5ad; --tint: #182323; }
-:global(html.dark) .t-amber  { --tone: #c7a862; --tint: #262013; }
-:global(html.dark) .t-umber  { --tone: #b39c90; --tint: #211c19; }
+.revision:hover .rev-arrow {
+  transform: translate(2px, -2px);
+  color: var(--accent);
+}
 
-/* ===== 索引 ===== */
 .index {
-  padding-bottom: 3rem;
+  padding-top: 4.4rem;
 }
 
-.grid {
+.index-list {
+  margin-top: 0.2rem;
+}
+
+.index-item {
+  border-bottom: 1px solid var(--border);
+}
+
+.index-item:first-child {
+  border-top: 1px solid var(--border);
+}
+
+.index-head {
   display: grid;
-  gap: 0.9rem;
-}
-
-.card {
-  position: relative;
-  overflow: hidden;
-  border: 1px solid var(--av-border);
-  border-radius: 14px;
-  background: var(--tint);
-  transition: border-color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease,
-    background-color 0.18s ease;
-}
-
-.card::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 3px;
-  background: var(--tone);
-  opacity: 0.62;
-  transition: opacity 0.18s ease;
-  z-index: 3;
-}
-
-.card:hover::before,
-.card.is-open::before {
-  opacity: 1;
-}
-
-.card.is-open {
-  border-color: var(--av-fg);
-  box-shadow: 0 16px 44px rgba(0, 0, 0, 0.08);
-}
-
-.card-head {
-  position: relative;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 1rem;
+  grid-template-columns: 4.3rem minmax(0, 1fr) auto 1.6rem;
+  align-items: center;
+  gap: 1.2rem;
   width: 100%;
-  padding: 1.05rem 1.3rem 1.05rem 1.45rem;
+  padding: 1.35rem 0;
+  background: none;
   border: 0;
-  background: transparent;
-  font: inherit;
-  color: inherit;
   text-align: left;
   cursor: pointer;
 }
 
-.card-head:focus-visible {
-  outline: 2px solid var(--av-accent);
-  outline-offset: -3px;
+.index-num {
+  font-family: var(--serif);
+  font-size: 2.45rem;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--tone, var(--accent));
+  opacity: 0.86;
+  transition: transform 0.3s, opacity 0.3s;
 }
 
-.card-idx {
-  display: none;
-  font-family: var(--av-mono);
-  font-size: 0.68rem;
-  color: var(--tone);
+.index-head:hover .index-num {
+  transform: translateX(4px);
+  opacity: 1;
 }
 
-.card-main {
-  display: flex;
-  flex-direction: column;
+.index-main {
   min-width: 0;
 }
 
-.card-en {
-  font-family: var(--av-mono);
-  font-size: 0.6rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--av-muted);
-  margin-bottom: 0.16rem;
-}
-
-.card-title {
-  display: block;
-  font-size: 1.24rem;
-  font-weight: 650;
-  letter-spacing: -0.01em;
-  line-height: 1.35;
-}
-
-.card-desc {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  margin-top: 0.35rem;
-  font-size: 0.84rem;
-  line-height: 1.65;
-  color: var(--av-sub);
-}
-
-.card-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.3rem;
-  margin-top: 0.85rem;
-}
-
-.chip {
-  font-family: var(--av-sans);
-  font-size: 0.68rem;
-  color: var(--av-sub);
-  border: 1px solid color-mix(in srgb, var(--tone) 20%, transparent);
-  border-radius: 999px;
-  padding: 0.04rem 0.45rem;
-  background: color-mix(in srgb, var(--av-bg) 70%, transparent);
-}
-
-.card-right {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  justify-content: center;
-  gap: 0.45rem;
-}
-
-.count {
-  font-family: var(--av-mono);
-  font-size: 0.68rem;
-  color: var(--tone);
-  opacity: 0.9;
-  white-space: nowrap;
-}
-
-.chev {
-  width: 7px;
-  height: 7px;
-  border-right: 1.5px solid var(--av-sub);
-  border-bottom: 1.5px solid var(--av-sub);
-  transform: rotate(45deg);
-  transition: transform 0.24s ease;
-}
-
-.card.is-open .chev {
-  transform: rotate(225deg);
-}
-
-/* 收尾卡里的「关于本站」 */
-.closing {
-  display: block;
-  margin-top: 0.55rem;
-  max-width: 44rem;
-}
-
-.closing-p {
-  display: block;
-  font-size: 0.86rem;
-  line-height: 1.75;
-  color: var(--av-sub);
-}
-
-.closing-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1.1rem;
-  margin-top: 0.9rem;
-  font-family: var(--av-sans);
-  font-size: 0.8rem;
-}
-
-.closing-links a {
-  color: var(--av-fg);
-  border-bottom: 1px solid var(--av-border);
-  padding-bottom: 1px;
-}
-
-.closing-links a:hover {
-  border-bottom-color: var(--av-fg);
-}
-
-/* 展开面板 */
-.panel {
-  display: grid;
-  grid-template-rows: 0fr;
-  transition: grid-template-rows 0.38s cubic-bezier(0.22, 0.61, 0.36, 1);
-}
-
-.card.is-open .panel {
-  grid-template-rows: 1fr;
-}
-
-.panel-clip {
-  min-height: 0;
-  overflow: hidden;
-}
-
-.panel-body {
-  padding: 0 1.45rem 1.2rem;
-}
-
-.notes {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.5rem 1.4rem;
-  padding-top: 1.1rem;
-  border-top: 1px solid color-mix(in srgb, var(--tone) 24%, transparent);
-}
-
-.cover {
-  position: relative;
-  display: block;
-  overflow: hidden;
-  aspect-ratio: 16 / 10;
-  border-radius: 9px;
-  border: 1px solid var(--av-border);
-  background: var(--av-card);
-}
-
-.cover img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  transition: transform 0.5s ease;
-}
-
-.cover:hover img {
-  transform: scale(1.04);
-}
-
-.cover-lang {
-  position: absolute;
-  left: 0.7rem;
-  top: 0.6rem;
-  font-family: var(--av-mono);
-  font-size: 0.6rem;
-  letter-spacing: 0.13em;
-  text-transform: uppercase;
-  color: #fff;
-  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.65);
-}
-
-.note h3 {
-  margin: 0.75rem 0 0.15rem;
-  font-size: 0.98rem;
-  font-weight: 600;
-}
-
-.note h3 a:hover {
-  color: var(--av-accent);
-}
-
-.note-meta {
+.index-en {
   display: flex;
   align-items: center;
   gap: 0.45rem;
-  margin: 0;
-  font-family: var(--av-sans);
-  font-size: 0.72rem;
-  color: var(--av-muted);
+  font-family: var(--sans);
+  font-size: 0.58rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--muted);
 }
 
-.badge {
-  font-family: var(--av-sans);
-  font-size: 0.62rem;
-  padding: 0.02rem 0.32rem;
-  border-radius: 4px;
-  background: color-mix(in srgb, var(--tone) 16%, transparent);
-  color: var(--tone);
+.index-en i {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--tone, var(--accent));
+  opacity: 0.8;
 }
 
-.note-desc {
-  margin: 0.35rem 0 0;
-  font-size: 0.82rem;
-  line-height: 1.6;
-  color: var(--av-sub);
+.index-title {
+  display: block;
+  margin-top: 0.18rem;
+  font-size: 1.55rem;
+  line-height: 1.25;
+  letter-spacing: 0.02em;
+  transition: color 0.2s;
 }
 
-/* ===== 样式 A：双列图卡 ===== */
-.style-cards .grid {
-  grid-template-columns: 1fr 1fr;
-  align-items: stretch;
+.index-head:hover .index-title {
+  color: var(--accent);
 }
 
-.style-cards .card {
-  display: flex;
-  flex-direction: column;
+.index-desc {
+  display: block;
+  margin-top: 0.28rem;
+  max-width: 48rem;
+  font-size: 0.86rem;
+  line-height: 1.7;
+  color: var(--muted);
 }
 
-.style-cards .card-head {
-  flex: 1 1 auto;
+.index-count {
+  font-family: var(--mono);
+  font-size: 0.61rem;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  white-space: nowrap;
 }
 
-.style-cards .card-idx {
-  display: none;
-}
-
-.style-cards .card.is-open {
-  grid-column: 1 / -1;
-}
-
-.style-cards .strip {
+.chevron {
   position: relative;
-  height: 112px;
-  overflow: hidden;
-  flex: 0 0 auto;
-  transition: height 0.3s ease;
+  width: 1.6rem;
+  height: 1.6rem;
 }
 
-.style-cards .card.is-open .strip {
-  height: 0;
-}
-
-.style-cards .strip img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center 42%;
-  filter: saturate(0.9) contrast(0.98);
-  transition: transform 0.6s ease, filter 0.3s ease;
-}
-
-.style-cards .card:hover .strip img {
-  transform: scale(1.04);
-  filter: saturate(1);
-}
-
-.style-cards .strip::after {
+.chevron::before,
+.chevron::after {
   content: '';
   position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to bottom,
-    color-mix(in srgb, var(--tint) 14%, transparent) 0%,
-    color-mix(in srgb, var(--tint) 48%, transparent) 45%,
-    color-mix(in srgb, var(--tint) 92%, transparent) 82%,
-    var(--tint) 100%
-  );
+  top: 50%;
+  width: 0.62rem;
+  height: 1px;
+  background: var(--muted);
+  transition: transform 0.3s, background 0.3s;
 }
 
-.style-cards .strip .num {
-  position: absolute;
-  left: 1.15rem;
-  top: 0.62rem;
-  z-index: 2;
-  font-family: var(--av-mono);
-  font-size: 0.6rem;
-  letter-spacing: 0.12em;
-  color: #fff;
-  background: color-mix(in srgb, var(--tone) 78%, #000);
-  padding: 0.1rem 0.38rem;
-  border-radius: 4px;
+.chevron::before {
+  left: 0.1rem;
+  transform: rotate(40deg);
 }
 
-.style-cards .card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.07);
+.chevron::after {
+  right: 0.1rem;
+  transform: rotate(-40deg);
 }
 
-.style-cards .card.is-open {
-  border-color: var(--av-fg);
-  box-shadow: 0 16px 44px rgba(0, 0, 0, 0.08);
-  transform: none;
+.index-item.open .chevron::before {
+  transform: rotate(-40deg);
+  background: var(--accent);
 }
 
-/* 收尾卡横排 */
-.style-cards .card.is-closing {
-  grid-column: 1 / -1;
+.index-item.open .chevron::after {
+  transform: rotate(40deg);
+  background: var(--accent);
+}
+
+.index-panel {
   display: grid;
-  grid-template-columns: 19rem minmax(0, 1fr);
-  align-items: stretch;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-.style-cards .card.is-closing .strip {
-  height: 100%;
-  min-height: 150px;
+.index-item.open .index-panel {
+  grid-template-rows: 1fr;
 }
 
-.style-cards .card.is-closing .panel {
-  grid-column: 1 / -1;
+.index-panel-inner {
+  overflow: hidden;
+  min-height: 0;
 }
 
-/* ===== 样式 B：单列细线目录 ===== */
-.style-list .grid {
-  gap: 0;
+.toc {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 2.4rem;
+  padding: 0.15rem 0 1.7rem 5.5rem;
 }
 
-.style-list .card {
-  background: transparent;
-  border: 0;
-  border-bottom: 1px solid var(--av-border);
-  border-radius: 0;
+.toc.single {
+  grid-template-columns: 1fr;
 }
 
-.style-list .card:hover {
-  background: color-mix(in srgb, var(--tone) 5%, transparent);
+.toc-row {
+  display: grid;
+  grid-template-columns: 2rem minmax(0, 1fr) auto 72px;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 4.1rem;
+  padding: 0.55rem 0;
+  border-top: 1px solid var(--border-soft);
+  transition: background 0.2s;
 }
 
-.style-list .card.is-open {
-  background: var(--tint);
-  border: 1px solid var(--av-border);
-  border-radius: 14px;
-  margin: 0.4rem 0;
-  box-shadow: none;
+.toc-row:hover {
+  background: var(--accent-soft);
 }
 
-.style-list .card-head {
-  grid-template-columns: 2.4rem minmax(0, 1fr) auto;
-  gap: 0 1.1rem;
-  padding: 0.82rem 0.9rem 0.86rem 1rem;
+.toc-num {
+  font-family: var(--mono);
+  font-size: 0.58rem;
+  color: var(--muted);
 }
 
-.style-list .card-idx {
-  display: block;
-  grid-column: 1;
-  grid-row: 1 / span 3;
-  align-self: start;
-  padding-top: 0.34rem;
-  opacity: 0.9;
+.toc-title {
+  font-size: 0.94rem;
+  line-height: 1.45;
+  color: var(--sub);
+  transition: color 0.2s;
 }
 
-.style-list .card-main {
-  grid-column: 2;
-  grid-row: 1 / span 3;
+.toc-row:hover .toc-title {
+  color: var(--accent);
 }
 
-.style-list .card-en {
-  display: none;
+.toc-meta {
+  font-family: var(--mono);
+  font-size: 0.56rem;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  white-space: nowrap;
 }
 
-.style-list .card-title {
-  font-size: 1.06rem;
-  line-height: 1.5;
+.toc-thumb {
+  width: 72px;
+  height: 46px;
+  object-fit: cover;
+  border: 1px solid var(--border);
+  filter: saturate(0.82) contrast(0.98);
+  transition: transform 0.3s, filter 0.3s;
 }
 
-.style-list .card-desc {
-  -webkit-line-clamp: 1;
-  margin-top: 0.06rem;
-  font-size: 0.81rem;
-  line-height: 1.55;
-  color: var(--av-muted);
+.toc-row:hover .toc-thumb {
+  transform: scale(1.045);
+  filter: saturate(1) contrast(1);
 }
 
-.style-list .card-chips {
-  display: none;
+.toc-thumb.placeholder {
+  display: grid;
+  place-items: center;
+  background: var(--card);
+  color: var(--tone, var(--accent));
+  font-family: var(--serif);
+  font-size: 1.15rem;
+  font-style: italic;
+  filter: none;
 }
 
-.style-list .card-right {
-  grid-column: 3;
-  grid-row: 1 / span 3;
-  justify-content: center;
+/* ---------- colophon ---------- */
+.colophon {
+  margin-top: 5.8rem;
+  padding-top: 1.6rem;
+  padding-bottom: 3.2rem;
+  border-top: 3px double var(--border);
 }
 
-.style-list .closing {
-  margin-top: 0.55rem;
+.colophon-mark {
+  font-family: var(--sans);
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--accent);
 }
 
-/* ===== 页脚 ===== */
-.foot {
-  border-top: 1px solid var(--av-border);
-  padding: 1.6rem 0 2.6rem;
-  font-family: var(--av-sans);
-  font-size: 0.76rem;
-  color: var(--av-muted);
+.colophon-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr;
+  gap: 2.5rem;
+  margin-top: 1.25rem;
 }
 
-.foot .wrap {
+.colophon h3 {
+  margin: 0 0 0.45rem;
+  font-family: var(--sans);
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.colophon p {
+  margin: 0;
+  max-width: 30rem;
+  font-size: 0.8rem;
+  line-height: 1.85;
+  color: var(--muted);
+}
+
+.colophon-bottom {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
+  align-items: baseline;
   justify-content: space-between;
+  gap: 1rem;
+  margin-top: 2.2rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border-soft);
+  font-family: var(--mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  text-transform: uppercase;
 }
 
-/* ===== 响应式 ===== */
-@media (max-width: 1000px) {
-  .style-cards .grid {
-    grid-template-columns: 1fr;
-  }
+.colophon-bottom a {
+  border-bottom: 1px solid var(--border);
+}
 
-  .style-cards .card.is-closing {
-    grid-template-columns: 1fr;
-  }
+.colophon-bottom a:hover {
+  color: var(--accent);
+  border-color: var(--accent-line);
+}
 
-  .style-cards .card.is-closing .strip {
-    height: 130px;
-    min-height: 0;
+/* ---------- entrance ---------- */
+@keyframes pageFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
   }
-
-  .notes {
-    grid-template-columns: 1fr;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-@media (max-width: 820px) {
-  .mast .wrap {
-    padding-top: 1.1rem;
-    padding-bottom: 0.7rem;
+@keyframes portraitFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px) rotate(-1.4deg);
   }
+  to {
+    opacity: 1;
+    transform: rotate(-1.4deg);
+  }
+}
 
-  .mast-meta {
+.masthead { animation: pageFadeUp 0.75s cubic-bezier(0.2, 0.8, 0.2, 1) 0ms both; }
+.kicker   { animation: pageFadeUp 0.75s cubic-bezier(0.2, 0.8, 0.2, 1) 80ms both; }
+h1        { animation: pageFadeUp 0.75s cubic-bezier(0.2, 0.8, 0.2, 1) 140ms both; }
+.hero-en  { animation: pageFadeUp 0.75s cubic-bezier(0.2, 0.8, 0.2, 1) 200ms both; }
+.tagline  { animation: pageFadeUp 0.75s cubic-bezier(0.2, 0.8, 0.2, 1) 260ms both; }
+.hero-bio { animation: pageFadeUp 0.75s cubic-bezier(0.2, 0.8, 0.2, 1) 320ms both; }
+.hero-meta{ animation: pageFadeUp 0.75s cubic-bezier(0.2, 0.8, 0.2, 1) 380ms both; }
+.portrait { animation: portraitFadeIn 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 280ms both; }
+.stats    { animation: pageFadeUp 0.75s cubic-bezier(0.2, 0.8, 0.2, 1) 420ms both; }
+.recent   { animation: pageFadeUp 0.75s cubic-bezier(0.2, 0.8, 0.2, 1) 480ms both; }
+.index    { animation: pageFadeUp 0.75s cubic-bezier(0.2, 0.8, 0.2, 1) 550ms both; }
+.colophon { animation: pageFadeUp 0.75s cubic-bezier(0.2, 0.8, 0.2, 1) 620ms both; }
+
+/* ---------- responsive ---------- */
+@media (max-width: 1040px) {
+  .page {
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+  .hero {
+    grid-template-columns: minmax(0, 1fr) 244px;
+    gap: 3rem;
+  }
+  .toc {
+    padding-left: 4.8rem;
+    gap: 0 1.6rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .masthead-meta {
     display: none;
   }
-
-  .mast-nav {
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    scrollbar-width: none;
-    gap: 1.15rem;
-    margin-top: 0.6rem;
-    padding-bottom: 2px;
-    font-size: 0.78rem;
-    -webkit-mask-image: linear-gradient(to right, #000 86%, transparent);
-    mask-image: linear-gradient(to right, #000 86%, transparent);
-  }
-
-  .mast-nav::-webkit-scrollbar {
-    display: none;
-  }
-
-  .mast-nav a {
-    white-space: nowrap;
-  }
-
   .hero {
     grid-template-columns: 1fr;
-    gap: 1.6rem;
-    padding: 2.2rem 0 1.4rem;
+    gap: 2.6rem;
+    padding-top: 3.2rem;
   }
-
-  h1 {
-    font-size: 1.85rem;
-  }
-
   .hero-side {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
+    display: grid;
+    grid-template-columns: 196px 1fr;
+    gap: 1.6rem;
+    align-items: start;
   }
-
-  .photo {
-    width: 92px;
-    height: 92px;
-    border-radius: 10px;
+  .portrait {
+    max-width: 196px;
   }
-
   .stats {
-    gap: 1rem;
+    margin-top: 0;
+    padding-top: 1rem;
   }
+  .topnav {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 0.3rem 0.95rem;
+    scrollbar-width: none;
+  }
+  .topnav::-webkit-scrollbar {
+    display: none;
+  }
+  .topnav a {
+    flex: 0 0 auto;
+    font-size: 0.7rem;
+  }
+  .toc {
+    grid-template-columns: 1fr;
+    padding-left: 4.8rem;
+  }
+  .colophon-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 1.6rem 2rem;
+  }
+  .colophon-grid > div:last-child {
+    grid-column: 1 / -1;
+  }
+}
 
-  .stats dt {
+@media (max-width: 680px) {
+  .page {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  .masthead-top {
+    padding-bottom: 0.8rem;
+  }
+  .brand-en {
+    font-size: 0.64rem;
+    letter-spacing: 0.24em;
+  }
+  .brand-cn {
+    display: none;
+  }
+  .topnav {
+    gap: 0.3rem 1rem;
+  }
+  .topnav a {
+    font-size: 0.7rem;
+  }
+  .hero {
+    padding-top: 2.6rem;
+    padding-bottom: 2.6rem;
+  }
+  h1 {
+    font-size: clamp(2.2rem, 10.5vw, 3.4rem);
+  }
+  .tagline {
+    font-size: 1.04rem;
+  }
+  .hero-bio {
+    font-size: 0.93rem;
+  }
+  .hero-side {
+    grid-template-columns: 148px 1fr;
+    gap: 1.2rem;
+  }
+  .portrait {
+    padding: 7px 7px 6px;
+  }
+  .portrait figcaption {
+    font-size: 0.5rem;
+  }
+  .stats {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .stats strong {
     font-size: 1.05rem;
   }
-
-  .upd a {
-    grid-template-columns: 1fr auto;
-    gap: 0.2rem 0.8rem;
+  .stats span {
+    font-size: 0.5rem;
+    letter-spacing: 0.08em;
   }
-
-  .upd-tag {
-    grid-column: 1 / -1;
-    font-size: 0.6rem;
+  .section-head {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.4rem;
   }
-
-  .wrap {
-    padding: 0 1.15rem;
+  .section-head h2 {
+    font-size: 1.75rem;
   }
-
-  .style-list .card-head {
-    grid-template-columns: 2rem minmax(0, 1fr) auto;
-    gap: 0 0.7rem;
-    padding: 0.78rem 0.6rem 0.82rem 0.75rem;
+  .section-note {
+    margin-bottom: 0;
   }
-
-  .panel-body {
-    padding: 0 1.1rem 1.1rem;
+  .revision {
+    grid-template-columns: 3.4rem minmax(0, 1fr) 1.2rem;
+    gap: 0.6rem;
+  }
+  .rev-tag {
+    display: none;
+  }
+  .index-head {
+    grid-template-columns: 2.5rem minmax(0, 1fr) 1.2rem;
+    gap: 0.7rem;
+    padding: 1.05rem 0;
+  }
+  .index-num {
+    font-size: 1.65rem;
+  }
+  .index-title {
+    font-size: 1.28rem;
+  }
+  .index-desc {
+    font-size: 0.78rem;
+  }
+  .index-count {
+    display: none;
+  }
+  .toc {
+    padding-left: 0;
+    padding-bottom: 1.2rem;
+  }
+  .toc-row {
+    grid-template-columns: 1.6rem minmax(0, 1fr) 58px;
+    gap: 0.55rem;
+    min-height: 3.5rem;
+  }
+  .toc-meta {
+    display: none;
+  }
+  .toc-thumb {
+    width: 58px;
+    height: 38px;
+  }
+  .colophon {
+    margin-top: 4rem;
+  }
+  .colophon-grid {
+    grid-template-columns: 1fr;
+    gap: 1.2rem;
+  }
+  .colophon-bottom {
+    flex-direction: column;
+    gap: 0.35rem;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .card,
-  .card::before,
-  .chev,
-  .panel,
-  .cover img,
-  .style-cards .strip,
-  .style-cards .strip img,
-  .upd-title,
-  .mast-nav a::after {
-    transition: none;
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
   }
 }
 </style>

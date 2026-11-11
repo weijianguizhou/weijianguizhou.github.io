@@ -26,15 +26,13 @@ my-blog/
 │  │  ├─ index.md
 │  │  ├─ hello-world.md
 │  │  └─ writing-with-markdown.md
-│  ├─ ros2/                        # ROS 2 连载（内容来自 ROS2/ 下的原始笔记）
+│  ├─ ros2/                        # ROS 2 连载（内容来自 机器人学/ROS2/ 下的 tex 笔记）
 │  │  ├─ index.md                  # 系列目录
-│  │  ├─ ch-01-ubuntu-wsl-ros.md   # 第一章：Ubuntu、WSL 与 ROS 是什么
-│  │  ├─ ch-02-wsl-install.md      # 第二章：WSL 安装与配置踩坑
-│  │  ├─ ch-03-ros2-install.md     # 第三章：ROS 2 安装与验证
-│  │  ├─ ch-04-ubuntu-commands.md  # 第四章：Ubuntu 常用命令
-│  │  ├─ ch-05-ubuntu-programming.md # 第五章：Ubuntu 环境下编程
-│  │  ├─ ch-06-ros2-experience.md  # 第六章：ROS 2 体验与系统架构
-│  │  └─ ch-07-cmake-ament.md      # 第七章：用 CMake + ament 编译节点
+│  │  ├─ ch-01-ubuntu-ros.md       # 第一章：Ubuntu、WSL 与 ROS 简介
+│  │  ├─ ch-02-ubuntu-commands.md  # 第二章：Ubuntu 常用指令
+│  │  ├─ ch-03-ubuntu-programming.md # 第三章：Ubuntu 环境下编程
+│  │  ├─ ch-04-ros2-fundamentals.md # 第四章：ROS 2 基础
+│  │  └─ ch-05-ros2-node.md        # 第五章：ROS 2 节点
 │  ├─ fluids/                      # 流体力学连载（内容来自 流体力学/笔记/）
 │  │  ├─ index.md
 │  │  ├─ ch-01-intro.md            # 第一章 绪论
