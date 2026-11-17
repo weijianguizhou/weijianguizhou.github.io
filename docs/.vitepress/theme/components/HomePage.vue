@@ -2,6 +2,7 @@
 import { computed, ref } from 'vue'
 import { useData } from 'vitepress'
 import VPNavBarSearch from 'vitepress/dist/client/theme-default/components/VPNavBarSearch.vue'
+import IntroScene from './IntroScene.vue'
 
 /* ============================================================
  * 首页。改内容只看这一段的三个对象：profile / recent / sections
@@ -59,24 +60,12 @@ const profile = {
 
 /** 刊头第二行的方向链接（顺序 = 页面顺序） */
 const topLinks = [
-  { text: '普通物理', link: '/notes/physics-electromagnetism' },
-  { text: '流体力学', link: '/fluids/' },
-  { text: '数字电路', link: '/digital/' },
-  { text: '控制工程', link: '/control/' },
-  { text: 'Linux', link: '/linux/' },
-  { text: 'ROS 2', link: '/ros2/' },
-  { text: '数据结构', link: '/data-structures/' },
-  { text: '写作与排版', link: '/writing/' },
-  { text: '随笔', link: '/posts/' }
+  { text: 'ROS 2', link: '/ros2/' }
 ]
 
 /** 最近校订：手动维护，一条一行，按时间倒序 */
 const recent = [
-  { tag: 'ROS 2', title: 'ROS 2 连载重排为 5 章，统一 Ubuntu 24.04 + Jazzy', link: '/ros2/', date: '11-11' },
-  { tag: '控制', title: '控制工程：第八章 根轨迹法与典型例题', link: '/control/', date: '10-30' },
-  { tag: 'Linux', title: '新增 Linux 使用教程（10 章连载）', link: '/linux/', date: '10-30' },
-  { tag: '数字电路', title: '补入第三至五章：组合逻辑、时序分析与设计', link: '/digital/', date: '10-28' },
-  { tag: '计算机', title: '新增 Eigen 库指南（19 章）与 Git 命令笔记', link: '/notes/eigen/', date: '10-28' },
+  { tag: 'ROS 2', title: 'ROS 2 连载扩到 7 章，补节点、话题、colcon 与通信', link: '/ros2/', date: '11-17' },
   { tag: '数据结构', title: '上线数据结构连载（10 章）与随笔分区', link: '/data-structures/', date: '10-26' }
 ]
 
@@ -92,42 +81,21 @@ const sections: Section[] = [
       {
         title: 'ROS 2 学习记录（连载）',
         cover: 'ROS 2',
-        meta: '2026 年 11 月 · 5 章',
-        desc: '从 Ubuntu、WSL 环境一路到 ROS 2 架构与节点，全是踩过的坑。',
+        meta: '2026 年 11 月 · 7 章',
+        desc: '从 Ubuntu、WSL 环境一路到 ROS 2 架构、节点、话题、colcon 构建与通信，全是踩过的坑。',
         link: '/ros2/',
         lang: 'UBUNTU 24.04',
         tone: 'sage',
         badge: '连载',
-        chapters: 5,
+        chapters: 7,
         image: '/ros2/talker-listener.webp'
       }
     ]
   },
   {
-    id: 'electronics',
-    title: '电子',
-    en: 'ELECTRONICS',
-    desc: '数字电路：数制与编码、布尔代数、组合与时序逻辑，配电路图与芯片符号。',
-    tone: 'mist',
-    notes: [
-      {
-        title: '数字电路（连载）',
-        cover: '数字电路',
-        meta: '2026 · 5 章',
-        desc: '数制与编码、布尔代数、组合与时序逻辑，配电路图与芯片符号。',
-        link: '/digital/',
-        lang: 'DIGITAL CIRCUITS',
-        tone: 'sand',
-        badge: '连载',
-        chapters: 5,
-        image: '/digital/and-circuit.webp'
-      }
-    ]
-  },
-  {
     id: 'physics',
-    title: '物理',
-    en: 'PHYSICS',
+    title: '普通物理',
+    en: 'GENERAL PHYSICS',
     desc: '静电场、电磁感应、热辐射、原子物理与物理实验，公式按篇排版。',
     tone: 'stone',
     notes: [
@@ -215,57 +183,12 @@ const sections: Section[] = [
     ]
   },
   {
-    id: 'control',
-    title: '控制',
-    en: 'CONTROL',
-    desc: '古典控制理论：建模、时域响应、频率特性、稳定性、误差、校正与根轨迹。',
-    tone: 'sand',
-    notes: [
-      {
-        title: '控制工程基础（连载）',
-        cover: '控制工程',
-        meta: '2026 年 10 月 · 8 章 + 例题',
-        desc: '从微分方程与传递函数讲起，走完时域、频域、稳定性、稳态误差、校正与根轨迹，附典型例题。',
-        link: '/control/',
-        lang: 'CONTROL ENGINEERING',
-        tone: 'stone',
-        badge: '连载',
-        chapters: 9,
-        image: '/control/thermostat-system.webp'
-      }
-    ]
-  },
-  {
     id: 'math',
     title: '数学基础',
     en: 'MATHEMATICS',
-    desc: '工程数学、常微分方程、概率论与数理统计：公式推导和速查表按章整理。',
+    desc: '工程数学、概率论与数理统计：公式推导和速查表按章整理。',
     tone: 'violet',
     notes: [
-      {
-        title: '数学分析',
-        cover: '数学分析',
-        meta: '2026 · 第 1 章',
-        desc: '第一章：函数极限与连续性——极限的 ε-δ 定义、无穷小量的阶、连续函数与闭区间上的性质。',
-        link: '/notes/math-analysis/ch-01-limits',
-        lang: 'MATHEMATICAL ANALYSIS',
-        tone: 'stone',
-        badge: '更新中',
-        chapters: 1,
-        image: '/math-analysis/fig-03-36ad41c2.webp'
-      },
-      {
-        title: '高等代数笔记',
-        cover: '高等代数',
-        meta: '2026 · 11 章 + 4 附录',
-        desc: '多项式、行列式、矩阵、线性方程组、二次型、线性空间与线性变换、λ-矩阵、欧氏空间与对偶空间。',
-        link: '/notes/linalg/',
-        lang: 'HIGHER ALGEBRA',
-        tone: 'sage',
-        badge: '已学完',
-        chapters: 11,
-        image: '/notes/linalg.webp'
-      },
       {
         title: '工程数学',
         cover: '工程数学',
@@ -277,18 +200,6 @@ const sections: Section[] = [
         badge: '已学完',
         chapters: 11,
         image: '/notes/emath-fourier.png'
-      },
-      {
-        title: '常微分方程',
-        cover: '常微分方程',
-        meta: '2026 · 6 章',
-        desc: '初等积分法、解的存在定理、高阶方程、线性方程组与非线性方程。',
-        link: '/notes/ode/',
-        lang: 'ODE',
-        tone: 'stone',
-        badge: '已学完',
-        chapters: 6,
-        image: '/notes/ode-lorenz.png'
       },
       {
         title: '概率论',
@@ -320,7 +231,7 @@ const sections: Section[] = [
     id: 'computer',
     title: '计算机',
     en: 'COMPUTER SCIENCE',
-    desc: '数据结构、Eigen 库、Git 与 Linux：从基本概念、矩阵分解到版本管理。',
+    desc: '数据结构：从基本概念、线性表到树、图、查找与排序。',
     tone: 'teal',
     notes: [
       {
@@ -334,40 +245,6 @@ const sections: Section[] = [
         badge: '连载',
         chapters: 10,
         image: '/data-structures/ch01-fig01.webp'
-      },
-      {
-        title: 'Eigen 库使用指南（19 章）',
-        cover: 'Eigen',
-        meta: '2026 年 10 月 · 19 章',
-        desc: '从 Matrix 类、块操作与归约，到 LU / QR / SVD 分解、旋转与仿射变换，再到卡尔曼滤波与点云配准。',
-        link: '/notes/eigen/',
-        lang: 'EIGEN / C++',
-        tone: 'clay',
-        badge: '连载',
-        chapters: 19,
-        image: '/eigen/eigen.png'
-      },
-      {
-        title: 'Git 命令笔记（6 章）',
-        cover: 'Git',
-        meta: '2026 年 10 月 · 6 章',
-        desc: '安装与全局配置、日常四步、版本回溯、常见报错处理与 .gitignore，附 Windows 高频踩坑。',
-        link: '/notes/git/',
-        lang: 'GIT',
-        tone: 'stone',
-        badge: '速查',
-        chapters: 6
-      },
-      {
-        title: 'Linux 使用教程（连载）',
-        cover: 'Linux',
-        meta: '2026 年 10 月 · 10 章',
-        desc: '操作系统概念、文件系统与权限、Shell 脚本、包管理与系统运维，每章配实操示例和习题。',
-        link: '/linux/',
-        lang: 'LINUX',
-        tone: 'mist',
-        badge: '连载',
-        chapters: 10
       }
     ]
   },
@@ -446,6 +323,17 @@ const sections: Section[] = [
 const { isDark } = useData()
 
 const openId = ref<string | null>('robotics')
+const introVisible = ref(true)
+const introDone = ref(false)
+
+function handleIntroReveal() {
+  introDone.value = true
+}
+
+function handleIntroDone() {
+  introDone.value = true
+  introVisible.value = false
+}
 
 function toggle(id: string) {
   openId.value = openId.value === id ? null : id
@@ -469,11 +357,12 @@ const year = new Date().getFullYear()
 </script>
 
 <template>
-  <div class="home-root" :class="{ 'is-dark': isDark }">
+  <div class="home-root" :class="{ 'is-dark': isDark, 'is-ready': introDone }">
     <div class="grain" aria-hidden="true" />
+    <IntroScene v-if="introVisible" @reveal="handleIntroReveal" @done="handleIntroDone" />
 
     <!-- ===== 刊头 ===== -->
-    <header class="masthead">
+    <header class="masthead" :inert="introVisible">
       <div class="page masthead-inner">
         <div class="masthead-top">
           <a class="brand" href="#top">
@@ -504,7 +393,7 @@ const year = new Date().getFullYear()
       </div>
     </header>
 
-    <main id="top">
+    <main id="top" :inert="introVisible">
       <!-- ===== Hero ===== -->
       <section class="hero page">
         <div class="hero-copy">
@@ -656,7 +545,7 @@ const year = new Date().getFullYear()
           <span>南京 · {{ year }}</span>
           <span>
             Made with care, revised slowly.
-            <a href="/about">关于</a> · <a href="#top">回到页首 ↑</a>
+            <a href="#top">回到页首 ↑</a>
           </span>
         </div>
       </footer>
@@ -696,8 +585,7 @@ const year = new Date().getFullYear()
   text-rendering: optimizeLegibility;
 }
 
-.home-root.is-dark,
-:global(html.dark) .home-root {
+.home-root.is-dark {
   --paper: #17140e;
   --paper-deep: #1d1911;
   --ink: #eee7d7;
@@ -745,8 +633,7 @@ const year = new Date().getFullYear()
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.92' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
 }
 
-.home-root.is-dark .grain,
-:global(html.dark) .home-root .grain {
+.home-root.is-dark .grain {
   opacity: 0.1;
   mix-blend-mode: screen;
   filter: invert(1);
@@ -1050,8 +937,7 @@ h1 {
   transition: transform 0.55s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.55s;
 }
 
-.home-root.is-dark .portrait,
-:global(html.dark) .home-root .portrait {
+.home-root.is-dark .portrait {
   background: #242017;
 }
 
@@ -1531,18 +1417,18 @@ h1 {
   }
 }
 
-.masthead { animation: pageFadeUp 0.75s cubic-bezier(0.2, 0.8, 0.2, 1) 0ms both; }
-.kicker   { animation: pageFadeUp 0.75s cubic-bezier(0.2, 0.8, 0.2, 1) 80ms both; }
-h1        { animation: pageFadeUp 0.75s cubic-bezier(0.2, 0.8, 0.2, 1) 140ms both; }
-.hero-en  { animation: pageFadeUp 0.75s cubic-bezier(0.2, 0.8, 0.2, 1) 200ms both; }
-.tagline  { animation: pageFadeUp 0.75s cubic-bezier(0.2, 0.8, 0.2, 1) 260ms both; }
-.hero-bio { animation: pageFadeUp 0.75s cubic-bezier(0.2, 0.8, 0.2, 1) 320ms both; }
-.hero-meta{ animation: pageFadeUp 0.75s cubic-bezier(0.2, 0.8, 0.2, 1) 380ms both; }
-.portrait { animation: portraitFadeIn 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 280ms both; }
-.stats    { animation: pageFadeUp 0.75s cubic-bezier(0.2, 0.8, 0.2, 1) 420ms both; }
-.recent   { animation: pageFadeUp 0.75s cubic-bezier(0.2, 0.8, 0.2, 1) 480ms both; }
-.index    { animation: pageFadeUp 0.75s cubic-bezier(0.2, 0.8, 0.2, 1) 550ms both; }
-.colophon { animation: pageFadeUp 0.75s cubic-bezier(0.2, 0.8, 0.2, 1) 620ms both; }
+.home-root.is-ready .masthead { animation: pageFadeUp 0.75s cubic-bezier(0.2, 0.8, 0.2, 1) 0ms both; }
+.home-root.is-ready .kicker   { animation: pageFadeUp 0.75s cubic-bezier(0.2, 0.8, 0.2, 1) 80ms both; }
+.home-root.is-ready h1        { animation: pageFadeUp 0.75s cubic-bezier(0.2, 0.8, 0.2, 1) 140ms both; }
+.home-root.is-ready .hero-en  { animation: pageFadeUp 0.75s cubic-bezier(0.2, 0.8, 0.2, 1) 200ms both; }
+.home-root.is-ready .tagline  { animation: pageFadeUp 0.75s cubic-bezier(0.2, 0.8, 0.2, 1) 260ms both; }
+.home-root.is-ready .hero-bio { animation: pageFadeUp 0.75s cubic-bezier(0.2, 0.8, 0.2, 1) 320ms both; }
+.home-root.is-ready .hero-meta{ animation: pageFadeUp 0.75s cubic-bezier(0.2, 0.8, 0.2, 1) 380ms both; }
+.home-root.is-ready .portrait { animation: portraitFadeIn 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 280ms both; }
+.home-root.is-ready .stats    { animation: pageFadeUp 0.75s cubic-bezier(0.2, 0.8, 0.2, 1) 420ms both; }
+.home-root.is-ready .recent   { animation: pageFadeUp 0.75s cubic-bezier(0.2, 0.8, 0.2, 1) 480ms both; }
+.home-root.is-ready .index    { animation: pageFadeUp 0.75s cubic-bezier(0.2, 0.8, 0.2, 1) 550ms both; }
+.home-root.is-ready .colophon { animation: pageFadeUp 0.75s cubic-bezier(0.2, 0.8, 0.2, 1) 620ms both; }
 
 /* ---------- responsive ---------- */
 @media (max-width: 1040px) {
